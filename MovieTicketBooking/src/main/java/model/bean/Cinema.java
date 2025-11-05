@@ -18,6 +18,11 @@ public class Cinema {
 		this.rooms = new ArrayList<>();
 	}
 
+	// Get cinema name and address
+	public String getAllInfo() {
+		return name + " - " + address;
+	}
+	
 	//Getter and Setter
 	public String getName() {
 		return name;

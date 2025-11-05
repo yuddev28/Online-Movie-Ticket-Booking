@@ -25,8 +25,22 @@ public class ShowTime {
 		this.createdAt = LocalDateTime.now();
 	}
 
+	// Get cinema name and address
+	public String getCinemaInfo() {
+		return cinema.getAllInfo();
+	}
+	
+	// Get room name
+	public String getRoomName() {
+		return room.getName();
+	}
+	
+	// Get movie name
+	public String getMovieName() {
+		return movie.getName();
+	}
+	
 	// Getter and Setter
-
 	public Room getRoom() {
 		return room;
 	}

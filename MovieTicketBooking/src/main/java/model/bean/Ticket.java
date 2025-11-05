@@ -32,12 +32,14 @@ public class Ticket {
 		this.updatedAt = createdAt;
 	}
 
+	// auto create uid of ticket
 	private String generateUid() {
 		return showTime.getId() + "-" + user.getId() + "-" + seats.size(); 
 	}
 	
+	// calculate total price of ticket by price per ticket * number of seat
 	private BigDecimal calculateTotalPrice() {
-		return showTime.getPricePerTicket().subtract(new BigDecimal(seats.size()));
+		return showTime.getPricePerTicket().multiply(new BigDecimal(seats.size()));
 	}
 	
 	// Getter and Setter
