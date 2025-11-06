@@ -300,4 +300,94 @@ nav .nav-bar .logo a{
 
     }
 }
+/* Sửa lỗi đánh máy và style cho .login (thay thế .loign) */
+.login {
+    margin: 0 5px; /* Giống margin của .nav-links li */
+    list-style: none; /* Để không có bullet nếu dùng li */
+}
+
+.login a {
+    position: relative;
+    font-size: 17px; /* Giống .nav-links li a */
+    font-weight: 400; /* Giống .nav-links li a */
+    color: var(--text-color);
+    padding: 10px; /* Giống .nav-links li a */
+    text-decoration: none;
+}
+
+/* Hiệu ứng hover giống .nav-links li a */
+.login a::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%); /* Sửa từ translateX(50%) để căn giữa đúng */
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/*=-----------------------------------------------------------------
+
+/* ... (giữ nguyên phần CSS cũ) ... */
+
+/* Sửa lỗi đánh máy và style cho .login (thay thế .loign) */
+.login {
+    margin: 0 5px; /* Giống margin của .nav-links li */
+    list-style: none; /* Để không có bullet nếu dùng li */
+}
+
+.login a {
+    position: relative;
+    font-size: 17px; /* Giống .nav-links li a */
+    font-weight: 400; /* Giống .nav-links li a */
+    color: var(--text-color);
+    padding: 10px; /* Giống .nav-links li a */
+    text-decoration: none;
+}
+
+/* Hiệu ứng hover giống .nav-links li a */
+.login a::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%); /* Sửa từ translateX(50%) để căn giữa đúng */
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.login:hover a::before {
+    opacity: 1;
+}
+
+/* Dark mode cho .login (thêm nếu cần, giữ nguyên color) */
+body.dark .login a {
+    color: var(--text-color); /* Đã có trong root */
+}
+
+/* Responsive: Ẩn trên mobile, chỉ hiện trong menu sidebar */
+@media (max-width: 790px) {
+    .nav-bar .login {
+        display: none; /* Ẩn trên desktop navbar khi mobile */
+    }
+    
+    /* Hiện trong sidebar menu */
+    .menu .nav-links .login {
+        display: block; /* Hiện khi sidebar mở */
+        margin: 20px; /* Giống .nav-links li a trên mobile */
+    }
+    
+    .menu .nav-links .login a {
+        display: block; /* Block để full width trên mobile */
+    }
+}
+
 /* end css navar */
