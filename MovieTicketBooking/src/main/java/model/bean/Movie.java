@@ -27,6 +27,20 @@ public class Movie {
 		this.imageUrl = imageUrl;
 		this.movieStatus = movieStatus;
 	}
+	
+	// Contructor without movie id
+	public Movie(String name, String type, String directorName, String actorsName, String description,
+			int duration, String country, String imageUrl, MovieStatus movieStatus) {
+		this.name = name;
+		this.type = type;
+		this.directorName = directorName;
+		this.actorsName = actorsName;
+		this.description = description;
+		this.duration = duration;
+		this.country = country;
+		this.imageUrl = imageUrl;
+		this.movieStatus = movieStatus;
+	}
 
 	// Getter and Setter
 	public int getId() {
