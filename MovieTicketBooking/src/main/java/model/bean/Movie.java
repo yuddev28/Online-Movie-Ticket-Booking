@@ -8,14 +8,14 @@ public class Movie {
 	private String actorsName;
 	private String description;
 	private int duration;
+	private String country;
 	private String imageUrl;
 	private MovieStatus movieStatus;
 
 	public Movie() {}
 	
 	public Movie(int id, String name, String type, String directorName, String actorsName, String description,
-			int duration, String imageUrl, MovieStatus movieStatus) {
-		super();
+			int duration, String country, String imageUrl, MovieStatus movieStatus) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -23,6 +23,7 @@ public class Movie {
 		this.actorsName = actorsName;
 		this.description = description;
 		this.duration = duration;
+		this.country = country;
 		this.imageUrl = imageUrl;
 		this.movieStatus = movieStatus;
 	}
@@ -95,6 +96,13 @@ public class Movie {
 	public void setMovieStatus(MovieStatus movieStatus) {
 		this.movieStatus = movieStatus;
 	}
-	
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
 	
 }
