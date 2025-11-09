@@ -10,6 +10,11 @@ public class Room {
 	public Room() {
 	}
 
+	public Room(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	public Room(int id, String name, int numberOfRows, int numberOfColumns, int startId) {
 		this.id = id;
 		this.name = name;
