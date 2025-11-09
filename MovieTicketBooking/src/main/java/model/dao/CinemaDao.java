@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.bean.Cinema;
+import model.bean.Room;
 
 public class CinemaDao {
 	// Get all cinema
@@ -61,6 +62,32 @@ public class CinemaDao {
 			e.printStackTrace();
 		}
 		return cinema;
+	}
+	
+	// Get list of rooms by cinema id
+	public List<Room> getRoomByCinemaId(int id){
+		List<Room> list = new ArrayList<>();
+		try {
+			String query = "SELECT * FROM rooms WHERE cinema_id = ?;";
+			// Create connect
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			int roomId;
+			String roomName;
+			Room room;
+			while (rs.next()) {
+				roomId = rs.getInt("cinema_id");
+				roomName = rs.getString("cinema_name");
+				room = new Room(roomId, roomName);
+				list.add(room);
+			}
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	// Delete cinema by id
