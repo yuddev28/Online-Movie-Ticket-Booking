@@ -184,4 +184,23 @@ public class MovieDAO {
 		}
 		return update;
 	}
+	
+	// Update movie status by movie id
+	public int updateMovieStatusById(int id, MovieStatus status) {
+		int update = 0;
+		try {
+			// Query string to get data
+			String queryString = "UPDATE movies SET movie_status = ? WHERE movie_id = ?";
+			// Create connection
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setString(1, status.toString());
+			ps.setInt(2, id);
+			update = ps.executeUpdate(queryString);
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return update;
+	}
 }
