@@ -90,15 +90,15 @@ public class CinemaDao {
 		return list;
 	}
 	
+	// Add cinema
 	public void addCinema(Cinema cinema) {
 		try {
-			String query = "INSERT INTO cinemas (cinema_id, cinema_name, cinema_address) VALUES (?, ?, ?);";
+			String query = "INSERT INTO cinemas (cinema_name, cinema_address) VALUES (?, ?);";
 			// Create connect
 			Connection connect = JBDCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, cinema.getId());
-			st.setString(2, cinema.getName());
-			st.setString(3, cinema.getAddress());
+			st.setString(1, cinema.getName());
+			st.setString(2, cinema.getAddress());
 			st.executeUpdate();
 			connect.close();
 		} catch (SQLException e) {
