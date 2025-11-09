@@ -55,12 +55,14 @@ public class MovieDAO {
 		}
 		return list;
 	}
-
+	
+	// Get movie have name contains a string
+	// Ex: if u want "The walking dead" just type "the walking"
 	public List<Movie> getMoviesHaveNameLikeString(String str) {
 		List<Movie> list = new ArrayList<>();
 		try {
 			// Query string to get data
-			String queryString = "SELECT * FROM movies WHERE LOWER(title) LIKE ?";
+			String queryString = "SELECT * FROM movies WHERE LOWER(title) LIKE ?;";
 			// Create connection
 			Connection connect = JBDCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -105,7 +107,7 @@ public class MovieDAO {
 		Movie movie = null;
 		try {
 			// Query string to get data
-			String queryString = "SELECT * FROM movies WHERE movie_id = ?";
+			String queryString = "SELECT * FROM movies WHERE movie_id = ?;";
 			// Create connection
 			Connection connect = JBDCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -141,5 +143,45 @@ public class MovieDAO {
 		return movie;
 	}
 	
+	// Add movie to database
+	public void addMovie(Movie movie) {
+		try {
+			// Query string to get data
+			String queryString = "INSERT INTO movies (movie_name, movie_type, director_name, names_of_actors, movie_description, movie_duration, movie_image_url, movie_status)" 
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			// Create connection
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setString(1, movie.getName());
+			ps.setString(2, movie.getType());
+			ps.setString(3, movie.getDirectorName());
+			ps.setString(4, movie.getActorsName());
+			ps.setString(5, movie.getDescription());
+			ps.setInt(6, movie.getDuration());
+			ps.setString(7, movie.getImageUrl());
+			ps.setString(8, movie.getMovieStatus().toString());
+			ps.executeUpdate(queryString);
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
+	// Delete movie by id
+	public int deleteMovieById(int id) {
+		int update = 0;
+		try {
+			// Query string to get data
+			String queryString = "DELETE FROM movies WHERE id = ?;";
+			// Create connection
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setInt(1, id);
+			update = ps.executeUpdate(queryString);
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return update;
+	}
 }
