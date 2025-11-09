@@ -160,7 +160,7 @@ public class MovieDAO {
 			ps.setInt(6, movie.getDuration());
 			ps.setString(7, movie.getImageUrl());
 			ps.setString(8, movie.getMovieStatus().toString());
-			ps.executeUpdate(queryString);
+			ps.executeUpdate();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,7 +177,7 @@ public class MovieDAO {
 			Connection connect = JBDCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setInt(1, id);
-			update = ps.executeUpdate(queryString);
+			update = ps.executeUpdate();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -196,7 +196,7 @@ public class MovieDAO {
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setString(1, status.toString());
 			ps.setInt(2, id);
-			update = ps.executeUpdate(queryString);
+			update = ps.executeUpdate();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
