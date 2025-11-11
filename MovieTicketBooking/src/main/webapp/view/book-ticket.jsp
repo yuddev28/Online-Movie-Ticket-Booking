@@ -414,7 +414,6 @@
         <p>&copy; 2025 MyCinema. Hệ thống rạp chiếu phim hiện đại bậc nhất.</p>
     </div>
 </footer>
-
 <%-- JS Script: Interactions (giữ nguyên từ trước, thêm cho seat grid nếu cần) --%>
 <script>
     // Date tab (giữ nguyên)
@@ -460,36 +459,6 @@
             const basePrice = 45000;
             document.querySelector('.total-price').textContent = `Tổng Tiền: ${selectedSeats * basePrice} VNĐ (${selectedSeats} ghế Standard x ${basePrice} VNĐ)`;
         });
-    });
-
-    // Dropdown script (giữ nguyên)
-    document.addEventListener('DOMContentLoaded', function() {
-        const movieLi = document.querySelector('.has-dropdown');
-        const dropdown = document.querySelector('.dropdown');
-        const movieLink = document.getElementById('movieLink');
-
-        if (movieLink) {
-            movieLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                movieLi.classList.toggle('active');
-            });
-        }
-
-        document.addEventListener('click', function(e) {
-            if (movieLi && !movieLi.contains(e.target)) {
-                movieLi.classList.remove('active');
-            }
-        });
-
-        if (dropdown) {
-            const dropdownLinks = dropdown.querySelectorAll('a');
-            dropdownLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (movieLi) movieLi.classList.remove('active');
-                    window.location.href = this.href;
-                });
-            });
-        }
     });
 </script>
 </body>
