@@ -1,42 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%-- JSP Directive: Định nghĩa encoding và ngôn ngữ cho trang --%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyCinema - Trang Chủ</title>
+<title>Tất Cả Phim - MyCinema</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<%-- Header: Bao gồm top-nav và search-bar - Sticky để luôn hiển thị khi scroll --%>
 	<header>
 		<div class="top-nav">
-			<%-- Logo: Link về home, màu vàng nổi bật --%>
 			<a href="home.jsp" class="logo">MyCinema</a>
-			<%-- Nav-links: Menu chính, hover đỏ - Ẩn trên mobile --%>
 			<ul class="nav-links">
 				<li><a href="home.jsp">Trang Chủ</a></li>
-				<li class="has-dropdown"><input type="checkbox"
-					id="movieToggle" class="dropdown-toggle"> <label
-					for="movieToggle" id="movieLink">Phim</label>
+				<li class="has-dropdown"><a href="#" id="movieLink">Phim</a>
 					<ul class="dropdown">
 						<li><a href="movieShowing.jsp">Phim Đang Chiếu</a></li>
 						<li><a href="movieUpcoming.jsp">Phim Sắp Chiếu</a></li>
 						<li><a href="movies.jsp">Tất Cả Phim</a></li>
 					</ul></li>
-				<li><a href="theater.jsp">Rạp</a></li>
+				<li><a href="cinemas.jsp">Rạp</a></li>
 				<li><a href="promotions.jsp">Ưu Đãi</a></li>
 				<li><a href="book-ticket.jsp">Đặt Vé</a></li>
 				<li><a href="profile.jsp">Tài Khoản</a></li>
 			</ul>
-			<%-- User-actions: Buttons đăng nhập/đăng ký - CTA cho user --%>
 			<div class="user-actions">
 				<a href="login.jsp" class="btn btn-secondary">Đăng Nhập</a> <a
 					href="register.jsp" class="btn">Đăng Ký</a>
 			</div>
 		</div>
-		<%-- Search-bar-header: Form tìm kiếm toàn trang - Placeholder cho search phim --%>
 		<div class="search-bar-header">
 			<div class="search-container">
 				<form>
@@ -47,40 +39,24 @@
 		</div>
 	</header>
 
-	<%-- Main: Container nội dung chính --%>
 	<main>
-		<%-- Hero Section: Tĩnh - Một banner duy nhất với background image và overlay text --%>
-		<%-- Loại bỏ carousel: Không JS, không nút prev/next, chỉ hero-banner đơn --%>
 		<section class="hero">
-			<%-- Hero-banner: Background image cố định (Avengers Endgame làm ví dụ) --%>
 			<div class="hero-banner"
-				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');">
-			</div>
-
-			<%-- Hero-overlay: Text cố định - Không thay đổi --%>
+				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');"></div>
 			<div class="hero-overlay">
-				<h1>Avengers: Endgame</h1>
-				<p>Bộ phim siêu anh hùng đỉnh cao, kết thúc saga Infinity.</p>
+				<h1>Tất Cả Phim Tại MyCinema</h1>
+				<p>Khám phá danh sách phim đa dạng từ đang chiếu đến sắp ra mắt.</p>
 				<a href="book-ticket.jsp" class="btn">Đặt Vé Ngay</a>
 			</div>
 		</section>
 
-		<%-- Cinema-select: Tabs chọn rạp/thành phố - JS để toggle active (thêm sau) --%>
-		<section class="cinema-select">
-			<div class="cinema-tab active">Tất Cả Rạp</div>
-			<div class="cinema-tab">Hà Nội</div>
-			<div class="cinema-tab">TP.HCM</div>
-			<div class="cinema-tab">Đà Nẵng</div>
-		</section>
-
-		<%-- Section Phim Đang Chiếu: Title + Grid cards + Link xem thêm --%>
 		<section class="section">
 			<h2>Phim Đang Chiếu</h2>
-			<%-- Movie-grid: 6 cards placeholder với poster, rating, genre, button đặt vé --%>
 			<div class="movie-grid">
+				<!-- 8 cards placeholder, mở rộng từ home -->
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+1"
-						alt="Phim 1">
+					<img src="https://via.placeholder.com/180x270?text=Showing+1"
+						alt="Showing 1">
 					<div class="movie-info">
 						<h3>Avengers: Endgame</h3>
 						<div class="rating">8.4</div>
@@ -89,8 +65,8 @@
 					</div>
 				</div>
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+2"
-						alt="Phim 2">
+					<img src="https://via.placeholder.com/180x270?text=Showing+2"
+						alt="Showing 2">
 					<div class="movie-info">
 						<h3>Parasite</h3>
 						<div class="rating">8.5</div>
@@ -99,8 +75,8 @@
 					</div>
 				</div>
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+3"
-						alt="Phim 3">
+					<img src="https://via.placeholder.com/180x270?text=Showing+3"
+						alt="Showing 3">
 					<div class="movie-info">
 						<h3>Joker</h3>
 						<div class="rating">8.4</div>
@@ -109,8 +85,8 @@
 					</div>
 				</div>
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+4"
-						alt="Phim 4">
+					<img src="https://via.placeholder.com/180x270?text=Showing+4"
+						alt="Showing 4">
 					<div class="movie-info">
 						<h3>Frozen 2</h3>
 						<div class="rating">6.8</div>
@@ -119,8 +95,8 @@
 					</div>
 				</div>
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+5"
-						alt="Phim 5">
+					<img src="https://via.placeholder.com/180x270?text=Showing+5"
+						alt="Showing 5">
 					<div class="movie-info">
 						<h3>1917</h3>
 						<div class="rating">8.2</div>
@@ -129,8 +105,8 @@
 					</div>
 				</div>
 				<div class="movie-card">
-					<img src="https://via.placeholder.com/180x270?text=Phim+6"
-						alt="Phim 6">
+					<img src="https://via.placeholder.com/180x270?text=Showing+6"
+						alt="Showing 6">
 					<div class="movie-info">
 						<h3>Knives Out</h3>
 						<div class="rating">7.9</div>
@@ -138,17 +114,33 @@
 						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
 					</div>
 				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Showing+7"
+						alt="Showing 7">
+					<div class="movie-info">
+						<h3>Once Upon a Time in Hollywood</h3>
+						<div class="rating">7.6</div>
+						<p class="genre">Hài, Tội Phạm</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Showing+8"
+						alt="Showing 8">
+					<div class="movie-info">
+						<h3>The Irishman</h3>
+						<div class="rating">7.8</div>
+						<p class="genre">Tội Phạm, Tiểu Sử</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
 			</div>
-			<%-- Link xem thêm: CTA dẫn đến movies.jsp --%>
-			<a href="movieShowing.jsp" class="btn"
-				style="margin-top: var(--spacing-md); display: inline-block;">Xem
-				Tất Cả</a>
 		</section>
 
-		<%-- Section Phim Sắp Chiếu: Tương tự, nhưng genre bao gồm ngày phát hành --%>
 		<section class="section">
 			<h2>Phim Sắp Chiếu</h2>
 			<div class="movie-grid">
+				<!-- 6 cards placeholder -->
 				<div class="movie-card">
 					<img src="https://via.placeholder.com/180x270?text=Upcoming+1"
 						alt="Upcoming 1">
@@ -158,7 +150,6 @@
 						<p class="genre">Khoa Học Viễn Tưởng - 15/11/2025</p>
 					</div>
 				</div>
-				<%-- Thêm 3-4 cards placeholder tương tự ở đây để đầy đủ --%>
 				<div class="movie-card">
 					<img src="https://via.placeholder.com/180x270?text=Upcoming+2"
 						alt="Upcoming 2">
@@ -186,14 +177,28 @@
 						<p class="genre">Hành Động, Phiêu Lưu - 01/07/2026</p>
 					</div>
 				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+5"
+						alt="Upcoming 5">
+					<div class="movie-info">
+						<h3>Top Gun: Maverick</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Hành Động - 22/05/2026</p>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+6"
+						alt="Upcoming 6">
+					<div class="movie-info">
+						<h3>Lightyear</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Hoạt Hình - 17/06/2026</p>
+					</div>
+				</div>
 			</div>
-			<a href="movieUpcoming.jsp" class="btn"
-				style="margin-top: var(--spacing-md); display: inline-block;">Xem
-				Tất Cả</a>
 		</section>
 	</main>
 
-	<%-- Footer: Links và copyright - Center align --%>
 	<footer class="footer">
 		<div
 			style="max-width: var(--max-width); margin: 0 auto; padding: 0 var(--spacing-md);">
