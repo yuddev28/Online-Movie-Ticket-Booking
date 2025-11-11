@@ -1116,3 +1116,166 @@ main {
   }
 }
 /*--------------------------End CSS book-ticket.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+
+
+
+
+
+
+/*--------------------------Start CSS loign.jsp/register.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+
+/* Login/Register Form Styles: Dark theme, centered form */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: var(--bg-color);
+}
+
+.auth-form {
+  background: var(--bg-secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.auth-logo .logo {
+  font-size: var(--font-size-xl);
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-color);
+  font-size: var(--font-size-large);
+}
+
+.form-group-auth {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group-auth label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.form-group-auth input {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid #333;
+  border-radius: var(--border-radius);
+  transition: border-color 0.3s;
+}
+
+.form-group-auth input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.auth-btn {
+  width: 100%;
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: var(--spacing-md);
+}
+
+.auth-btn:hover {
+  background: #b20710;
+}
+
+.social-login {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+}
+
+.social-login p {
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid #333;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: border-color 0.3s;
+  margin-bottom: var(--spacing-sm);
+}
+
+.social-btn:hover {
+  border-color: var(--primary-color);
+}
+
+.social-btn::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.google-btn::before {
+  background-image: url('data:image/svg+xml;base64,...'); /* Icon Google base64 */
+}
+
+.facebook-btn::before {
+  background-image: url('data:image/svg+xml;base64,...'); /* Icon Facebook base64 */
+}
+
+.auth-link {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.auth-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+.error-msg {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: var(--spacing-sm);
+  text-align: center;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .auth-form {
+    padding: var(--spacing-lg);
+  }
+}
+
+/*--------------------------End CSS loign.jsp/register.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
