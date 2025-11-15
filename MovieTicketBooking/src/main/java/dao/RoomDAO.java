@@ -73,6 +73,34 @@ public class RoomDAO {
 		return room;
 	}
 	
+	// Get list of rooms by cinema id
+	public List<Room> getRoomByCinemaId(int id){
+		List<Room> list = new ArrayList<>();
+		try {
+			String query = "SELECT * FROM rooms WHERE cinema_id = ?;";
+			// Create connect
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			int roomId;
+			String roomName;
+			Room room;
+			Seat[] seats;
+			while (rs.next()) {
+				roomId = rs.getInt("room_id");
+				roomName = rs.getString("room_name");
+				seats = (Seat[]) seatDAO.getSeatsByRoomId(roomId).toArray();
+				room = new Room(roomId, roomName, seats);
+				list.add(room);
+			}
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	// Add room with cinema id, then add seats of room
 	public void addRoom(Room room, int cinemaId) {
 		try {
