@@ -11,8 +11,11 @@ import java.util.List;
 import model.Movie;
 import model.MovieStatus;
 import model.Room;
+import model.Seat;
 
 public class RoomDAO {
+	private SeatDAO seatDAO = new SeatDAO();
+	
 	// Get list of all rooms
 	public List<Room> getAllRoom(){
 		List<Room> list = new ArrayList<>();
@@ -27,10 +30,13 @@ public class RoomDAO {
 			int id;
 			String name;
 			Room room;
+			Seat[] seats;
 			while (rs.next()) {
 				id = rs.getInt("movie_id");
 				name = rs.getString("movie_name");
-				room = new Room(id, name);
+				// Get seats of this room
+				seats = (Seat[]) seatDAO.getSeatsByRoomId(id).toArray();
+				room = new Room(id, name, seats);
 				list.add(room);
 			}
 			connect.close();
@@ -40,7 +46,34 @@ public class RoomDAO {
 		return list;
 	}
 	
-	// Add room with cinema id
+	// Get room by room id
+	public Room getRoomById(int roomId) {
+		Room room = null;
+		try {
+			String query = "SELECT * FROM rooms WHERE room_id = ?";
+			// Create connect
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, roomId);
+			ResultSet rs = st.executeQuery();
+			int id;
+			String name;
+			// Get seats of this room
+			Seat[] seats = (Seat[]) seatDAO.getSeatsByRoomId(roomId).toArray();
+			while(rs.next()) {
+				id = rs.getInt("movie_id");
+				name = rs.getString("movie_name");
+				room = new Room(id, name, seats); 
+			}
+			st.executeUpdate();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return room;
+	}
+	
+	// Add room with cinema id, then add seats of room
 	public void addRoom(Room room, int cinemaId) {
 		try {
 			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
@@ -50,6 +83,9 @@ public class RoomDAO {
 			st.setString(1, room.getName());
 			st.setInt(2, cinemaId);
 			st.executeUpdate();
+			// Add seats of this room to database
+			Seat[] seats = room.getSeats();
+			seatDAO.addSeats(seats);
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
