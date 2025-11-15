@@ -83,7 +83,7 @@ public class RoomDAO {
 			st.setString(1, room.getName());
 			st.setInt(2, cinemaId);
 			st.executeUpdate();
-			// Add seats of this room to database
+			// Add seats of this room to db
 			Seat[] seats = room.getSeats();
 			seatDAO.addSeats(seats);
 			connect.close();
