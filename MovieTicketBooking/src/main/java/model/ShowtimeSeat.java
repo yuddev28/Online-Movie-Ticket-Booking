@@ -30,12 +30,13 @@ public class ShowtimeSeat {
 		this.haveBooked = false;
 		this.updatedAt = LocalDateTime.now();
 	}
-
-	//Getter and Setter
-	public Seat getSeat() {
-		return seat;
+	
+	//Get seat name
+	public String getSeatName() {
+		return seat.getName();
 	}
 
+	//Getter and Setter
 	public void setSeat(Seat seat) {
 		this.seat = seat;
 	}
@@ -50,10 +51,6 @@ public class ShowtimeSeat {
 
 	public ShowTime getShowTime() {
 		return showTime;
-	}
-
-	public void setShowTime(ShowTime showTime) {
-		this.showTime = showTime;
 	}
 
 	public boolean isHaveBooked() {
