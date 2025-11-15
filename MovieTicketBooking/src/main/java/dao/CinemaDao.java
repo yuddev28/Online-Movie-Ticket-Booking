@@ -1,4 +1,4 @@
-package model.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.bean.Cinema;
-import model.bean.Room;
+import model.Cinema;
+import model.Room;
 
 public class CinemaDao {
 	// Get all cinema

@@ -1,4 +1,4 @@
-package model.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.bean.Movie;
-import model.bean.MovieStatus;
+import model.Movie;
+import model.MovieStatus;
 
 public class MovieDAO {
 	// Get list of all movies in database

@@ -1,4 +1,4 @@
-package model.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.bean.Movie;
-import model.bean.MovieStatus;
-import model.bean.Room;
+import model.Movie;
+import model.MovieStatus;
+import model.Room;
 
 public class RoomDAO {
 	// Get list of all rooms
