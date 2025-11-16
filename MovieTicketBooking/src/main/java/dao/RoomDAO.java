@@ -17,6 +17,7 @@ public class RoomDAO implements IRoomDAO{
 	private ISeatDAO seatDAO = new SeatDAO();
 	
 	// Get list of all rooms
+	@Override
 	public List<Room> getAllRoom(){
 		List<Room> list = new ArrayList<>();
 		try {
@@ -47,6 +48,7 @@ public class RoomDAO implements IRoomDAO{
 	}
 	
 	// Get room by room id
+	@Override
 	public Room getRoomById(int roomId) {
 		Room room = null;
 		try {
@@ -74,6 +76,7 @@ public class RoomDAO implements IRoomDAO{
 	}
 	
 	// Get list of rooms by cinema id
+	@Override
 	public List<Room> getRoomByCinemaId(int id){
 		List<Room> list = new ArrayList<>();
 		try {
@@ -102,6 +105,7 @@ public class RoomDAO implements IRoomDAO{
 	}
 	
 	// Add room with cinema id, then add seats of room
+	@Override
 	public void addRoom(Room room, int cinemaId) {
 		try {
 			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
@@ -122,6 +126,7 @@ public class RoomDAO implements IRoomDAO{
 	
 	
 	// Delete room by id
+	@Override
 	public int deleteRoomById(int id) {
 		int update = 0;
 		try {
