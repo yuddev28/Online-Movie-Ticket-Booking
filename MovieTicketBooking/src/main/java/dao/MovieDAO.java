@@ -11,8 +11,9 @@ import java.util.List;
 import model.Movie;
 import model.MovieStatus;
 
-public class MovieDAO {
+public class MovieDAO implements IMovieDAO{
 	// Get list of all movies in database
+	@Override
 	public List<Movie> getAllMovies() {
 		List<Movie> list = new ArrayList<>();
 		try {
@@ -58,6 +59,7 @@ public class MovieDAO {
 	
 	// Get movie have name contains a string
 	// Ex: if u want "The walking dead" just type "the walking"
+	@Override
 	public List<Movie> getMoviesHaveNameLikeString(String str) {
 		List<Movie> list = new ArrayList<>();
 		try {
@@ -103,6 +105,7 @@ public class MovieDAO {
 	}
 
 	// Get movie by id
+	@Override
 	public Movie getMovieById(int id) {
 		Movie movie = null;
 		try {
@@ -144,6 +147,7 @@ public class MovieDAO {
 	}
 	
 	// Add movie to database
+	@Override
 	public void addMovie(Movie movie) {
 		try {
 			// Query string to get data
@@ -168,6 +172,7 @@ public class MovieDAO {
 	}
 
 	// Delete movie by id
+	@Override
 	public int deleteMovieById(int id) {
 		int update = 0;
 		try {
@@ -186,6 +191,7 @@ public class MovieDAO {
 	}
 	
 	// Update movie status by movie id
+	@Override
 	public int updateMovieStatusById(int id, MovieStatus status) {
 		int update = 0;
 		try {
