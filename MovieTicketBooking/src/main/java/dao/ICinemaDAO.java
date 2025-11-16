@@ -17,5 +17,5 @@ public interface ICinemaDAO {
 	// Add cinema
 	void addCinema(Cinema cinema);
 	// Delete cinema by id
-	int deleteCinemaById(int id) ;
+	void deleteCinemaById(int id) ;
 }

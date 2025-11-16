@@ -85,19 +85,17 @@ public class CinemaDAO implements ICinemaDAO{
 
 	// Delete cinema by id
 	@Override
-	public int deleteCinemaById(int id) {
-		int update = 0;
+	public void deleteCinemaById(int id) {
 		try {
 			String query = "DELETE FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JBDCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
-			update = st.executeUpdate();
+			st.executeUpdate();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return update;
 	}
 }
