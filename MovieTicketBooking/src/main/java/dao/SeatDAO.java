@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import model.Seat;
 import model.Room;
 
-public class SeatDAO {
+public class SeatDAO implements ISeatDAO{
 	// Get seats by room id
+	@Override
 	public List<Seat> getSeatsByRoomId(int roomId){
 		RoomDAO roomDAO = new RoomDAO();
 		List<Seat> seats = new ArrayList<>();
@@ -44,6 +45,7 @@ public class SeatDAO {
 	}
 	
 	// Add a list of seats (array)
+	@Override
 	public void addSeats(Seat[] seats) {
 		try {
 			String query = "INSERT INTO seats (seat_name, room_id) VALUES (?, ?);";
