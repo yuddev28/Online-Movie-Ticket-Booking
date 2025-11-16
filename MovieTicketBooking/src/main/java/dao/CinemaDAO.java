@@ -11,7 +11,7 @@ import java.util.List;
 import model.Cinema;
 import model.Room;
 
-public class CinemaDao {
+public class CinemaDAO implements ICinemaDAO{
 	// Get all cinema
 	public List<Cinema> getAllCinema() {
 		List<Cinema> list = new ArrayList<>();
