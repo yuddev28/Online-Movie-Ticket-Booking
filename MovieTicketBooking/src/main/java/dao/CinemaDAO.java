@@ -13,6 +13,7 @@ import model.Room;
 
 public class CinemaDAO implements ICinemaDAO{
 	// Get all cinema
+	@Override
 	public List<Cinema> getAllCinema() {
 		List<Cinema> list = new ArrayList<>();
 		try {
@@ -40,6 +41,7 @@ public class CinemaDAO implements ICinemaDAO{
 	}
 
 	// Get cinema by id
+	@Override
 	public Cinema getCinemaById(int id) {
 		Cinema cinema = null;
 		try {
@@ -65,6 +67,7 @@ public class CinemaDAO implements ICinemaDAO{
 	}
 	
 	// Add cinema
+	@Override
 	public void addCinema(Cinema cinema) {
 		try {
 			String query = "INSERT INTO cinemas (cinema_name, cinema_address) VALUES (?, ?);";
@@ -81,6 +84,7 @@ public class CinemaDAO implements ICinemaDAO{
 	}
 
 	// Delete cinema by id
+	@Override
 	public int deleteCinemaById(int id) {
 		int update = 0;
 		try {

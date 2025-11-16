@@ -11,14 +11,11 @@ import java.util.List;
 import model.Cinema;
 
 public interface ICinemaDAO {
-	public List<Cinema> getAllCinema();
-
+	List<Cinema> getAllCinema();
 	// Get cinema by id
-	public Cinema getCinemaById(int id);
-	
+	Cinema getCinemaById(int id);
 	// Add cinema
-	public void addCinema(Cinema cinema);
-
+	void addCinema(Cinema cinema);
 	// Delete cinema by id
-	public int deleteCinemaById(int id) ;
+	int deleteCinemaById(int id) ;
 }
