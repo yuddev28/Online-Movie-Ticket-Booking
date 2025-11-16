@@ -9,7 +9,7 @@ public class Ticket {
 	private String uid;
 	private User user;
 	private ShowTime showTime;
-	private List<ShowtimeSeat> seats;
+	private List<ShowTimeSeat> seats;
 	private BigDecimal totalPrice;
 	private PaymentMethod paymentMethod;
 	private TicketStatus status;
@@ -18,7 +18,7 @@ public class Ticket {
 	
 	public Ticket() {}
 	
-	public Ticket(int id, User user, ShowTime showTime, List<ShowtimeSeat> seats, PaymentMethod paymentMethod) {
+	public Ticket(int id, User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
 		super();
 		this.id = id;
 		this.uid = this.generateUid();
@@ -59,11 +59,11 @@ public class Ticket {
 		this.showTime = showTime;
 	}
 
-	public List<ShowtimeSeat> getSeats() {
+	public List<ShowTimeSeat> getSeats() {
 		return seats;
 	}
 
-	public void setSeats(List<ShowtimeSeat> seats) {
+	public void setSeats(List<ShowTimeSeat> seats) {
 		this.seats = seats;
 	}
 

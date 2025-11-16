@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class ShowtimeSeat {
+public class ShowTimeSeat {
 	private int id;
 	private Seat seat;
 	private User bookedBy;
@@ -10,10 +10,10 @@ public class ShowtimeSeat {
 	private boolean haveBooked;
 	private LocalDateTime updatedAt;
 	
-	public ShowtimeSeat() {}
+	public ShowTimeSeat() {}
 	
 	//Constructor with user 
-	public ShowtimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime) {
+	public ShowTimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime) {
 		this.id = id;
 		this.seat = seat;
 		this.bookedBy = bookedBy;
@@ -23,7 +23,7 @@ public class ShowtimeSeat {
 	}
 
 	//Constructor without user
-	public ShowtimeSeat(int id, Seat seat, ShowTime showTime) {
+	public ShowTimeSeat(int id, Seat seat, ShowTime showTime) {
 		this.id = id;
 		this.seat = seat;
 		this.showTime = showTime;
