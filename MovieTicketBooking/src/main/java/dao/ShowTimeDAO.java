@@ -124,14 +124,33 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	// Add show time
 	@Override
 	public void addShowTime(ShowTime showTime) {
-		// TODO Auto-generated method stub
-		
+		try {
+			String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES "
+					+ "(?, ?, ?, ?, ?);";
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setBigDecimal(1, showTime.getPricePerTicket());
+			st.setTimestamp(2, Timestamp.valueOf(showTime.getStartTime()));
+			st.setInt(3, showTime.getMovieId());
+			st.setInt(4, showTime.getCinemaId());
+			st.setInt(5, showTime.getRoomId());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	// Delete show time by id
 	@Override
 	public void deleteShowTimeById(int id) {
-		// TODO Auto-generated method stub
-		
+		try {
+			String query = "DELETE FROM showtimes WHERE showtime_id = ?;";
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
