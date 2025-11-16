@@ -139,7 +139,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			e.printStackTrace();
 		}
 	}
-	// Delete show time by id
+	// Delete show time by showtime id
 	@Override
 	public void deleteShowTimeById(int id) {
 		try {
