@@ -13,8 +13,8 @@ import model.MovieStatus;
 import model.Room;
 import model.Seat;
 
-public class RoomDAO {
-	private SeatDAO seatDAO = new SeatDAO();
+public class RoomDAO implements IRoomDAO{
+	private ISeatDAO seatDAO = new SeatDAO();
 	
 	// Get list of all rooms
 	public List<Room> getAllRoom(){
