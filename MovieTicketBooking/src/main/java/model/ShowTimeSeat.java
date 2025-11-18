@@ -7,7 +7,6 @@ public class ShowTimeSeat {
 	private Seat seat;
 	private User bookedBy;
 	private ShowTime showTime;
-	private boolean haveBooked;
 	private LocalDateTime updatedAt;
 	
 	public ShowTimeSeat() {}
@@ -18,7 +17,6 @@ public class ShowTimeSeat {
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
-		haveBooked = (bookedBy == null);
 		this.updatedAt = LocalDateTime.now();
 	}
 
@@ -29,10 +27,11 @@ public class ShowTimeSeat {
 	}
 	
 	// constructor use for user take show time seat
-	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime) {
+	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime, LocalDateTime updatedAt) {
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
+		this.updatedAt = updatedAt;
 	}
 	
 	//Get seat name
@@ -55,14 +54,6 @@ public class ShowTimeSeat {
 
 	public ShowTime getShowTime() {
 		return showTime;
-	}
-
-	public boolean isHaveBooked() {
-		return haveBooked;
-	}
-
-	public void setHaveBooked(boolean haveBooked) {
-		this.haveBooked = haveBooked;
 	}
 
 	public LocalDateTime getUpdatedAt() {
