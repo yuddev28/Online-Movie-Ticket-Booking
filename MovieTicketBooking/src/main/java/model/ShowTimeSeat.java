@@ -12,23 +12,27 @@ public class ShowTimeSeat {
 	
 	public ShowTimeSeat() {}
 	
-	//Constructor with user 
+	// contructor use for get data from db
 	public ShowTimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime) {
 		this.id = id;
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
-		this.haveBooked = true;
+		haveBooked = (bookedBy == null);
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	//Constructor without user
-	public ShowTimeSeat(int id, Seat seat, ShowTime showTime) {
-		this.id = id;
+	// constructor use for create show time seat
+	public ShowTimeSeat(Seat seat, ShowTime showTime) {
 		this.seat = seat;
 		this.showTime = showTime;
-		this.haveBooked = false;
-		this.updatedAt = LocalDateTime.now();
+	}
+	
+	// constructor use for user take show time seat
+	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime) {
+		this.seat = seat;
+		this.bookedBy = bookedBy;
+		this.showTime = showTime;
 	}
 	
 	//Get seat name
