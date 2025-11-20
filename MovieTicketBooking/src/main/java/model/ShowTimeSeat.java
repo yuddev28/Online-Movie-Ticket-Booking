@@ -7,6 +7,7 @@ public class ShowTimeSeat {
 	private Seat seat;
 	private User bookedBy;
 	private ShowTime showTime;
+	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	
 	public ShowTimeSeat() {}
@@ -17,6 +18,7 @@ public class ShowTimeSeat {
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
+		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
 
@@ -27,10 +29,11 @@ public class ShowTimeSeat {
 	}
 	
 	// constructor use for user take show time seat
-	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime, LocalDateTime updatedAt) {
+	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
+		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
 	
@@ -67,5 +70,11 @@ public class ShowTimeSeat {
 	public int getId() {
 		return id;
 	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	
+	
 	
 }
