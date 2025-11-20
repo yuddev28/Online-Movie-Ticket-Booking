@@ -1675,3 +1675,63 @@ main {
 
 
 
+/*-------------------------------------------------Start forgot-password.jsp(quên mật khẩu)------------------------------------------*/
+
+/* Forgot Password Form: Similar to login, email only */
+.forgot-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: var(--bg-color);
+}
+
+.forgot-form {
+  background: var(--bg-secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 400px;
+}
+
+.forgot-btn {
+  width: 100%;
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: var(--spacing-md);
+}
+
+.forgot-btn:hover {
+  background: #b20710;
+}
+
+.forgot-success {
+  text-align: center;
+  color: #28a745;
+  margin-top: var(--spacing-md);
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .forgot-form {
+    padding: var(--spacing-lg);
+  }
+}
+
+
+/*-------------------------------------------------End forgot-password.jsp(quên mật khẩu)------------------------------------------*/
+
+
+
+
+
+
