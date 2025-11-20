@@ -11,10 +11,8 @@ import model.Room;
 import model.Seat;
 
 public interface ISeatDAO {
-	// Get seats by room id
 	List<Seat> getSeatsByRoomId(int roomId);
-
-	// Add a list of seats (array)
+	Seat getSeatById(int id);
 	void addSeats(Seat[] seats);
 
 }

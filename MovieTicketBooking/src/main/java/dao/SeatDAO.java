@@ -12,6 +12,11 @@ import model.Seat;
 import model.Room;
 
 public class SeatDAO implements ISeatDAO{
+	private IRoomDAO roomDAO;
+	
+	public SeatDAO() {
+		roomDAO = new RoomDAO();
+	}
 	// Get seats by room id
 	@Override
 	public List<Seat> getSeatsByRoomId(int roomId){
@@ -44,6 +49,34 @@ public class SeatDAO implements ISeatDAO{
 		return seats;
 	}
 	
+	// Get seat by seat id
+	@Override
+	public Seat getSeatById(int id) {
+		Seat seat = null;
+		try {
+			// Query string to get data
+			String queryString = "SELECT * FROM seats WHERE seat_id = ?;";
+			// Create connection
+			Connection connect = JBDCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(queryString);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery(queryString);
+			// Iterate result set to get data
+			String name;
+			Room room;
+			while(rs.next()) {
+				name = rs.getString("seat_name");
+				room = roomDAO.getRoomById(rs.getInt("room_id"));
+				seat = new Seat(id, name, room);
+			}
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return seat;
+	}
+	
+	
 	// Add a list of seats (array)
 	@Override
 	public void addSeats(Seat[] seats) {
@@ -63,5 +96,6 @@ public class SeatDAO implements ISeatDAO{
 			e.printStackTrace();
 		}
 	}
-	
+
+
 }
