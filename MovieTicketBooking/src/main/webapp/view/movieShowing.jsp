@@ -22,10 +22,7 @@
 						<li><a href="movies.jsp">Tất Cả Phim</a></li>
 					</ul></li>
 
-				<%-- Thêm script ở cuối body của movies.jsp (tương tự home.jsp) --%>
-				<script>
-					// Paste script JS từ home.jsp
-				</script>
+				
 				<li><a href="cinemas.jsp">Rạp</a></li>
 				<li><a href="profile.jsp">Tài Khoản</a></li>
 			</ul>
@@ -172,10 +169,17 @@
 			</div>
 		</section>
 	</main>
-
-	<!-- Copy footer từ movies.jsp -->
 	<footer class="footer">
-		<!-- Paste footer -->
+		<div style="max-width: var(--max-width); margin: 0 auto; padding: 0 var(--spacing-md);">
+        <div class="footer-links">
+            <a href="#">Giới Thiệu</a>
+            <a href="#">Tin Tức</a>
+            <a href="#">Tuyển Dụng</a>
+            <a href="#">Liên Hệ</a>
+            <a href="#">Chính Sách Bảo Mật</a>
+        </div>
+        <p>&copy; 2025 MyCinema. Hệ thống rạp chiếu phim hiện đại bậc nhất.</p>
+    </div>
 	</footer>
 </body>
 </html>

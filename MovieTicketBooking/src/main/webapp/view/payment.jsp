@@ -123,52 +123,6 @@
         </div>
     </footer>
 
-    <script>
-        // Payment method selection
-        document.querySelectorAll('.method-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.method-option').forEach(o => o.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Promo code
-        document.querySelector('.promo-code button').addEventListener('click', function() {
-            const code = document.querySelector('.promo-code input').value;
-            if (code) {
-                alert('Mã ưu đãi ' + code + ' đã áp dụng! Giảm 20,000 VNĐ.');
-            }
-        });
-
-        // Dropdown script (giữ nguyên)
-        document.addEventListener('DOMContentLoaded', function() {
-            const movieLi = document.querySelector('.has-dropdown');
-            const dropdown = document.querySelector('.dropdown');
-            const movieLink = document.getElementById('movieLink');
-
-            if (movieLink) {
-                movieLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    movieLi.classList.toggle('active');
-                });
-            }
-
-            document.addEventListener('click', function(e) {
-                if (movieLi && !movieLi.contains(e.target)) {
-                    movieLi.classList.remove('active');
-                }
-            });
-
-            if (dropdown) {
-                const dropdownLinks = dropdown.querySelectorAll('a');
-                dropdownLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (movieLi) movieLi.classList.remove('active');
-                        window.location.href = this.href;
-                    });
-                });
-            }
-        });
-    </script>
+    
 </body>
 </html>

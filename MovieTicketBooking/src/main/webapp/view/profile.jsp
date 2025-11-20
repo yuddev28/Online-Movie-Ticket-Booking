@@ -23,8 +23,6 @@
                     </ul>
                 </li>
                 <li><a href="theater.jsp">Rạp</a></li>
-                <li><a href="promotions.jsp">Ưu Đãi</a></li>
-                <li><a href="book-ticket.jsp">Đặt Vé</a></li>
                 <li><a href="profile.jsp">Tài Khoản</a></li>
             </ul>
             <div class="user-actions">
@@ -152,28 +150,6 @@
             <p style="text-align: center; margin-top: var(--spacing-md);">
                 <a href="my-bookings.jsp" class="btn btn-secondary">Xem Tất Cả Lịch Sử</a>
             </p>
-        </section>
-
-        <%-- Promotions Section --%>
-        <section class="profile-section">
-            <h2>Ưu Đãi Cá Nhân Hóa</h2>
-            <div class="promotions-list">
-                <div class="promotion-summary">
-                    <h4>C’STUDENT - 45K HSSV</h4>
-                    <p>Áp dụng cho vé 2D cả tuần.</p>
-                    <button class="btn btn-secondary" style="margin-top: var(--spacing-sm);">Áp Dụng</button>
-                </div>
-                <div class="promotion-summary">
-                    <h4>C'MONDAY - 45K Thứ 2</h4>
-                    <p>Đồng giá vé thứ 2 hàng tuần.</p>
-                    <button class="btn btn-secondary" style="margin-top: var(--spacing-sm);">Áp Dụng</button>
-                </div>
-                <div class="promotion-summary">
-                    <h4>C'MEMBER - Giảm 10% Bắp Nước</h4>
-                    <p>Giảm thêm cho thành viên VIP.</p>
-                    <button class="btn btn-secondary" style="margin-top: var(--spacing-sm);">Áp Dụng</button>
-                </div>
-            </div>
         </section>
 
         <%-- Action Buttons --%>

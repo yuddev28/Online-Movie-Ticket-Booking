@@ -1343,4 +1343,29 @@ main {
   }
 }
 
+
 /*--------------------------End payment.jsp  -----------------------------------------------*/
+
+
+/*-------------------------- Start profile.jsp(form edit chinh sua thong tin ca nhan)  -----------------------------------------------*/
+
+/* Form-group: Style cho forms (login, book-ticket) - Input dark theme */
+.form-group {
+	margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: var(--spacing-sm);
+	font-weight: 400;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+	width: 100%;
+	padding: var(--spacing-md);
+	background-color: var(--bg-secondary);
+	color: var(--text-color);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+}
+/*--------------------------End profile.jsp(form edit chinh sua thong tin ca nhan)  -----------------------------------------------*/
