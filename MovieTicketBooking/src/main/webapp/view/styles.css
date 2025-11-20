@@ -1537,3 +1537,141 @@ main {
 }
 
 /*-------------------------------------------------End payment-failure.jsp------------------------------------------*/
+
+
+
+
+
+/*-------------------------------------------------Start my-booking.jsp(xem lich su dat ve)------------------------------------------*/
+/* Styles cho my-bookings.jsp: Bảng lịch sử đặt vé, filter, status badges */
+.bookings-container {
+  padding: var(--spacing-md);
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.bookings-table th,
+.bookings-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.bookings-table th {
+  background: var(--primary-color);
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.status-badge {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-confirmed {
+  background: #28a745;
+  color: #fff;
+}
+
+.status-cancelled {
+  background: #dc3545;
+  color: #fff;
+}
+
+.status-pending {
+  background: #ffc107;
+  color: #000;
+}
+
+.action-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-right: var(--spacing-sm);
+  font-size: 12px;
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.action-btn:hover {
+  background: #b20710;
+}
+
+.no-bookings {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--text-muted);
+}
+
+.filter-bar {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-select {
+  padding: var(--spacing-sm);
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid #333;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+}
+
+.filter-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.filter-btn:hover {
+  background: #b20710;
+}
+
+.download-btn, .clear-btn {
+  padding: var(--spacing-md);
+  margin: 0 var(--spacing-sm);
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bookings-table {
+    font-size: 12px;
+  }
+
+  .bookings-table th, .bookings-table td {
+    padding: var(--spacing-sm);
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-btn {
+    display: block;
+    margin: var(--spacing-sm) 0;
+  }
+}
+/*-------------------------------------------------End my-booking.jsp(xem lich su dat ve)------------------------------------------*/
+
+
+
