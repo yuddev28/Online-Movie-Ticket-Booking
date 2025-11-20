@@ -1369,3 +1369,171 @@ main {
 	border-radius: var(--border-radius);
 }
 /*--------------------------End profile.jsp(form edit chinh sua thong tin ca nhan)  -----------------------------------------------*/
+
+
+/*--------------------------Start payment-success.jsp(thanh toan thanh cong)  -----------------------------------------------*/
+
+/* Success Page Styles: Confirmation with badges, summary */
+.success-container {
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.success-hero {
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-icon {
+  font-size: 64px;
+  color: #28a745;
+  margin-bottom: var(--spacing-sm);
+}
+
+.success-title {
+  font-size: var(--font-size-xl);
+  color: #28a745;
+  margin-bottom: var(--spacing-sm);
+}
+
+.success-summary {
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-code {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.success-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid #333;
+}
+
+.continue-btn {
+  width: 100%;
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: var(--spacing-md);
+}
+
+.continue-btn:hover {
+  background: #b20710;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .success-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/*--------------------------End payment-success.jsp(thanh toan thanh cong)  -----------------------------------------------*/
+
+
+
+
+/*--------------------------Start payment-failure.jsp(thanh toan that bai)  -----------------------------------------------*/
+
+
+/* Failure Page Styles: Error message, retry buttons */
+.failure-container {
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.failure-hero {
+  margin-bottom: var(--spacing-lg);
+}
+
+.failure-icon {
+  font-size: 64px;
+  color: #dc3545;
+  margin-bottom: var(--spacing-sm);
+}
+
+.failure-title {
+  font-size: var(--font-size-xl);
+  color: #dc3545;
+  margin-bottom: var(--spacing-sm);
+}
+
+.failure-message {
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-base);
+}
+
+.failure-summary {
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+  border-left: 4px solid #dc3545;
+}
+
+.retry-btn {
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin: 0 var(--spacing-md);
+  width: 200px;
+  text-decoration: none !important;
+}
+
+.retry-btn:hover {
+  background: #b20710;
+}
+
+.back-btn {
+  background: var(--secondary-color);
+  color: var(--bg-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin: 0 var(--spacing-md);
+  width: 200px;
+  text-decoration: none !important;
+  
+}
+
+.back-btn:hover {
+  background: #e6c200;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .retry-btn, .back-btn {
+    width: 100%;
+    margin: var(--spacing-sm) 0;
+   	
+  }
+  
+}
+
+/*-------------------------------------------------End payment-failure.jsp------------------------------------------*/

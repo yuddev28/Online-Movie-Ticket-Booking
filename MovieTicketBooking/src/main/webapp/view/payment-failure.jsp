@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán Thành Công - MyCinema</title>
+    <title>Thanh Toán Thất Bại - MyCinema</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -40,21 +40,22 @@
         </div>
     </header>
 
-    <main class="success-container">
+    <main class="failure-container">
         <section class="hero">
-            <div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1400x500?text=Payment+Success');"></div>
+            <div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1400x500?text=Payment+Failure');"></div>
             <div class="hero-overlay">
-                <h1>Thanh Toán Thành Công!</h1>
-                <p>Cảm ơn bạn đã đặt vé tại MyCinema. Vé đã được gửi qua email.</p>
+                <h1>Thanh Toán Thất Bại</h1>
+                <p>Chúng tôi xin lỗi vì sự bất tiện này. Vui lòng thử lại.</p>
             </div>
         </section>
 
-        <div class="success-hero">
-            <div style="font-size: 64px; color: #28a745; margin-bottom: var(--spacing-sm);">✓</div>
-            <h2 class="success-title">Đơn Vé Của Bạn Đã Được Xác Nhận</h2>
-            <p style="color: var(--text-muted); margin-bottom: var(--spacing-lg);">Mã đơn: <strong>MCN-20251109-001</strong></p>
+        <div class="failure-hero">
+            <div class="failure-icon">✕</div>
+            <h2 class="failure-title">Giao Dịch Không Thành Công</h2>
+            <p class="failure-message">Lý do: Thẻ không hợp lệ hoặc hết hạn. Vui lòng kiểm tra thông tin và thử lại.</p>
 
-            <section class="success-summary">
+            <section class="failure-summary">
+                <h3>Thông Tin Đơn Hàng</h3>
                 <div class="summary-item">
                     <span>Phim: Quái Thú Vô Hình: Vùng Đất Chết Chóc</span>
                     <span>TPHCM - 16:30, 09/11/2025</span>
@@ -67,13 +68,13 @@
                     <span>Tổng Tiền</span>
                     <span>80,000 VNĐ</span>
                 </div>
-                <div class="success-code">Mã Vé: MCN-V-20251109-001</div>
-                <p style="color: var(--text-muted); font-size: 14px;">Vé sẽ được gửi qua email trong 5 phút. Kiểm tra thư rác nếu không nhận được.</p>
+                <div class="success-code">Mã Đơn: MCN-20251109-001 (Chưa Xác Nhận)</div>
+                <p style="color: var(--text-muted); font-size: 14px;">Không có khoản phí nào bị trừ. Bạn có thể thử thanh toán lại ngay.</p>
             </section>
 
             <div style="margin-top: var(--spacing-lg);">
-                <a href="home.jsp" class="btn" style="margin-right: var(--spacing-md);">Về Trang Chủ</a>
-                <a href="profile.jsp" class="btn btn-secondary">Xem Hồ Sơ</a>
+                <a href="payment.jsp" class="retry-btn">Thử Thanh Toán Lại</a>
+                <a href="book-ticket.jsp" class="back-btn">Quay Lại Đặt Vé</a>
             </div>
         </div>
     </main>
