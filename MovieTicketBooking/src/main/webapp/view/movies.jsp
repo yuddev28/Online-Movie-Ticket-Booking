@@ -20,8 +20,6 @@
 						<li><a href="movies.jsp">Tất Cả Phim</a></li>
 					</ul></li>
 				<li><a href="cinemas.jsp">Rạp</a></li>
-				<li><a href="promotions.jsp">Ưu Đãi</a></li>
-				<li><a href="book-ticket.jsp">Đặt Vé</a></li>
 				<li><a href="profile.jsp">Tài Khoản</a></li>
 			</ul>
 			<div class="user-actions">

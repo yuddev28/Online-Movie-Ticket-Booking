@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%-- JSP Directive: Định nghĩa encoding và ngôn ngữ cho trang --%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -12,7 +13,7 @@
 	<%-- Header: Bao gồm top-nav và search-bar - Sticky để luôn hiển thị khi scroll --%>
 	<header>
 		<div class="top-nav">
-			<%-- Logo: Link về home, màu vàng nổi bật --%>
+			<%-- Logo: Link về home,	 màu vàng nổi bật --%>
 			<a href="home.jsp" class="logo">MyCinema</a>
 			<%-- Nav-links: Menu chính, hover đỏ - Ẩn trên mobile --%>
 			<ul class="nav-links">
@@ -203,5 +204,6 @@
 				nhất.</p>
 		</div>
 	</footer>
+
 </body>
 </html>

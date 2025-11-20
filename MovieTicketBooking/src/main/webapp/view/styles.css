@@ -563,7 +563,7 @@ main {
 
 
 
-/*--------------------------Start CSS promotions.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS promotions.jsp(lược bỏ)-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 /* Promotion Grid: Tương tự movie-grid cho danh sách ưu đãi */
 .promotion-grid {
   display: grid;
@@ -571,7 +571,7 @@ main {
   gap: var(--spacing-md);
 }
 
-/*--------------------------End CSS promotions.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------End CSS promotions.jsp(lược bỏ)-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
 
 
@@ -1221,4 +1221,126 @@ main {
   }
 }
 
-/*--------------------------End  -----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------End CSS loign.jsp/register.jsp  -----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+
+
+
+
+
+/*--------------------------Start payment.jsp  -----------------------------------------------*/
+
+.payment-container {
+  padding: var(--spacing-md);
+}
+
+.payment-hero {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.payment-summary {
+  flex: 1;
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid #333;
+}
+
+.summary-total {
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  color: var(--secondary-color);
+  border-top: 2px solid var(--primary-color);
+  padding-top: var(--spacing-md);
+}
+
+.payment-methods {
+  flex: 1;
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+}
+
+.method-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid #333;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.method-option:hover, .method-option.active {
+  border-color: var(--primary-color);
+}
+
+.method-icon {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: 700;
+}
+
+.promo-code {
+  margin-bottom: var(--spacing-lg);
+}
+
+.promo-code input {
+  width: 70%;
+  padding: var(--spacing-sm);
+  background: var(--bg-color);
+  border: 1px solid #333;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.promo-code button {
+  width: 30%;
+  padding: var(--spacing-sm);
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  cursor: pointer;
+}
+
+.pay-btn {
+  width: 100%;
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pay-btn:hover {
+  background: #b20710;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+  .payment-hero {
+    flex-direction: column;
+  }
+}
+
+/*--------------------------End payment.jsp  -----------------------------------------------*/
