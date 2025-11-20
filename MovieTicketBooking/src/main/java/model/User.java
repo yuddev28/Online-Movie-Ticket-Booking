@@ -10,10 +10,17 @@ public class User {
 	private String phoneNumber;
 	private Role role;
 	private List<Ticket> tickets;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
 	
 	public User() {}
+	
+	public User(String username, String password,
+			String email, String phoneNumber) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.role = Role.USER;
+	}
 	
 	public User(int id, String username, String password,
 			String email, String phoneNumber, Role role,
@@ -25,8 +32,6 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.role = role;
 		this.tickets = tickets;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = createdAt;
 	}
 
 	//Getter and Setter
@@ -78,21 +83,10 @@ public class User {
 		this.tickets = tickets;
 	}
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
 	public int getId() {
 		return id;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
 	
 	
 }
