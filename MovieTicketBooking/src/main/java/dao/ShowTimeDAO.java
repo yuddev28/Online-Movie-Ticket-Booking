@@ -101,17 +101,15 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			ResultSet rs = st.executeQuery();
 			int id;
 			BigDecimal price;
-			Cinema cinema;
+			Cinema cinema = cinemaDAO.getCinemaById(cinemaId);
 			Room room;
-			Movie movie;
+			Movie movie = movieDAO.getMovieById(movieId);
 			LocalDateTime startTime;
 			ShowTime showTime;
 			while(rs.next()) {
 				id = rs.getInt("showtime_id");
 				price = rs.getBigDecimal("showtime_price");
 				startTime = rs.getObject("start_time", LocalDateTime.class);
-				movie = movieDAO.getMovieById(rs.getInt("movie_id"));
-				cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
 				room = roomDAO.getRoomById(rs.getInt("room_id"));
 				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
 				list.add(showTime);
