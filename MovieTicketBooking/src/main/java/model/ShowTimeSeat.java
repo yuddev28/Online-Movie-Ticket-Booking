@@ -13,28 +13,35 @@ public class ShowTimeSeat {
 	public ShowTimeSeat() {}
 	
 	// contructor use for get data from db
-	public ShowTimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime) {
+	public ShowTimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
-		this.seat = seat;
-		this.bookedBy = bookedBy;
-		this.showTime = showTime;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	// constructor use for create show time seat
-	public ShowTimeSeat(Seat seat, ShowTime showTime) {
-		this.seat = seat;
-		this.showTime = showTime;
-	}
-	
-	// constructor use for user take show time seat
-	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.seat = seat;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+	}
+	
+	// constructor use for user take show time seat (user can be null)
+	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime) {
+		this.seat = seat;
+		this.bookedBy = bookedBy;
+		this.showTime = showTime;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = createdAt;
+	}
+	
+	
+	public int getSeatId() {
+		return seat.getId();
+	}
+	
+	public int getUserId() {
+		return bookedBy.getId();
+	}
+	
+	public int getShowTimeId() {
+		return showTime.getId();
 	}
 	
 	//Get seat name
