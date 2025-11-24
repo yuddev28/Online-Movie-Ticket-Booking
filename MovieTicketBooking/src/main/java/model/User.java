@@ -1,5 +1,6 @@
 package model;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -13,6 +14,7 @@ public class User {
 	
 	public User() {}
 	
+	// Constructor for create user
 	public User(String username, String password,
 			String email, String phoneNumber) {
 		this.username = username;
@@ -20,8 +22,10 @@ public class User {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.role = Role.USER;
+		this.tickets = new ArrayList<>();
 	}
 	
+	// Constructor for get user from db
 	public User(int id, String username, String password,
 			String email, String phoneNumber, Role role,
 			List<Ticket> tickets) {
