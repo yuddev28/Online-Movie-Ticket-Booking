@@ -18,8 +18,8 @@ public class Ticket {
 	
 	public Ticket() {}
 	
+	// constructor for create ticket
 	public Ticket(int id, User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
-		super();
 		this.id = id;
 		this.uid = this.generateUid();
 		this.user = user;
@@ -30,6 +30,21 @@ public class Ticket {
 		this.status = TicketStatus.UNPAID;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = createdAt;
+	}
+	
+	// constructor for get data from db
+	public Ticket(int id, String uid, User user, ShowTime showTime, List<ShowTimeSeat> seats, BigDecimal totalPrice,
+			PaymentMethod paymentMethod, TicketStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.id = id;
+		this.uid = uid;
+		this.user = user;
+		this.showTime = showTime;
+		this.seats = seats;
+		this.totalPrice = totalPrice;
+		this.paymentMethod = paymentMethod;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	// auto create uid of ticket
