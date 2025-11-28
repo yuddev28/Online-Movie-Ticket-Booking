@@ -20,7 +20,7 @@ public class MovieDAO implements IMovieDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM movies";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(queryString);
 			// Iterate result set to get data
@@ -50,6 +50,8 @@ public class MovieDAO implements IMovieDAO{
 						movieStatus);
 				list.add(movie);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,7 +68,7 @@ public class MovieDAO implements IMovieDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM movies WHERE LOWER(title) LIKE ?;";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setString(1, str);
 			ResultSet rs = ps.executeQuery(queryString);
@@ -97,6 +99,8 @@ public class MovieDAO implements IMovieDAO{
 						movieStatus);
 				list.add(movie);
 			}
+			rs.close();
+			ps.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,7 +116,7 @@ public class MovieDAO implements IMovieDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM movies WHERE movie_id = ?;";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery(queryString);
@@ -139,6 +143,8 @@ public class MovieDAO implements IMovieDAO{
 				movie = new Movie(id, name, type, directorName, actorsName, description, duration, country, imageUrl,
 						movieStatus);
 			}
+			rs.close();
+			ps.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -154,7 +160,7 @@ public class MovieDAO implements IMovieDAO{
 			String queryString = "INSERT INTO movies (movie_name, movie_type, director_name, names_of_actors, movie_description, movie_duration, movie_image_url, movie_status)" 
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setString(1, movie.getName());
 			ps.setString(2, movie.getType());
@@ -165,6 +171,7 @@ public class MovieDAO implements IMovieDAO{
 			ps.setString(7, movie.getImageUrl());
 			ps.setString(8, movie.getMovieStatus().toString());
 			ps.executeUpdate();
+			ps.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -179,10 +186,11 @@ public class MovieDAO implements IMovieDAO{
 			// Query string to get data
 			String queryString = "DELETE FROM movies WHERE id = ?;";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setInt(1, id);
 			update = ps.executeUpdate();
+			ps.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -198,11 +206,12 @@ public class MovieDAO implements IMovieDAO{
 			// Query string to get data
 			String queryString = "UPDATE movies SET movie_status = ? WHERE movie_id = ?";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setString(1, status.toString());
 			ps.setInt(2, id);
 			update = ps.executeUpdate();
+			ps.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

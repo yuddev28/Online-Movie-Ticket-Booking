@@ -26,7 +26,7 @@ public class SeatDAO implements ISeatDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM seats WHERE room_id = ?;";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(queryString);
 			st.setInt(1, roomId);
 			ResultSet rs = st.executeQuery(queryString);
@@ -41,7 +41,8 @@ public class SeatDAO implements ISeatDAO{
 				seat = new Seat(id, name, room);
 				seats.add(seat);
 			}
-			
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,7 +58,7 @@ public class SeatDAO implements ISeatDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM seats WHERE seat_id = ?;";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(queryString);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery(queryString);
@@ -69,6 +70,8 @@ public class SeatDAO implements ISeatDAO{
 				room = roomDAO.getRoomById(rs.getInt("room_id"));
 				seat = new Seat(id, name, room);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +86,7 @@ public class SeatDAO implements ISeatDAO{
 		try {
 			String query = "INSERT INTO seats (seat_name, room_id) VALUES (?, ?);";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			for(Seat seat : seats) {
 				st.setString(1, seat.getName());
@@ -91,6 +94,7 @@ public class SeatDAO implements ISeatDAO{
 				st.addBatch();
 			}
 			st.executeBatch();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

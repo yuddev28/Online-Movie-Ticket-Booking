@@ -27,7 +27,7 @@ public class UserDAO implements IUserDAO {
 		User user = null;
 		try {
 			String query = "SELECT * FROM users WHERE user_id = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -47,6 +47,9 @@ public class UserDAO implements IUserDAO {
 				tickets = ticketDAO.getTicketsByUserId(id);
 				user = new User(id, username, password, email, phoneNumber, role, tickets);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +62,7 @@ public class UserDAO implements IUserDAO {
 		User user = null;
 		try {
 			String query = "SELECT * FROM users WHERE username = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, username);
 			ResultSet rs = st.executeQuery();
@@ -79,6 +82,9 @@ public class UserDAO implements IUserDAO {
 				tickets = ticketDAO.getTicketsByUserId(id);
 				user = new User(id, username, password, email, phoneNumber, role, tickets);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -89,14 +95,15 @@ public class UserDAO implements IUserDAO {
 	public void addUser(User user) {
 		try {
 			String query = "INSERT INTO users (username, password, email, phonenumber) VALUES (?, ?, ?, ?);";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, user.getUsername());
 			st.setString(2, user.getPassword());
 			st.setString(3, user.getEmail());
 			st.setString(4, user.getPhoneNumber());
 			st.executeUpdate();
-			
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

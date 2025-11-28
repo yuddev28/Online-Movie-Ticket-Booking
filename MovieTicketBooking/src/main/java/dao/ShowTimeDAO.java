@@ -33,7 +33,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		List<ShowTime> list = new ArrayList<>();
 		try {
 			String query = "SELECT * FROM showtimes;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
 			int id;
@@ -53,6 +53,9 @@ public class ShowTimeDAO implements IShowTimeDAO{
 				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
 				list.add(showTime);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +67,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		ShowTime showTime = null;
 		try {
 			String query = "SELECT * FROM showtimes WHERE showtime_id = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -81,6 +84,9 @@ public class ShowTimeDAO implements IShowTimeDAO{
 				room = roomDAO.getRoomById(rs.getInt("room_id"));
 				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +98,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		List<ShowTime> list = new ArrayList<>();
 		try {
 			String query = "SELECT * FROM showtimes WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, cinemaId);
 			st.setInt(2, movieId);
@@ -114,6 +120,9 @@ public class ShowTimeDAO implements IShowTimeDAO{
 				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
 				list.add(showTime);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -125,7 +134,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		try {
 			String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES "
 					+ "(?, ?, ?, ?, ?);";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setBigDecimal(1, showTime.getPricePerTicket());
 			st.setTimestamp(2, Timestamp.valueOf(showTime.getStartTime()));
@@ -133,6 +142,8 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			st.setInt(4, showTime.getCinemaId());
 			st.setInt(5, showTime.getRoomId());
 			st.executeUpdate();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -142,10 +153,12 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public void deleteShowTimeById(int id) {
 		try {
 			String query = "DELETE FROM showtimes WHERE showtime_id = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			st.executeUpdate();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

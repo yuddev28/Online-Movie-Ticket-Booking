@@ -19,7 +19,7 @@ public class CinemaDAO implements ICinemaDAO{
 		try {
 			String query = "SELECT * FROM cinemas;";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
 			int id;
@@ -33,6 +33,8 @@ public class CinemaDAO implements ICinemaDAO{
 				cinema = new Cinema(id, name, address);
 				list.add(cinema);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -47,7 +49,7 @@ public class CinemaDAO implements ICinemaDAO{
 		try {
 			String query = "SELECT * FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery(query);
@@ -59,6 +61,8 @@ public class CinemaDAO implements ICinemaDAO{
 				address = rs.getString("cinema_address");
 				cinema = new Cinema(id, name, address);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -72,11 +76,12 @@ public class CinemaDAO implements ICinemaDAO{
 		try {
 			String query = "INSERT INTO cinemas (cinema_name, cinema_address) VALUES (?, ?);";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, cinema.getName());
 			st.setString(2, cinema.getAddress());
 			st.executeUpdate();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -89,10 +94,11 @@ public class CinemaDAO implements ICinemaDAO{
 		try {
 			String query = "DELETE FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			st.executeUpdate();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

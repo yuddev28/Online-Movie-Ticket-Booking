@@ -30,7 +30,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
 			String query = "SELECT * FROM showtimeseats WHERE showtime_id = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
 			ResultSet rs = st.executeQuery();
@@ -49,6 +49,9 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 				updatedAt = rs.getObject("updated_at", LocalDateTime.class);
 				sts = new ShowTimeSeat(id, seat, bookBy, showTime, createdAt, updatedAt);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +64,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
 			String query = "SELECT * FROM showtimeseats WHERE user_id = ?;";
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
@@ -81,6 +84,9 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 				updatedAt = rs.getObject("updated_at", LocalDateTime.class);
 				sts = new ShowTimeSeat(id, seat, bookBy, showTime, createdAt, updatedAt);
 			}
+			rs.close();
+			st.close();
+			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +98,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public void addShowTimeSeats(List<ShowTimeSeat> list) {
 		try {
 			String sql = "INSERT INTO showtimeseats (user_id, showtime_id, seat_id) VALUES (?, ?, ?)";
-			Connection conn = JBDCConnection.getConnection();
+			Connection conn = JDBCConnection.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
 
 			// Tắt auto commit để batch hiệu quả
@@ -116,6 +122,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			// Thực thi batch
 			st.executeBatch();
 			conn.commit();
+			st.close();
 			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +136,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		try {
 			String sql = "UPDATE showtimeseats SET user_id = ? WHERE showtimeseat_id = ?;";
 
-			Connection conn = JBDCConnection.getConnection();
+			Connection conn = JDBCConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			if (user != null) {
@@ -139,8 +146,8 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			}
 			ps.setInt(2, showTimeSeatId);
 			ps.executeUpdate();
+			ps.close();
 			conn.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

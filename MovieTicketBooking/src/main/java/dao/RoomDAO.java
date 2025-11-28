@@ -24,7 +24,7 @@ public class RoomDAO implements IRoomDAO{
 			// Query string to get data
 			String queryString = "SELECT * FROM rooms";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(queryString);
 			// Iterate result set to get data
@@ -40,6 +40,8 @@ public class RoomDAO implements IRoomDAO{
 				room = new Room(id, name, seats);
 				list.add(room);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,7 +56,7 @@ public class RoomDAO implements IRoomDAO{
 		try {
 			String query = "SELECT * FROM rooms WHERE room_id = ?";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, roomId);
 			ResultSet rs = st.executeQuery();
@@ -68,6 +70,8 @@ public class RoomDAO implements IRoomDAO{
 				room = new Room(id, name, seats); 
 			}
 			st.executeUpdate();
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,7 +86,7 @@ public class RoomDAO implements IRoomDAO{
 		try {
 			String query = "SELECT * FROM rooms WHERE cinema_id = ?;";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -97,6 +101,8 @@ public class RoomDAO implements IRoomDAO{
 				room = new Room(roomId, roomName, seats);
 				list.add(room);
 			}
+			rs.close();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -110,7 +116,7 @@ public class RoomDAO implements IRoomDAO{
 		try {
 			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
 			// Create connect
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, room.getName());
 			st.setInt(2, cinemaId);
@@ -118,6 +124,7 @@ public class RoomDAO implements IRoomDAO{
 			// Add seats of this room to db
 			Seat[] seats = room.getSeats();
 			seatDAO.addSeats(seats);
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -133,10 +140,11 @@ public class RoomDAO implements IRoomDAO{
 			// Query string to get data
 			String queryString = "DELETE FROM rooms WHERE room_id = ?";
 			// Create connection
-			Connection connect = JBDCConnection.getConnection();
+			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(queryString);
 			st.setInt(1, id);
 			update = st.executeUpdate();
+			st.close();
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
