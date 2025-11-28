@@ -34,20 +34,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
 			ResultSet rs = st.executeQuery();
-			int id;
-			Seat seat;
-			User bookBy;
-			ShowTime showTime = showtimeDAO.getShowTimeById(showTimeId);
-			LocalDateTime createdAt;
-			LocalDateTime updatedAt;
 			ShowTimeSeat sts;
 			while (rs.next()) {
-				id = rs.getInt("showtimeseat_id");
-				seat = seatDAO.getSeatById(rs.getInt("seat_id"));
-				bookBy = userDAO.getUserById(rs.getInt("user_id"));
-				createdAt = rs.getObject("created_at", LocalDateTime.class);
-				updatedAt = rs.getObject("updated_at", LocalDateTime.class);
-				sts = new ShowTimeSeat(id, seat, bookBy, showTime, createdAt, updatedAt);
+				sts = mapResultSetToShowTimeSeat(rs);
+				list.add(sts);
 			}
 			rs.close();
 			st.close();
@@ -55,7 +45,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 
 	// Get list of show time seats of user by user id
@@ -68,21 +58,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
-			int id;
-			Seat seat;
-			User bookBy = userDAO.getUserById(userId);
-			;
-			ShowTime showTime;
-			LocalDateTime createdAt;
-			LocalDateTime updatedAt;
 			ShowTimeSeat sts;
 			while (rs.next()) {
-				id = rs.getInt("showtimeseat_id");
-				seat = seatDAO.getSeatById(rs.getInt("seat_id"));
-				showTime = showtimeDAO.getShowTimeById(rs.getInt("showtime_id"));
-				createdAt = rs.getObject("created_at", LocalDateTime.class);
-				updatedAt = rs.getObject("updated_at", LocalDateTime.class);
-				sts = new ShowTimeSeat(id, seat, bookBy, showTime, createdAt, updatedAt);
+				sts = mapResultSetToShowTimeSeat(rs);
+				list.add(sts);
 			}
 			rs.close();
 			st.close();
@@ -90,7 +69,31 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return list;
+	}
+	
+	@Override
+	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeIdAndUserId(int showTimeId, int userId) {
+		List<ShowTimeSeat> list = new ArrayList<>();
+		try {
+			String query = "SELECT * FROM showtimeseats WHERE showtime_id = ? AND user_id = ?;";
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, showTimeId);
+			st.setInt(2, userId);
+			ResultSet rs = st.executeQuery();
+			ShowTimeSeat sts;
+			while (rs.next()) {
+				sts = mapResultSetToShowTimeSeat(rs);
+				list.add(sts);
+			}
+			rs.close();
+			st.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	// Add list of show time seats
@@ -151,6 +154,24 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// map result set to show time seat
+	private ShowTimeSeat mapResultSetToShowTimeSeat(ResultSet rs) {
+		ShowTimeSeat sts = null;
+		try {
+			int id = rs.getInt("showtimeseat_id");;
+			Seat seat = seatDAO.getSeatById(rs.getInt("seat_id"));
+			int userId = rs.getInt("user_id");
+			User bookBy = userDAO.getUserById(userId);
+			ShowTime showTime = showtimeDAO.getShowTimeById(rs.getInt("showtime_id"));
+			LocalDateTime createdAt = rs.getObject("created_at", LocalDateTime.class);
+			LocalDateTime updatedAt = rs.getObject("updated_at", LocalDateTime.class);
+			sts = new ShowTimeSeat(id, seat, bookBy, showTime, createdAt, updatedAt);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sts;
 	}
 
 }
