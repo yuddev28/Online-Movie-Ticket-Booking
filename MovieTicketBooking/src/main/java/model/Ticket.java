@@ -121,6 +121,23 @@ public class Ticket {
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+	
 	
 	
 	
