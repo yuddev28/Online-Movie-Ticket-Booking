@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 
 public class ShowTimeSeat {
 	private int id;
-	private Seat seat;
+	private String seatName;
+	private Room room;
 	private User bookedBy;
 	private ShowTime showTime;
 	private LocalDateTime createdAt;
@@ -13,9 +14,10 @@ public class ShowTimeSeat {
 	public ShowTimeSeat() {}
 	
 	// contructor use for get data from db
-	public ShowTimeSeat(int id, Seat seat, User bookedBy, ShowTime showTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public ShowTimeSeat(int id, String seatName, Room room, User bookedBy, ShowTime showTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
-		this.seat = seat;
+		this.seatName = seatName;
+		this.room = room;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
 		this.createdAt = createdAt;
@@ -23,19 +25,17 @@ public class ShowTimeSeat {
 	}
 	
 	// constructor use for user take show time seat (user can be null)
-	public ShowTimeSeat(Seat seat, User bookedBy, ShowTime showTime) {
-		this.seat = seat;
+	public ShowTimeSeat(String seatName, Room room, User bookedBy, ShowTime showTime) {
+		this.seatName = seatName;
+		this.room = room;
 		this.bookedBy = bookedBy;
 		this.showTime = showTime;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = createdAt;
 	}
 	
-	
-	public int getSeatId() {
-		return seat.getId();
-	}
-	
+
+	//Getter and Setter
 	public int getUserId() {
 		return bookedBy.getId();
 	}
@@ -46,12 +46,12 @@ public class ShowTimeSeat {
 	
 	//Get seat name
 	public String getSeatName() {
-		return seat.getName();
+		return seatName;
 	}
 
-	//Getter and Setter
-	public void setSeat(Seat seat) {
-		this.seat = seat;
+	
+	public void setSeat(String seatName) {
+		this.seatName = seatName;
 	}
 
 	public User getBookedBy() {
@@ -80,6 +80,10 @@ public class ShowTimeSeat {
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
+	}
+
+	public Room getRoom() {
+		return room;
 	}
 	
 	

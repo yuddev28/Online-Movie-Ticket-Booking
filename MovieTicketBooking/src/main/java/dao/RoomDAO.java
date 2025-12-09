@@ -11,63 +11,22 @@ import java.util.List;
 import model.Movie;
 import model.MovieStatus;
 import model.Room;
-import model.Seat;
 
 public class RoomDAO implements IRoomDAO{
-	private ISeatDAO seatDAO = new SeatDAO();
-	
-	// Get list of all rooms
-	@Override
-	public List<Room> getAllRoom(){
-		List<Room> list = new ArrayList<>();
-		try {
-			// Query string to get data
-			String queryString = "SELECT * FROM rooms";
-			// Create connection
-			Connection connect = JDBCConnection.getConnection();
-			Statement st = connect.createStatement();
-			ResultSet rs = st.executeQuery(queryString);
-			// Iterate result set to get data
-			int id;
-			String name;
-			Room room;
-			Seat[] seats;
-			while (rs.next()) {
-				id = rs.getInt("movie_id");
-				name = rs.getString("movie_name");
-				// Get seats of this room
-				seats = (Seat[]) seatDAO.getSeatsByRoomId(id).toArray();
-				room = new Room(id, name, seats);
-				list.add(room);
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
 	
 	// Get room by room id
 	@Override
 	public Room getRoomById(int roomId) {
 		Room room = null;
 		try {
-			String query = "SELECT * FROM rooms WHERE room_id = ?";
+			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE room_id = ?";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, roomId);
 			ResultSet rs = st.executeQuery();
-			int id;
-			String name;
-			// Get seats of this room
-			Seat[] seats = (Seat[]) seatDAO.getSeatsByRoomId(roomId).toArray();
 			while(rs.next()) {
-				id = rs.getInt("movie_id");
-				name = rs.getString("movie_name");
-				room = new Room(id, name, seats); 
+				room = mapResultSetToRoom(rs);
 			}
 			st.executeUpdate();
 			rs.close();
@@ -84,22 +43,14 @@ public class RoomDAO implements IRoomDAO{
 	public List<Room> getRoomByCinemaId(int id){
 		List<Room> list = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM rooms WHERE cinema_id = ?;";
+			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			int roomId;
-			String roomName;
-			Room room;
-			Seat[] seats;
 			while (rs.next()) {
-				roomId = rs.getInt("room_id");
-				roomName = rs.getString("room_name");
-				seats = (Seat[]) seatDAO.getSeatsByRoomId(roomId).toArray();
-				room = new Room(roomId, roomName, seats);
-				list.add(room);
+				list.add(mapResultSetToRoom(rs));
 			}
 			rs.close();
 			st.close();
@@ -122,8 +73,7 @@ public class RoomDAO implements IRoomDAO{
 			st.setInt(2, cinemaId);
 			st.executeUpdate();
 			// Add seats of this room to db
-			Seat[] seats = room.getSeats();
-			seatDAO.addSeats(seats);
+			
 			st.close();
 			connect.close();
 		} catch (SQLException e) {
@@ -150,5 +100,20 @@ public class RoomDAO implements IRoomDAO{
 			e.printStackTrace();
 		}
 		return update;
+	}
+	
+	private Room mapResultSetToRoom(ResultSet rs) {
+		try {
+			int id = rs.getInt("room_id");
+			String name = rs.getString("room_name");
+			int numberOfColumns = rs.getInt("number_of_columns");
+			int numberOfRows = rs.getInt("number_of_rows");
+
+			return new Room(id, name, numberOfColumns, numberOfRows);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 }

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import model.Role;
-import model.Seat;
 import model.ShowTime;
 import model.ShowTimeSeat;
 import model.Ticket;
