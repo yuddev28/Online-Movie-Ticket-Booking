@@ -34,7 +34,16 @@ public class ShowTimeSeat {
 		this.updatedAt = createdAt;
 	}
 	
-
+	// constructor use for create show time seat
+		public ShowTimeSeat(String seatName, Room room, ShowTime showTime) {
+			this.seatName = seatName;
+			this.room = room;
+			this.bookedBy = null;
+			this.showTime = showTime;
+			this.createdAt = LocalDateTime.now();
+			this.updatedAt = createdAt;
+		}
+	
 	//Getter and Setter
 	public int getUserId() {
 		return bookedBy.getId();
