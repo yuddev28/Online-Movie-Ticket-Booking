@@ -17,11 +17,11 @@ public class CinemaDAO implements ICinemaDAO{
 	public List<Cinema> getAllCinema() {
 		List<Cinema> list = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM cinemas;";
+			String query = "SELECT (cinema_id, cinema_name, cinema_address) FROM cinemas;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
-			Statement st = connect.createStatement();
-			ResultSet rs = st.executeQuery(query);
+			PreparedStatement st = connect.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
 			int id;
 			String name;
 			String address;
@@ -47,7 +47,7 @@ public class CinemaDAO implements ICinemaDAO{
 	public Cinema getCinemaById(int id) {
 		Cinema cinema = null;
 		try {
-			String query = "SELECT * FROM cinemas WHERE cinema_id = ?;";
+			String query = "SELECT (cinema_id, cinema_name, cinema_address) FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);

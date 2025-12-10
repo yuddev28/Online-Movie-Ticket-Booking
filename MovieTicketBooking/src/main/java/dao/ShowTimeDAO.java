@@ -15,6 +15,7 @@ import model.Cinema;
 import model.Movie;
 import model.Room;
 import model.ShowTime;
+import model.ShowTimeSeat;
 
 public class ShowTimeDAO implements IShowTimeDAO{
 	private ICinemaDAO cinemaDAO;
@@ -32,26 +33,12 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public List<ShowTime> getAllShowTime() {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM showtimes;";
+			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes;";
 			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			int id;
-			BigDecimal price;
-			Cinema cinema;
-			Room room;
-			Movie movie;
-			LocalDateTime startTime;
-			ShowTime showTime;
 			while(rs.next()) {
-				id = rs.getInt("showtime_id");
-				price = rs.getBigDecimal("showtime_price");
-				startTime = rs.getObject("start_time", LocalDateTime.class);
-				movie = movieDAO.getMovieById(rs.getInt("movie_id"));
-				cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
-				room = roomDAO.getRoomById(rs.getInt("room_id"));
-				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
-				list.add(showTime);
+				list.add(mapResultSetToShowTime(rs));
 			}
 			rs.close();
 			st.close();
@@ -66,23 +53,13 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public ShowTime getShowTimeById(int id) {
 		ShowTime showTime = null;
 		try {
-			String query = "SELECT * FROM showtimes WHERE showtime_id = ?;";
+			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes WHERE showtime_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			BigDecimal price;
-			Cinema cinema;
-			Room room;
-			Movie movie;
-			LocalDateTime startTime;
 			while(rs.next()) {
-				price = rs.getBigDecimal("showtime_price");
-				startTime = rs.getObject("start_time", LocalDateTime.class);
-				movie = movieDAO.getMovieById(rs.getInt("movie_id"));
-				cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
-				room = roomDAO.getRoomById(rs.getInt("room_id"));
-				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
+				showTime = mapResultSetToShowTime(rs);
 			}
 			rs.close();
 			st.close();
@@ -97,7 +74,8 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM showtimes WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
+			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes "
+					+ "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, cinemaId);
@@ -105,19 +83,9 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			st.setTimestamp(3, Timestamp.valueOf(day.toLocalDate().atStartOfDay()));
 			st.setTimestamp(4, Timestamp.valueOf(day.toLocalDate().plusDays(1).atStartOfDay()));
 			ResultSet rs = st.executeQuery();
-			int id;
-			BigDecimal price;
-			Cinema cinema = cinemaDAO.getCinemaById(cinemaId);
-			Room room;
-			Movie movie = movieDAO.getMovieById(movieId);
-			LocalDateTime startTime;
 			ShowTime showTime;
 			while(rs.next()) {
-				id = rs.getInt("showtime_id");
-				price = rs.getBigDecimal("showtime_price");
-				startTime = rs.getObject("start_time", LocalDateTime.class);
-				room = roomDAO.getRoomById(rs.getInt("room_id"));
-				showTime = new ShowTime(id, cinema, room, movie, price, startTime);
+				showTime = mapResultSetToShowTime(rs);
 				list.add(showTime);
 			}
 			rs.close();
@@ -128,7 +96,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		}
 		return list;
 	}
-	// Add show time
+	// Add show time and seats of it
 	@Override
 	public void addShowTime(ShowTime showTime) {
 		try {
@@ -144,6 +112,10 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			st.executeUpdate();
 			st.close();
 			connect.close();
+			// Create seats and add to db
+			List<ShowTimeSeat> seats = showTime.createListShowTimeSeats();
+			IShowTimeSeatDAO stsDAO = new ShowTimeSeatDAO();
+			stsDAO.addShowTimeSeats(seats);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -162,6 +134,22 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private ShowTime mapResultSetToShowTime(ResultSet rs) {
+		ShowTime showTime = null;
+		try {
+			int id = rs.getInt("showtime_id");
+			BigDecimal price = rs.getBigDecimal("showtime_price");
+			LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
+			Movie movie = movieDAO.getMovieById(rs.getInt("movie_id"));
+			Cinema cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
+			Room room = roomDAO.getRoomById(rs.getInt("room_id"));
+			showTime = new ShowTime(id, cinema, room, movie, price, startTime);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return showTime;
 	}
 
 }
