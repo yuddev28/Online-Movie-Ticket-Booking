@@ -1,270 +1,209 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%-- JSP Directive: Định nghĩa encoding và ngôn ngữ cho trang --%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Rạp - Admin - MyCinema</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="adminstyle.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyCinema - Trang Chủ</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="admin-container">
-        <nav class="admin-sidebar">
-            <h3 style="color: var(--secondary-color); margin-bottom: var(--spacing-lg);">Admin Menu</h3>
-            <ul class="sidebar-menu">
-                <li class="sidebar-item">
-                    <a href="admin-dashboard.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">📊</span>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-users.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">👥</span>
-                        Quản Lý User
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-movies.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">🎬</span>
-                        Quản Lý Phim
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-theaters.jsp" class="sidebar-link active">
-                        <span class="sidebar-icon">🎭</span>
-                        Quản Lý Rạp
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-bookings.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">🎫</span>
-                        Quản Lý Booking
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-revenue.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">💰</span>
-                        Doanh Thu
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin-promotions.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">📣</span>
-                        Khuyến Mãi
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="login.jsp" class="sidebar-link">
-                        <span class="sidebar-icon">🚪</span>
-                        Đăng Xuất
-                    </a>
-                </li>
-            </ul>
-        </nav>
+	<%-- Header: Bao gồm top-nav và search-bar - Sticky để luôn hiển thị khi scroll --%>
+	<header>
+		<div class="top-nav">
+			<%-- Logo: Link về home,	 màu vàng nổi bật --%>
+			<a href="home.jsp" class="logo">MyCinema</a>
+			<%-- Nav-links: Menu chính, hover đỏ - Ẩn trên mobile --%>
+			<ul class="nav-links">
+				<li><a href="home.jsp">Trang Chủ</a></li>
+				<li class="has-dropdown"><input type="checkbox"
+					id="movieToggle" class="dropdown-toggle"> <label
+					for="movieToggle" id="movieLink">Phim</label>
+					<ul class="dropdown">
+						<li><a href="movieShowing.jsp">Phim Đang Chiếu</a></li>
+						<li><a href="movieUpcoming.jsp">Phim Sắp Chiếu</a></li>
+						<li><a href="movies.jsp">Tất Cả Phim</a></li>
+					</ul></li>
+				<li><a href="theater.jsp">Rạp</a></li>
+				<li><a href="profile.jsp">Tài Khoản</a></li>
+			</ul>
+			<%-- User-actions: Buttons đăng nhập/đăng ký - CTA cho user --%>
+			<div class="user-actions">
+				<a href="login.jsp" class="btn btn-secondary">Đăng Nhập</a> <a
+					href="register.jsp" class="btn">Đăng Ký</a>
+			</div>
+		</div>
+		<%-- Search-bar-header: Form tìm kiếm toàn trang - Placeholder cho search phim --%>
+		<div class="search-bar-header">
+			<div class="search-container">
+				<form>
+					<input type="text" placeholder="Tìm kiếm phim, diễn viên...">
+					<button type="submit">Tìm Kiếm</button>
+				</form>
+			</div>
+		</div>
+	</header>
 
-        <main class="admin-main">
-            <div class="theaters-header">
-                <h1>Quản Lý Rạp</h1>
-                <button class="btn" onclick="openModal('addModal')">Thêm Rạp Mới</button>
-            </div>
+	<%-- Main: Container nội dung chính --%>
+	<main>
+		<%-- Hero Section: Tĩnh - Một banner duy nhất với background image và overlay text --%>
+		<%-- Loại bỏ carousel: Không JS, không nút prev/next, chỉ hero-banner đơn --%>
+		<section class="hero">
+			<%-- Hero-banner: Background image cố định (Avengers Endgame làm ví dụ) --%>
+			<div class="hero-banner"
+				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');">
+			</div>
 
-            <div class="table-wrapper">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên Rạp</th>
-                            <th>Địa Chỉ</th>
-                            <th>Sức Chứa</th>
-                            <th>Trạng Thái</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#001</td>
-                            <td>Cinestar Q6</td>
-                            <td>Quận 6, TP.HCM</td>
-                            <td>250 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('1')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('1')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#002</td>
-                            <td>Cinestar Hai Bà Trưng</td>
-                            <td>Quận Hai Bà Trưng, Hà Nội</td>
-                            <td>180 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('2')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('2')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#003</td>
-                            <td>Cinestar Quốc Thanh</td>
-                            <td>Quận 3, TP.HCM</td>
-                            <td>300 chỗ</td>
-                            <td><span class="status-tag status-inactive">Không Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('3')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('3')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#004</td>
-                            <td>CGV Vincom</td>
-                            <td>Quận 1, TP.HCM</td>
-                            <td>220 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('4')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('4')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#005</td>
-                            <td>Lotte Cinema</td>
-                            <td>Quận 7, TP.HCM</td>
-                            <td>150 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('5')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('5')">Xóa</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+			<%-- Hero-overlay: Text cố định - Không thay đổi --%>
+			<div class="hero-overlay">
+				<h1>Avengers: Endgame</h1>
+				<p>Bộ phim siêu anh hùng đỉnh cao, kết thúc saga Infinity.</p>
+				<a href="book-ticket.jsp" class="btn">Đặt Vé Ngay</a>
+			</div>
+		</section>
 
-            <!-- Pagination -->
-            <div class="pagination" style="text-align: center; margin-top: var(--spacing-lg);">
-                <a href="#" onclick="prevPage()" class="btn btn-secondary" style="margin-right: 10px;">« Trước</a>
-                <span style="margin: 0 20px; color: var(--text-muted);">1 / 2</span>
-                <a href="#" onclick="nextPage()" class="btn btn-secondary">Sau »</a>
-            </div>
+		<%-- Cinema-select: Tabs chọn rạp/thành phố - JS để toggle active (thêm sau) --%>
+		<section class="cinema-select">
+			<div class="cinema-tab active">Tất Cả Rạp</div>
+			<div class="cinema-tab">Hà Nội</div>
+			<div class="cinema-tab">TP.HCM</div>
+			<div class="cinema-tab">Đà Nẵng</div>
+		</section>
 
-            <!-- Modal Thêm/Sửa Rạp -->
-            <div id="addModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Thêm Rạp Mới</h3>
-                        <span class="close-modal" onclick="closeModal('addModal')">&times;</span>
-                    </div>
-                    <form class="modal-form">
-                        <div class="form-group">
-                            <label for="theaterName">Tên Rạp</label>
-                            <input type="text" id="theaterName" placeholder="Nhập tên rạp" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Địa Chỉ</label>
-                            <input type="text" id="address" placeholder="Nhập địa chỉ" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="capacity">Sức Chứa</label>
-                            <input type="number" id="capacity" placeholder="Nhập sức chứa" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Trạng Thái</label>
-                            <select id="status" required>
-                                <option value="active">Hoạt Động</option>
-                                <option value="inactive">Không Hoạt Động</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Hình Ảnh (Upload)</label>
-                            <input type="file" id="image" accept="image/*">
-                        </div>
-                        <div class="modal-btns">
-                            <button type="submit" class="auth-btn">Lưu</button>
-                            <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Hủy</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </main>
-    </div>
+		<%-- Section Phim Đang Chiếu: Title + Grid cards + Link xem thêm --%>
+		<section class="section">
+			<h2>Phim Đang Chiếu</h2>
+			<%-- Movie-grid: 6 cards placeholder với poster, rating, genre, button đặt vé --%>
+			<div class="movie-grid">
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+1"
+						alt="Phim 1">
+					<div class="movie-info">
+						<h3>Avengers: Endgame</h3>
+						<div class="rating">8.4</div>
+						<p class="genre">Hành Động, Khoa Học Viễn Tưởng</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+2"
+						alt="Phim 2">
+					<div class="movie-info">
+						<h3>Parasite</h3>
+						<div class="rating">8.5</div>
+						<p class="genre">Tâm Lý, Hài</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+3"
+						alt="Phim 3">
+					<div class="movie-info">
+						<h3>Joker</h3>
+						<div class="rating">8.4</div>
+						<p class="genre">Tội Phạm, Tâm Lý</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+4"
+						alt="Phim 4">
+					<div class="movie-info">
+						<h3>Frozen 2</h3>
+						<div class="rating">6.8</div>
+						<p class="genre">Hoạt Hình, Gia Đình</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+5"
+						alt="Phim 5">
+					<div class="movie-info">
+						<h3>1917</h3>
+						<div class="rating">8.2</div>
+						<p class="genre">Chiến Tranh, Hành Động</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Phim+6"
+						alt="Phim 6">
+					<div class="movie-info">
+						<h3>Knives Out</h3>
+						<div class="rating">7.9</div>
+						<p class="genre">Bí Ẩn, Hài</p>
+						<a href="book-ticket.jsp" class="btn">Đặt Vé</a>
+					</div>
+				</div>
+			</div>
+			<%-- Link xem thêm: CTA dẫn đến movies.jsp --%>
+			<a href="movieShowing.jsp" class="btn"
+				style="margin-top: var(--spacing-md); display: inline-block;">Xem
+				Tất Cả</a>
+		</section>
 
-    <script>
-        // Modal functions
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
+		<%-- Section Phim Sắp Chiếu: Tương tự, nhưng genre bao gồm ngày phát hành --%>
+		<section class="section">
+			<h2>Phim Sắp Chiếu</h2>
+			<div class="movie-grid">
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+1"
+						alt="Upcoming 1">
+					<div class="movie-info">
+						<h3>Dune Part 2</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Khoa Học Viễn Tưởng - 15/11/2025</p>
+					</div>
+				</div>
+				<%-- Thêm 3-4 cards placeholder tương tự ở đây để đầy đủ --%>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+2"
+						alt="Upcoming 2">
+					<div class="movie-info">
+						<h3>Spider-Man: No Way Home</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Hành Động, Siêu Anh Hùng - 17/12/2025</p>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+3"
+						alt="Upcoming 3">
+					<div class="movie-info">
+						<h3>The Batman</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Hành Động, Tội Phạm - 04/03/2026</p>
+					</div>
+				</div>
+				<div class="movie-card">
+					<img src="https://via.placeholder.com/180x270?text=Upcoming+4"
+						alt="Upcoming 4">
+					<div class="movie-info">
+						<h3>Black Widow</h3>
+						<div class="rating">N/A</div>
+						<p class="genre">Hành Động, Phiêu Lưu - 01/07/2026</p>
+					</div>
+				</div>
+			</div>
+			<a href="movieUpcoming.jsp" class="btn"
+				style="margin-top: var(--spacing-md); display: inline-block;">Xem
+				Tất Cả</a>
+		</section>
+	</main>
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+	<%-- Footer: Links và copyright - Center align --%>
+	<footer class="footer">
+		<div
+			style="max-width: var(--max-width); margin: 0 auto; padding: 0 var(--spacing-md);">
+			<div class="footer-links">
+				<a href="#">Giới Thiệu</a> <a href="#">Tin Tức</a> <a href="#">Tuyển
+					Dụng</a> <a href="#">Liên Hệ</a> <a href="#">Chính Sách Bảo Mật</a>
+			</div>
+			<p>&copy; 2025 MyCinema. Hệ thống rạp chiếu phim hiện đại bậc
+				nhất.</p>
+		</div>
+	</footer>
 
-        // Modal submit mock
-        document.querySelector('.modal-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Rạp đã được thêm thành công!');
-            closeModal('addModal');
-            // Reload table or add row
-        });
-
-        // Edit/Delete mock
-        function editTheater(id) {
-            alert('Chỉnh sửa rạp ' + id + ' (tính năng này sẽ được triển khai sau)!');
-        }
-
-        function deleteTheater(id) {
-            if (confirm('Bạn có chắc muốn xóa rạp ' + id + '?')) {
-                alert('Rạp ' + id + ' đã xóa!');
-                // Reload table
-            }
-        }
-
-        function prevPage() {
-            alert('Trang trước');
-        }
-
-        function nextPage() {
-            alert('Trang sau');
-        }
-
-        // Sidebar active
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Dropdown script (giữ nguyên)
-        document.addEventListener('DOMContentLoaded', function() {
-            const movieLi = document.querySelector('.has-dropdown');
-            const dropdown = document.querySelector('.dropdown');
-            const movieLink = document.getElementById('movieLink');
-
-            if (movieLink) {
-                movieLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    movieLi.classList.toggle('active');
-                });
-            }
-
-            document.addEventListener('click', function(e) {
-                if (movieLi && !movieLi.contains(e.target)) {
-                    movieLi.classList.remove('active');
-                }
-            });
-
-            if (dropdown) {
-                const dropdownLinks = dropdown.querySelectorAll('a');
-                dropdownLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (movieLi) movieLi.classList.remove('active');
-                        window.location.href = this.href;
-                    });
-                });
-            }
-        });
-    </script>
 </body>
 </html>
