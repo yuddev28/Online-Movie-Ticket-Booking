@@ -26,6 +26,10 @@ public interface IMovieDAO {
 
 	// Delete movie by id
 	int deleteMovieById(int id);
+	
+	// Update detail of movie with id
+	
+	int updateMovie(int id, Movie newMovie);
 
 	// Update movie status by movie id
 	int updateMovieStatusById(int id, MovieStatus status);
