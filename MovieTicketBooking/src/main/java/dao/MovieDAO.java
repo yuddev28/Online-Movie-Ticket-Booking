@@ -11,7 +11,7 @@ import java.util.List;
 import model.Movie;
 import model.MovieStatus;
 
-public class MovieDAO implements IMovieDAO{
+public class MovieDAO implements IMovieDAO {
 	// Get list of all movies in database
 	@Override
 	public List<Movie> getAllMovies() {
@@ -35,7 +35,7 @@ public class MovieDAO implements IMovieDAO{
 		}
 		return list;
 	}
-	
+
 	// Get movie have name contains a string
 	// Ex: if u want "The walking dead" just type "the walking"
 	@Override
@@ -68,12 +68,12 @@ public class MovieDAO implements IMovieDAO{
 		Movie movie = null;
 		try {
 			// Query string to get data
-			String queryString = "SELECT * FROM movies WHERE movie_id = ?;";
+			String queryString = "SELECT * FROM movies WHERE movie_id = ?";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
 			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery(queryString);
+			ResultSet rs = ps.executeQuery();
 			// Iterate result set to get data
 			while (rs.next()) {
 				movie = mapResultSetToMovie(rs);
@@ -86,13 +86,13 @@ public class MovieDAO implements IMovieDAO{
 		}
 		return movie;
 	}
-	
+
 	// Add movie to database
 	@Override
 	public void addMovie(Movie movie) {
 		try {
 			// Query string to get data
-			String queryString = "INSERT INTO movies (movie_name, movie_type, director_name, names_of_actors, movie_description, movie_duration, movie_country, movie_image_url, movie_status)" 
+			String queryString = "INSERT INTO movies (movie_name, movie_type, director_name, names_of_actors, movie_description, movie_duration, movie_country, movie_image_url, movie_status)"
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
@@ -133,17 +133,17 @@ public class MovieDAO implements IMovieDAO{
 		}
 		return update;
 	}
-	
+
 	// Update
 	@Override
 	public int updateMovie(int id, Movie newMovie) {
 		int update = 0;
+		// Query string to get data
+		String queryString = "UPDATE movies SET movie_name = ? , movie_type = ? , "
+				+ "director_name = ? , names_of_actors = ? , movie_description = ? ,"
+				+ "movie_duration = ? , movie_country = ? , movie_image_url = ? ,"
+				+ "movie_status = ? WHERE movie_id = ?";
 		try {
-			// Query string to get data
-			String queryString = "UPDATE movies SET movie_name = ? AND movie_type = ? "
-					+ "AND director_name = ? AND names_of_actors = ? AND movie_description = ?"
-					+ "AND movie_duration = ? AND movie_country = ? AND movie_image_url = ?"
-					+ "AND movie_status = ? WHERE movie_id = ?";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -165,7 +165,7 @@ public class MovieDAO implements IMovieDAO{
 		}
 		return update;
 	}
-	
+
 	// Update movie status by movie id
 	@Override
 	public int updateMovieStatusById(int id, MovieStatus status) {
@@ -186,7 +186,7 @@ public class MovieDAO implements IMovieDAO{
 		}
 		return update;
 	}
-	
+
 	private Movie mapResultSetToMovie(ResultSet rs) {
 		Movie movie = null;
 		try {

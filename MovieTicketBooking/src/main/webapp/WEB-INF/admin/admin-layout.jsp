@@ -14,14 +14,14 @@
 	rel="stylesheet"
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
-
+<script src="${pageContext.request.contextPath}/admin/admin.js "></script>
 </head>
 <body>
-	<!-- Sidebar -->
 	<div class="d-flex">
-		<nav class="sidebar bg-dark text-white vh-100 p-3">
-			<h4 class="text-center mb-4">Admin Panel</h4>
-
+		<!-- Sidebar -->
+		<nav class="sidebar bg-dark text-white vh-100 p-3 d-flex flex-column" style="position: fixed;width: 250px;">
+			<h4 class="text-center mb-2">Admin Panel</h4>
+			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li class="nav-item">
 					<a
@@ -45,13 +45,12 @@
 				
 			</ul>
 
-			<hr>
 
-			<a href="#" class="nav-link text-white mt-auto"> 🚪 Logout </a>
+			<a href="#" class="nav-link text-white mt-auto text-center"> Đăng xuất </a>
 		</nav>
 
 		<!-- Main content -->
-		<main class="flex-fill p-4">
+		<main class="flex-fill p-4" style="margin-left: 250px;">
 			<jsp:include page="${pageView}" />
 		</main>
 	</div>
