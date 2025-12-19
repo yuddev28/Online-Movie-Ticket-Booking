@@ -24,6 +24,9 @@
 		
 		<h1>Quản lý phim</h1>
 		
+		<div  class="mt-2 mb-2">
+			<a href="${pageContext.request.contextPath }/admin/movie/add" class="btn btn-primary">Thêm phim</a>
+		</div>
 		<table class="table">
 			<thread>
 				<tr>
@@ -53,10 +56,10 @@
 	    							<input type="hidden" name="id" value="${m.id }">
 									<input type="submit" value="Sửa" class="btn btn-warning">
 								</form>
-								<form action="${pageContext.request.contextPath}/admin/movie/delete" method="get">
-									<input type="hidden" name="id" value="${m.id }">
-									<input type="submit" value="Xoá" class="btn btn-danger text-white">
-								</form>
+								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-movie-id="${m.id}">
+									Xoá
+								</button>
+								
 							</div>
 						</td>
 					</tr>
@@ -65,7 +68,46 @@
 		</table>
 	</div>
 	
+	<!-- Thông báo xác nhận xoá phim -->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+	    <div class="modal-dialog modal-dialog-centered">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <h5 class="modal-title text-danger">Xác nhận xoá</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	            </div>
+	
+	            <div class="modal-body text-center">
+	                <p>Bạn có chắc chắn muốn xoá phim này không?</p>
+	            </div>
+	
+	            <div class="modal-footer justify-content-center">
+	                <form id="deleteForm" 
+	                      action="${pageContext.request.contextPath}/admin/movie/delete" 
+	                      method="post">
+	                    <input type="hidden" name="id" id="deleteMovieId">
+	                    <button type="submit" class="btn btn-danger">Xoá</button>
+	                </form>
+	
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+	                    Không
+	                </button>
+	            </div>
+	
+	        </div>
+	    </div>
+	</div>
+	
 	<script >
+		const deleteModal = document.getElementById('confirmDeleteModal');
+	
+		deleteModal.addEventListener('show.bs.modal', function (event) {
+		    const button = event.relatedTarget;
+		    const movieId = button.getAttribute('data-movie-id');
+	
+		    document.getElementById('deleteMovieId').value = movieId;
+		});
 		function hideMessage() {
 			const msg = document.getElementById("message");
 			if (msg) {

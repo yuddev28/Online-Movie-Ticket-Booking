@@ -89,11 +89,11 @@ public class MovieDAO implements IMovieDAO {
 
 	// Add movie to database
 	@Override
-	public void addMovie(Movie movie) {
+	public boolean addMovie(Movie movie) {
 		try {
 			// Query string to get data
 			String queryString = "INSERT INTO movies (movie_name, movie_type, director_name, names_of_actors, movie_description, movie_duration, movie_country, movie_image_url, movie_status)"
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -111,7 +111,9 @@ public class MovieDAO implements IMovieDAO {
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	// Delete movie by id

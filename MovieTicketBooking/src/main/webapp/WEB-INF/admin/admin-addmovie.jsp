@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %><!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -25,37 +24,36 @@
 	    	</div>
 		</c:if>
 		
-		<h1>Sửa thông tin phim</h1>
-		<form action="${pageContext.request.contextPath }/admin/movie/edit" method="post">
-			<input type="hidden" name="id" value="${movie.id }">
+		<h1>Thêm phim mới</h1>
+		<form action="${pageContext.request.contextPath }/admin/movie/add" method="post">
 			<table>
 				<tr>
 					<td><label for="name">Tên phim</label></td>
-					<td><input name="name" type="text" style="width:400px" class="form-control" value="${movie.name }"></td>
+					<td><input name="name" type="text" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="type">Thể loại</label></td>
-					<td><input name="type" type="text" style="width:400px" class="form-control" value="${movie.type }"></td>
+					<td><input name="type" type="text" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="directorName">Tên đạo diễn</label></td>
-					<td><input name="directorName" type="text" style="width:400px" class="form-control" value="${movie.directorName}"></td>
+					<td><input name="directorName" type="text" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="actorsName">Tên các diễn viên</label></td>
-					<td><input name="actorsName" type="text" style="width:400px" class="form-control" value="${movie.actorsName}"></td>
+					<td><input name="actorsName" type="text" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="duration">Thời lượng</label></td>
-					<td><input name="duration" type="number" min="0" style="width:400px" class="form-control" value="${movie.duration}"></td>
+					<td><input name="duration" type="number" min="0" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="country">Quốc gia</label></td>
-					<td><input name="country" type="text" style="width:400px" class="form-control" value="${movie.country}"></td>
+					<td><input name="country" type="text" style="width:400px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="imageUrl">Đường dẫn hình ảnh poster</label></td>
-					<td><input name="imageUrl" type="text" style="width:1000px" class="form-control" value="${movie.imageUrl}"></td>
+					<td><input name="imageUrl" type="text" style="width:1000px" class="form-control"></td>
 				</tr>
 				<tr>
 					<td><label for="status">Trạng thái</label></td>
@@ -68,10 +66,10 @@
 			</table>
 			<div class="mt-2 mb-2">
 				<label class="form-label">Mô tả</label>
-        		<textarea name="description" rows="4" col="8" class="form-control">${movie.description}
+        		<textarea name="description" rows="4" col="8" class="form-control">
                  </textarea>
 			</div>
-			<input type="submit" value="Cập nhật" class="btn btn-success">
+			<input type="submit" value="Thêm" class="btn btn-success">
 		</form>
 	</div>
 	<script >

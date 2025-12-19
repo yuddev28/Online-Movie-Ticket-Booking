@@ -22,7 +22,7 @@ public interface IMovieDAO {
 	Movie getMovieById(int id);
 
 	// Add movie to database
-	void addMovie(Movie movie);
+	boolean addMovie(Movie movie);
 
 	// Delete movie by id
 	int deleteMovieById(int id);

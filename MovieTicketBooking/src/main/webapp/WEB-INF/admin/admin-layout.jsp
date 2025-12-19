@@ -24,29 +24,38 @@
 			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li class="nav-item">
-					<a
-					href="${pageContext.request.contextPath}/admin/movies"
-					class="nav-link p-3 text-white">
-						Quản lý phim
-					</a>
+					<form action="${pageContext.request.contextPath}/admin/movies" method="post">
+						<input type="submit" value="Quản lý phim" class="nav-link p-3 text-white">
+					</form>
 				</li>
 				<li class="nav-item">
-					<a href="admin-theaters.jsp"
-					class="nav-link p-3 text-white">
-						Quản lý rạp phim
-					</a>
+					<form action="${pageContext.request.contextPath}/admin/cinemas" method="post">
+						<input type="submit" value="Quản lý rạp" class="nav-link p-3 text-white">
+					</form>
 				</li>
 				<li class="nav-item">
-					<a href="admin-bookings.jsp"
-					class="nav-link p-3 text-white">
-						Quản lý xuất chiếu
-					</a>
+					<form action="${pageContext.request.contextPath}/admin/rooms" method="post">
+						<input type="submit" value="Quản lý phòng chiếu" class="nav-link p-3 text-white">
+					</form>
 				</li>
-				
+				<li class="nav-item">
+					<form action="${pageContext.request.contextPath}/admin/showtimes" method="post">
+						<input type="submit" value="Quản lý xuất chiếu" class="nav-link p-3 text-white">
+					</form>
+				</li>
+				<li class="nav-item">
+					<form action="${pageContext.request.contextPath}/admin/tickets" method="post">
+						<input type="submit" value="Quản lý vé" class="nav-link p-3 text-white">
+					</form>
+				</li>
 			</ul>
 
-
-			<a href="#" class="nav-link text-white mt-auto text-center"> Đăng xuất </a>
+			<div class="d-flex justify-content-center align-items-center">
+				<form action="${pageContext.request.contextPath}/admin/login" method="get" >
+					<input type="submit" value="Đăng xuất" class="nav-link text-white mt-auto text-center">
+				</form>
+			</div>
+			
 		</nav>
 
 		<!-- Main content -->
