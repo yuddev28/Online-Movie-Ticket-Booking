@@ -13,7 +13,10 @@ public interface IRoomDAO {
 	List<Room> getRoomByCinemaId(int id);
 
 	// Add room with cinema id, then add seats of room
-	void addRoom(Room room, int cinemaId);
+	boolean addRoom(Room room, int cinemaId);
+	
+	// Update room with id
+	int updateRoom(int id, Room room);
 
 	// Delete room by id
 	int deleteRoomById(int id);

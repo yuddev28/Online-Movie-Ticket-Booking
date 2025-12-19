@@ -8,9 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Movie;
-import model.MovieStatus;
 import model.Room;
+import model.Cinema;
 
 public class RoomDAO implements IRoomDAO{
 	
@@ -19,7 +18,7 @@ public class RoomDAO implements IRoomDAO{
 	public Room getRoomById(int roomId) {
 		Room room = null;
 		try {
-			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows FROM rooms WHERE room_id = ?";
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows, cinema_id FROM rooms WHERE room_id = ?";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
@@ -43,7 +42,7 @@ public class RoomDAO implements IRoomDAO{
 	public List<Room> getRoomByCinemaId(int id){
 		List<Room> list = new ArrayList<>();
 		try {
-			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows FROM rooms WHERE cinema_id = ?;";
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows, cinema_id FROM rooms WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
@@ -63,7 +62,7 @@ public class RoomDAO implements IRoomDAO{
 	
 	// Add room with cinema id, then add seats of room
 	@Override
-	public void addRoom(Room room, int cinemaId) {
+	public boolean addRoom(Room room, int cinemaId) {
 		try {
 			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
 			// Create connect
@@ -78,7 +77,9 @@ public class RoomDAO implements IRoomDAO{
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	
@@ -102,18 +103,41 @@ public class RoomDAO implements IRoomDAO{
 		return update;
 	}
 	
+	// Update room by id
+	@Override
+	public int updateRoom(int id, Room room) {
+		int update = 0;
+		// Query string to get data
+		String queryString = "UPDATE rooms SET room_name = ?  WHERE cinema_id = ?";
+		try {
+			// Create connection
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setString(1, room.getName());
+			ps.setInt(2, id);
+			update = ps.executeUpdate();
+			ps.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return update;
+	}
+	
 	private Room mapResultSetToRoom(ResultSet rs) {
 		try {
 			int id = rs.getInt("room_id");
 			String name = rs.getString("room_name");
 			int numberOfColumns = rs.getInt("number_of_columns");
 			int numberOfRows = rs.getInt("number_of_rows");
+			Cinema cinema = new CinemaDAO().getCinemaById(rs.getInt("cinema_id"));
 
-			return new Room(id, name, numberOfColumns, numberOfRows);
+			return new Room(id, name, numberOfColumns, numberOfRows, cinema);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 		
 	}
+
 }

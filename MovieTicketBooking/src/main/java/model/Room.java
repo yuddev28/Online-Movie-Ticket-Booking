@@ -7,6 +7,7 @@ public class Room {
 	private String name;
 	private int numberOfColumns;
 	private int numberOfRows;
+	private Cinema cinema;
 
 	public Room() {
 	}
@@ -22,31 +23,14 @@ public class Room {
 		this.numberOfColumns = numberOfColumns;
 		this.numberOfRows = numberOfRows;
 	}
-
-//	/*
-//	 * Generate seat with number of rows and number of columns startId is start id
-//	 * of seat number of rows must be in 1 and 26 because alphabet just have 26
-//	 * letter seat name is a combination of letter and number
-//	 */
-//	private Seat[] generateSeat(int numberOfRows, int numberOfColumns) {
-//		if (numberOfRows < 1 && numberOfRows > 26)
-//			throw new IllegalArgumentException("Number of row must be in 1 and 26 ");
-//		Seat[] seats = new Seat[numberOfRows * numberOfColumns];
-//		int count = 0;
-//		char seatLetter = 'A';
-//		int seatNumber = 1;
-//		while (count < seats.length) {
-//			seats[count] = new Seat("" + seatLetter + seatNumber, this);
-//			seatNumber++;
-//			count++;
-//			if (count >= numberOfColumns && count % numberOfColumns == 0) {
-//				seatNumber = 1;
-//				seatLetter++;
-//			}
-//
-//		}
-//		return seats;
-//	}
+	
+	public Room(int id, String name, int numberOfColumns, int numberOfRows, Cinema cinema) {
+		this.id = id;
+		this.name = name;
+		this.numberOfColumns = numberOfColumns;
+		this.numberOfRows = numberOfRows;
+		this.cinema = cinema;
+	}
 
 	public String getName() {
 		return name;
