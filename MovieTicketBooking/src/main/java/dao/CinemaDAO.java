@@ -17,7 +17,7 @@ public class CinemaDAO implements ICinemaDAO{
 	public List<Cinema> getAllCinema() {
 		List<Cinema> list = new ArrayList<>();
 		try {
-			String query = "SELECT (cinema_id, cinema_name, cinema_address) FROM cinemas;";
+			String query = "SELECT cinema_id, cinema_name, cinema_address FROM cinemas;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
@@ -47,12 +47,12 @@ public class CinemaDAO implements ICinemaDAO{
 	public Cinema getCinemaById(int id) {
 		Cinema cinema = null;
 		try {
-			String query = "SELECT (cinema_id, cinema_name, cinema_address) FROM cinemas WHERE cinema_id = ?;";
+			String query = "SELECT cinema_id, cinema_name, cinema_address FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
-			ResultSet rs = st.executeQuery(query);
+			ResultSet rs = st.executeQuery();
 			String name;
 			String address;
 			while (rs.next()) {
@@ -72,7 +72,7 @@ public class CinemaDAO implements ICinemaDAO{
 	
 	// Add cinema
 	@Override
-	public void addCinema(Cinema cinema) {
+	public boolean addCinema(Cinema cinema) {
 		try {
 			String query = "INSERT INTO cinemas (cinema_name, cinema_address) VALUES (?, ?);";
 			// Create connect
@@ -85,12 +85,14 @@ public class CinemaDAO implements ICinemaDAO{
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	// Delete cinema by id
 	@Override
-	public void deleteCinemaById(int id) {
+	public boolean deleteCinemaById(int id) {
 		try {
 			String query = "DELETE FROM cinemas WHERE cinema_id = ?;";
 			// Create connect
@@ -102,6 +104,29 @@ public class CinemaDAO implements ICinemaDAO{
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
+	}
+
+	@Override
+	public int updateCinema(int id, Cinema newCinema) {
+		int update = 0;
+		// Query string to get data
+		String queryString = "UPDATE cinemas SET cinema_name = ?, cinema_address = ?  WHERE cinema_id = ?";
+		try {
+			// Create connection
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setString(1, newCinema.getName());
+			ps.setString(2, newCinema.getAddress());
+			ps.setInt(3, id);
+			update = ps.executeUpdate();
+			ps.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return update;
 	}
 }

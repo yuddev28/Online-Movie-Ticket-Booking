@@ -17,6 +17,12 @@ public class Cinema {
 		this.address = address;
 		this.rooms = new ArrayList<>();
 	}
+	
+	public Cinema(String name, String address) {
+		this.name = name;
+		this.address = address;
+		this.rooms = new ArrayList<>();
+	}
 
 	// Get cinema name and address
 	public String getAllInfo() {

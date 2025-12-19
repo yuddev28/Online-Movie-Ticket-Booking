@@ -19,7 +19,7 @@ public class RoomDAO implements IRoomDAO{
 	public Room getRoomById(int roomId) {
 		Room room = null;
 		try {
-			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE room_id = ?";
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows FROM rooms WHERE room_id = ?";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
@@ -43,7 +43,7 @@ public class RoomDAO implements IRoomDAO{
 	public List<Room> getRoomByCinemaId(int id){
 		List<Room> list = new ArrayList<>();
 		try {
-			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE cinema_id = ?;";
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows FROM rooms WHERE cinema_id = ?;";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);

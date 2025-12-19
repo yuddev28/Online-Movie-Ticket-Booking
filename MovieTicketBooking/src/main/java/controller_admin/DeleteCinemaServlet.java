@@ -9,11 +9,10 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import dao.IMovieDAO;
-import dao.MovieDAO;
+import dao.CinemaDAO;
 
-@WebServlet("/admin/movie/delete")
-public class DeleteMovieServlet extends HttpServlet {
+@WebServlet("/admin/cinema/delete")
+public class DeleteCinemaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
@@ -27,21 +26,20 @@ public class DeleteMovieServlet extends HttpServlet {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
             request.getSession().setAttribute("movieMessage", "ID không hợp lệ!");
-            response.sendRedirect(request.getContextPath() + "/admin/movies");
+            response.sendRedirect(request.getContextPath() + "/admin/cinemas");
             return;
         }
-
-        IMovieDAO movieDAO = new MovieDAO();
-        int update = movieDAO.deleteMovieById(id);
+        
+        boolean res = new CinemaDAO().deleteCinemaById(id);
 
         HttpSession session = request.getSession();
-        if (update > 0) {
-            session.setAttribute("movieMessage", "Xoá phim thành công!");
+        if (res) {
+            session.setAttribute("movieMessage", "Xoá rạp thành công!");
         } else {
-            session.setAttribute("movieMessage", "Xoá thất bại!");
+            session.setAttribute("movieMessage", "Xoá rạp thất bại!");
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/movies");
+        response.sendRedirect(request.getContextPath() + "/admin/cinemas");
 	}
 
 }

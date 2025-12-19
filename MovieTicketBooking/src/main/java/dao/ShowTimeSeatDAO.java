@@ -29,7 +29,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT (showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id) FROM showtimeseats WHERE showtime_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
@@ -53,7 +53,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByUserId(int userId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT (showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id) FROM showtimeseats WHERE user_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE user_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, userId);
@@ -76,7 +76,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeIdAndUserId(int showTimeId, int userId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT (showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id) FROM showtimeseats WHERE showtime_id = ? AND user_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ? AND user_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);

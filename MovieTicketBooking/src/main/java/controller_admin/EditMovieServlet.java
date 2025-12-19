@@ -32,6 +32,11 @@ public class EditMovieServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		Movie movie = mDAO.getMovieById(id);
+		if(movie == null) {
+			request.getSession().setAttribute("movieMessage", "Không tìm thấy phim.");
+			response.sendRedirect(request.getContextPath() + "/admin/movies");
+			return;
+		}
 		request.setAttribute("movie", movie);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/admin-layout.jsp");

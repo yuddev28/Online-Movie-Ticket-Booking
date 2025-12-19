@@ -33,7 +33,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public List<ShowTime> getAllShowTime() {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes;";
+			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes;";
 			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
@@ -53,7 +53,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public ShowTime getShowTimeById(int id) {
 		ShowTime showTime = null;
 		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes WHERE showtime_id = ?;";
+			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes WHERE showtime_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
@@ -74,7 +74,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes "
+			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes "
 					+ "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);

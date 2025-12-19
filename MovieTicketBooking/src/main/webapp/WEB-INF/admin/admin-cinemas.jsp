@@ -1,139 +1,109 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Rạp - Admin - MyCinema</title>
-    <link rel="stylesheet" href="adminstyle.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	
 </head>
 <body>
-     <div class="admin-main">
-            <div class="theaters-header">
-                <h1>Quản Lý Rạp</h1>
-                <button class="btn" onclick="openModal('addModal')">Thêm Rạp Mới</button>
-            </div>
-
-            <div class="table-wrapper">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên Rạp</th>
-                            <th>Địa Chỉ</th>
-                            <th>Sức Chứa</th>
-                            <th>Trạng Thái</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#001</td>
-                            <td>Cinestar Q6</td>
-                            <td>Quận 6, TP.HCM</td>
-                            <td>250 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('1')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('1')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#002</td>
-                            <td>Cinestar Hai Bà Trưng</td>
-                            <td>Quận Hai Bà Trưng, Hà Nội</td>
-                            <td>180 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('2')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('2')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#003</td>
-                            <td>Cinestar Quốc Thanh</td>
-                            <td>Quận 3, TP.HCM</td>
-                            <td>300 chỗ</td>
-                            <td><span class="status-tag status-inactive">Không Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('3')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('3')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#004</td>
-                            <td>CGV Vincom</td>
-                            <td>Quận 1, TP.HCM</td>
-                            <td>220 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('4')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('4')">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#005</td>
-                            <td>Lotte Cinema</td>
-                            <td>Quận 7, TP.HCM</td>
-                            <td>150 chỗ</td>
-                            <td><span class="status-tag status-active">Hoạt Động</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary action-btn-small" onclick="editTheater('5')">Sửa</button>
-                                <button class="btn btn-secondary action-btn-small" onclick="deleteTheater('5')">Xóa</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="pagination" style="text-align: center; margin-top: var(--spacing-lg);">
-                <a href="#" onclick="prevPage()" class="btn btn-secondary" style="margin-right: 10px;">« Trước</a>
-                <span style="margin: 0 20px; color: var(--text-muted);">1 / 2</span>
-                <a href="#" onclick="nextPage()" class="btn btn-secondary">Sau »</a>
-            </div>
-
-            <!-- Modal Thêm/Sửa Rạp -->
-            <div id="addModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Thêm Rạp Mới</h3>
-                        <span class="close-modal" onclick="closeModal('addModal')">&times;</span>
-                    </div>
-                    <form class="modal-form">
-                        <div class="form-group">
-                            <label for="theaterName">Tên Rạp</label>
-                            <input type="text" id="theaterName" placeholder="Nhập tên rạp" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Địa Chỉ</label>
-                            <input type="text" id="address" placeholder="Nhập địa chỉ" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="capacity">Sức Chứa</label>
-                            <input type="number" id="capacity" placeholder="Nhập sức chứa" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Trạng Thái</label>
-                            <select id="status" required>
-                                <option value="active">Hoạt Động</option>
-                                <option value="inactive">Không Hoạt Động</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Hình Ảnh (Upload)</label>
-                            <input type="file" id="image" accept="image/*">
-                        </div>
-                        <div class="modal-btns">
-                            <button type="submit" class="auth-btn">Lưu</button>
-                            <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Hủy</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-   
+	<div class="container-fluid">
+		<c:if test="${not empty sessionScope.cinemaMessage }">
+			<div id="message"
+		         class="bg-success text-white px-3 py-2 rounded d-inline-flex align-items-center gap-2">
+		        <span>${sessionScope.cinemaMessage}</span>
+		        <button type="button"
+		                class="btn-close btn-close-white"
+		                aria-label="Close"
+		                onclick="hideMessage()">
+		        </button>
+	    	</div>
+		</c:if>
+		
+		<h1>Quản lý rạp phim</h1>
+		
+		<div  class="mt-2 mb-2">
+			<a href="${pageContext.request.contextPath }/admin/cinema/add" class="btn btn-primary">Thêm rạp</a>
+		</div>
+		<table class="table">
+			<thread>
+				<tr>
+					<th style="width:20%">Tên</th>
+					<th style="width:60%">Địa chỉ</th>
+					<th style="width:20%">Hành động</th>
+				</tr>
+			</thread>
+			<tbody>
+				<c:forEach var="cine" items="${listCinemas}">
+					<tr>
+						<td>${cine.name }</td>
+						<td>${cine.address }</td>
+						<td>
+							<div class="d-flex gap-2">
+	    						<form action="${pageContext.request.contextPath}/admin/cinema/edit" method="get">
+	    							<input type="hidden" name="id" value="${cine.id }">
+									<input type="submit" value="Sửa" class="btn btn-warning">
+								</form>
+								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-cinema-id="${cine.id}">
+									Xoá
+								</button>
+								
+							</div>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- Thông báo xác nhận xoá phim -->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+	    <div class="modal-dialog modal-dialog-centered">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <h5 class="modal-title text-danger">Xác nhận xoá</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	            </div>
+	
+	            <div class="modal-body text-center">
+	                <p>Bạn có chắc chắn muốn xoá rạp này không?</p>
+	            </div>
+	
+	            <div class="modal-footer justify-content-center">
+	                <form id="deleteForm" 
+	                      action="${pageContext.request.contextPath}/admin/cinema/delete" 
+	                      method="post">
+	                    <input type="hidden" name="id" id="deleteCinemaId">
+	                    <button type="submit" class="btn btn-danger">Xoá</button>
+	                </form>
+	
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+	                    Không
+	                </button>
+	            </div>
+	
+	        </div>
+	    </div>
+	</div>
+	
+	<script >
+		const deleteModal = document.getElementById('confirmDeleteModal');
+	
+		deleteModal.addEventListener('show.bs.modal', function (event) {
+		    const button = event.relatedTarget;
+		    const cinemaId = button.getAttribute('data-cinema-id');
+	
+		    document.getElementById('deleteCinemaId').value = cinemaId;
+		});
+		function hideMessage() {
+			const msg = document.getElementById("message");
+			if (msg) {
+				msg.classList.add("d-none");
+			}
+		}
+	</script>
 </body>
 </html>

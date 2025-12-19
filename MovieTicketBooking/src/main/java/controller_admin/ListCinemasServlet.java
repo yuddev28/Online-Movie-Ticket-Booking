@@ -29,9 +29,11 @@ public class ListCinemasServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Remove all message in request and session
 		HttpSession session = request.getSession();
 		String message = (String) session.getAttribute("cinemaMessage");
 		if(message != null) session.setAttribute("cinemaMessage", null);
+		request.setAttribute("errorMessage", null);
 		doGet(request, response);
 	}
 

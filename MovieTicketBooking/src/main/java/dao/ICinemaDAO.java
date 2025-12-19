@@ -15,7 +15,9 @@ public interface ICinemaDAO {
 	// Get cinema by id
 	Cinema getCinemaById(int id);
 	// Add cinema
-	void addCinema(Cinema cinema);
+	boolean addCinema(Cinema cinema);
+	// Update cinema
+	int updateCinema(int id, Cinema newCinema);
 	// Delete cinema by id
-	void deleteCinemaById(int id) ;
+	boolean deleteCinemaById(int id) ;
 }

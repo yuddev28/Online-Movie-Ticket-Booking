@@ -28,6 +28,8 @@ public class ListMoviesServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Remove all message in request and session
+		request.setAttribute("errorMessage", null);
 		HttpSession session = request.getSession();
 		String message = (String) session.getAttribute("movieMessage");
 		if(message != null) session.setAttribute("movieMessage", null);
