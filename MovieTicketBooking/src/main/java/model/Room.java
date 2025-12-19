@@ -17,11 +17,11 @@ public class Room {
 		this.name = name;
 	}
 	
-	public Room(int id, String name, int numberOfColumns, int numberOfRows) {
-		this.id = id;
+	public Room(String name, int numberOfColumns, int numberOfRows, Cinema cinema) {
 		this.name = name;
 		this.numberOfColumns = numberOfColumns;
 		this.numberOfRows = numberOfRows;
+		this.cinema = cinema;
 	}
 	
 	public Room(int id, String name, int numberOfColumns, int numberOfRows, Cinema cinema) {
@@ -58,6 +58,10 @@ public class Room {
 
 	public void setNumberOfRows(int numberOfRows) {
 		this.numberOfRows = numberOfRows;
+	}
+
+	public Cinema getCinema() {
+		return cinema;
 	}
 	
 	

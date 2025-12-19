@@ -33,7 +33,7 @@
 					<td><input name="name" type="text" style="width:500px" class="form-control" value="${cinema.name }"></td>
 				</tr>
 				<tr>
-					<td><label for="type">Thể địa chỉ</label></td>
+					<td><label for="address">Thể địa chỉ</label></td>
 					<td><input name="address" type="text" style="width:1000px" class="form-control" value="${cinema.address}"></td>
 				</tr>
 			</table>

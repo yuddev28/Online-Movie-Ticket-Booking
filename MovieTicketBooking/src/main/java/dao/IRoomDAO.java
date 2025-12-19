@@ -6,6 +6,8 @@ import java.util.List;
 import model.Room;
 
 public interface IRoomDAO {
+	// Get all room
+	List<Room> getAllRoom();
 	// Get room by room id
 	Room getRoomById(int roomId);
 

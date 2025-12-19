@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<form action="${pageContext.request.contextPath }/admin/cinemas" method="post">
+		<form action="${pageContext.request.contextPath }/admin/rooms" method="post">
 			<input type="submit" value="Quay lại" class="btn btn-primary">
 		</form>
 		<c:if test="${not empty errorMessage }">
@@ -24,16 +24,30 @@
 	    	</div>
 		</c:if>
 		
-		<h1>Thêm rạp mới</h1>
-		<form action="${pageContext.request.contextPath }/admin/cinema/add" method="post">
+		<h1>Thêm phòng mới</h1>
+		<form action="${pageContext.request.contextPath }/admin/room/add" method="post">
 			<table>
 				<tr>
-					<td><label for="name">Tên rạp</label></td>
-					<td><input name="name" type="text" style="width:500px" class="form-control"></td>
+					<td><label for="name">Tên phòng</label></td>
+					<td><input name="name" type="text" style="width:200px" class="form-control"></td>
 				</tr>
 				<tr>
-					<td><label for="address">Địa chỉ</label></td>
-					<td><input name="address" type="text" style="width:1000px" class="form-control"></td>
+					<td><label for="cinemaId">Chi nhánh</label></td>
+					<td>
+						<select name="cinemaId">
+							<c:forEach var="cine" items="${listCinemas }">
+								<option value="${cine.id }">${cine.name }</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="cols">Số cột</label></td>
+					<td><input name="cols" type="number" min=1  class="form-control"></td>
+				</tr>
+				<tr>
+					<td><label for="rows">Số hàng (từ 1 đến 26)</label></td>
+					<td><input name="rows" type="number" min=1 max=26 class="form-control"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Thêm" class="btn btn-success">

@@ -12,6 +12,27 @@ import model.Room;
 import model.Cinema;
 
 public class RoomDAO implements IRoomDAO{
+	// Get all rooms
+	@Override
+	public List<Room> getAllRoom() {
+		List<Room> list = new ArrayList<>();
+		try {
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows, cinema_id FROM rooms";
+			// Create connect
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				list.add(mapResultSetToRoom(rs));
+			}
+			rs.close();
+			st.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	// Get room by room id
 	@Override
@@ -64,12 +85,15 @@ public class RoomDAO implements IRoomDAO{
 	@Override
 	public boolean addRoom(Room room, int cinemaId) {
 		try {
-			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
+			String query = "INSERT INTO rooms (room_name, number_of_columns, number_of_rows, cinema_id) VALUES (?, ?, ?, ?);";
 			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, room.getName());
-			st.setInt(2, cinemaId);
+			st.setInt(2, room.getNumberOfColumns());
+			st.setInt(3, room.getNumberOfRows());
+			st.setInt(4, cinemaId);
+			
 			st.executeUpdate();
 			// Add seats of this room to db
 			
@@ -139,5 +163,6 @@ public class RoomDAO implements IRoomDAO{
 		}
 		
 	}
+
 
 }
