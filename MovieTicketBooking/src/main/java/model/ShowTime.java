@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class ShowTime {
 	private int id;
@@ -15,6 +17,16 @@ public class ShowTime {
 	private LocalDateTime createdAt;
 	
 	public ShowTime() {}
+	
+	public ShowTime(Cinema cinema, Room room, Movie movie, BigDecimal pricePerTicket,
+			LocalDateTime startTime) {
+		this.cinema = cinema;
+		this.room = room;
+		this.movie = movie;
+		this.pricePerTicket = pricePerTicket;
+		this.startTime = startTime;
+		this.createdAt = LocalDateTime.now();
+	}
 	
 	public ShowTime(int id, Cinema cinema, Room room, Movie movie, BigDecimal pricePerTicket,
 			LocalDateTime startTime) {
@@ -107,16 +119,8 @@ public class ShowTime {
 		return pricePerTicket;
 	}
 
-	public void setPricePerTicket(BigDecimal pricePerTicket) {
-		this.pricePerTicket = pricePerTicket;
-	}
-
 	public LocalDateTime getStartTime() {
 		return startTime;
-	}
-
-	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
 	}
 
 	public int getId() {
@@ -125,6 +129,14 @@ public class ShowTime {
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
+	}
+	
+	public Date getStartTimeAsDate() {
+	    return Timestamp.valueOf(this.startTime);
+	}
+
+	public Date getCreatedAtAsDate() {
+	    return Timestamp.valueOf(this.createdAt);
 	}
 	
 }

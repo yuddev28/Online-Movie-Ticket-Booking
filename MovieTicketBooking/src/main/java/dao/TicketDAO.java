@@ -18,15 +18,6 @@ import model.TicketStatus;
 import model.User;
 
 public class TicketDAO implements ITicketDAO {
-	private IUserDAO userDAO;
-	private IShowTimeDAO showTimeDAO;
-	private IShowTimeSeatDAO showTimeSeatDAO;
-
-	public TicketDAO() {
-		userDAO = new UserDAO();
-		showTimeDAO = new ShowTimeDAO();
-		showTimeSeatDAO = new ShowTimeSeatDAO();
-	}
 
 	// get tickets by user id
 	@Override
@@ -91,6 +82,7 @@ public class TicketDAO implements ITicketDAO {
 	        ps.executeUpdate();
 	        ps.close();
 	        conn.close();
+	        IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
 	        for(ShowTimeSeat sts : ticket.getSeats()) {
 	        	showTimeSeatDAO.updateShowTimeSeat(sts.getId(), ticket.getUser());
 	        }
@@ -110,6 +102,7 @@ public class TicketDAO implements ITicketDAO {
 	        ps.executeUpdate();
 	        ps.close();
 	        conn.close();
+	        IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
 	        // If user cancelled ticket => all show time seat in that ticket will be not booked
 	        if(newStatus.equals(TicketStatus.CANCELLED)) {
 	        	for(ShowTimeSeat sts : ticket.getSeats()) {
@@ -134,13 +127,15 @@ public class TicketDAO implements ITicketDAO {
 
 			int userId = rs.getInt("user_id");
 			int showtimeId = rs.getInt("showtime_id");
-
+			IUserDAO userDAO = new UserDAO();
 			User user = userDAO.getUserById(userId);
 			ticket.setUser(user);
-
+			
+			IShowTimeDAO showTimeDAO = new ShowTimeDAO();
 			ShowTime showTime = showTimeDAO.getShowTimeById(showtimeId);
 			ticket.setShowTime(showTime);
 			
+			IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
 			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showtimeId, userId);
 			ticket.setSeats(showTimeSeats);
 		} catch (SQLException e) {

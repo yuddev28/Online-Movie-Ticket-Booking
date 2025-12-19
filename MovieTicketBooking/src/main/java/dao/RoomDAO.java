@@ -48,7 +48,6 @@ public class RoomDAO implements IRoomDAO{
 			while(rs.next()) {
 				room = mapResultSetToRoom(rs);
 			}
-			st.executeUpdate();
 			rs.close();
 			st.close();
 			connect.close();

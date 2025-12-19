@@ -40,7 +40,7 @@
 				</li>
 				<li class="nav-item">
 					<form action="${pageContext.request.contextPath}/admin/showtimes" method="post">
-						<input type="submit" value="Quản lý xuất chiếu" class="nav-link p-3 text-white">
+						<input type="submit" value="Quản lý suất chiếu" class="nav-link p-3 text-white">
 					</form>
 				</li>
 				<li class="nav-item">

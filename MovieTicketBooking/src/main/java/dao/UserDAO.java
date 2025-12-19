@@ -14,10 +14,8 @@ import model.Ticket;
 import model.User;
 
 public class UserDAO implements IUserDAO {
-	private ITicketDAO ticketDAO;
 	
 	public UserDAO() {
-		ticketDAO = new TicketDAO();
 	}
 	
 	// Get user by user id
@@ -43,7 +41,7 @@ public class UserDAO implements IUserDAO {
 				email = rs.getString("email");
 				phoneNumber = rs.getString("phonenumber");
 				role = Role.valueOf(rs.getString("role"));
-				tickets = ticketDAO.getTicketsByUserId(id);
+				tickets = new TicketDAO().getTicketsByUserId(id);
 				user = new User(id, username, password, email, phoneNumber, role, tickets);
 			}
 			rs.close();
@@ -78,7 +76,7 @@ public class UserDAO implements IUserDAO {
 				email = rs.getString("email");
 				phoneNumber = rs.getString("phonenumber");
 				role = Role.valueOf(rs.getString("role"));
-				tickets = ticketDAO.getTicketsByUserId(id);
+				tickets = new TicketDAO().getTicketsByUserId(id);
 				user = new User(id, username, password, email, phoneNumber, role, tickets);
 			}
 			rs.close();

@@ -17,17 +17,17 @@ import model.Room;
 import model.ShowTime;
 import model.ShowTimeSeat;
 
-public class ShowTimeDAO implements IShowTimeDAO{
+public class ShowTimeDAO implements IShowTimeDAO {
 	private ICinemaDAO cinemaDAO;
 	private IRoomDAO roomDAO;
 	private IMovieDAO movieDAO;
-	
+
 	public ShowTimeDAO() {
 		cinemaDAO = new CinemaDAO();
 		roomDAO = new RoomDAO();
 		movieDAO = new MovieDAO();
 	}
-	
+
 	// Get all show time
 	@Override
 	public List<ShowTime> getAllShowTime() {
@@ -37,7 +37,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			while(rs.next()) {
+			while (rs.next()) {
 				list.add(mapResultSetToShowTime(rs));
 			}
 			rs.close();
@@ -48,6 +48,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		}
 		return list;
 	}
+
 	// Get show time by id
 	@Override
 	public ShowTime getShowTimeById(int id) {
@@ -58,7 +59,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				showTime = mapResultSetToShowTime(rs);
 			}
 			rs.close();
@@ -69,6 +70,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		}
 		return showTime;
 	}
+
 	// Get list of show time by cinema id and movie id and day have show time
 	@Override
 	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
@@ -84,7 +86,7 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			st.setTimestamp(4, Timestamp.valueOf(day.toLocalDate().plusDays(1).atStartOfDay()));
 			ResultSet rs = st.executeQuery();
 			ShowTime showTime;
-			while(rs.next()) {
+			while (rs.next()) {
 				showTime = mapResultSetToShowTime(rs);
 				list.add(showTime);
 			}
@@ -96,33 +98,48 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		}
 		return list;
 	}
+
 	// Add show time and seats of it
 	@Override
-	public void addShowTime(ShowTime showTime) {
+	public boolean addShowTime(ShowTime showTime) {
+		String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES "
+				+ "(?, ?, ?, ?, ?);";
 		try {
-			String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES "
-					+ "(?, ?, ?, ?, ?);";
 			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
+			connect.setAutoCommit(false);
+			PreparedStatement st = connect.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setBigDecimal(1, showTime.getPricePerTicket());
 			st.setTimestamp(2, Timestamp.valueOf(showTime.getStartTime()));
 			st.setInt(3, showTime.getMovieId());
 			st.setInt(4, showTime.getCinemaId());
 			st.setInt(5, showTime.getRoomId());
 			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+			if (!rs.next()) {
+				return false;
+			}
+
+			int newShowTimeId = rs.getInt(1);
+			rs.close();
+			
 			st.close();
+			connect.commit();
 			connect.close();
 			// Create seats and add to db
-			List<ShowTimeSeat> seats = showTime.createListShowTimeSeats();
+			ShowTime newShowTime = new ShowTime(newShowTimeId, showTime.getCinema(), showTime.getRoom(), showTime.getMovie(), showTime.getPricePerTicket(), showTime.getStartTime());
+			List<ShowTimeSeat> seats = newShowTime.createListShowTimeSeats();
 			IShowTimeSeatDAO stsDAO = new ShowTimeSeatDAO();
 			stsDAO.addShowTimeSeats(seats);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
+
 	// Delete show time by showtime id
 	@Override
-	public void deleteShowTimeById(int id) {
+	public boolean deleteShowTimeById(int id) {
 		try {
 			String query = "DELETE FROM showtimes WHERE showtime_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
@@ -133,9 +150,11 @@ public class ShowTimeDAO implements IShowTimeDAO{
 			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
-	
+
 	private ShowTime mapResultSetToShowTime(ResultSet rs) {
 		ShowTime showTime = null;
 		try {

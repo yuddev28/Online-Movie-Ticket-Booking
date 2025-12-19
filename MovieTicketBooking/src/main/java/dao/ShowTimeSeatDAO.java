@@ -108,7 +108,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			conn.setAutoCommit(false);
 
 			for (ShowTimeSeat sts : list) {
-
+				st.setString(1, sts.getSeatName());
 				// user_id có thể null
 				if (sts.getBookedBy() != null) {
 					st.setInt(2, sts.getBookedBy().getId());
@@ -117,6 +117,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 				}
 
 				st.setInt(3, sts.getShowTimeId());
+				st.setInt(4, sts.getRoom().getId());
 				st.addBatch();
 			}
 
