@@ -188,6 +188,47 @@ public class MovieDAO implements IMovieDAO {
 		}
 		return update;
 	}
+	
+	@Override
+	public List<Movie> getMoviesByCinemaId(int cinemaId) {
+	    List<Movie> list = new ArrayList<>();
+	    // Join bảng movies và cinema_movies để tìm phim
+	    String sql = "SELECT m.* FROM movies m " +
+	                 "JOIN cinema_movies cm ON m.movie_id = cm.movie_id " +
+	                 "WHERE cm.cinema_id = ? AND m.movie_status = 'NOW_SHOWING'"; 
+	                 // Chỉ lấy phim ĐANG CHIẾU (bỏ dòng này nếu muốn hiện cả phim sắp chiếu)
+	    try {
+	        Connection connect = JDBCConnection.getConnection();
+	        PreparedStatement ps = connect.prepareStatement(sql);
+	        ps.setInt(1, cinemaId);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	             // --- COPY ĐOẠN CODE TẠO ĐỐI TƯỢNG MOVIE TỪ HÀM getAllMovies() ---
+	             int id = rs.getInt("movie_id");
+	             String name = rs.getString("movie_name");
+	             String type = rs.getString("movie_type");
+	             String director = rs.getString("director_name");
+	             String actors = rs.getString("names_of_actors");
+	             String desc = rs.getString("movie_description");
+	             int duration = rs.getInt("movie_duration");
+	             String country = rs.getString("movie_country");
+	             String img = rs.getString("movie_image_url");
+	             
+	             String statusStr = rs.getString("movie_status");
+	             MovieStatus status = MovieStatus.COMING_SOON;
+	             if(statusStr != null) status = MovieStatus.valueOf(statusStr);
+
+	             list.add(new Movie(id, name, type, director, actors, desc, duration, country, img, status));
+	             // ----------------------------------------------------------------
+	        }
+	        rs.close();
+	        ps.close();
+	        connect.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
 
 	private Movie mapResultSetToMovie(ResultSet rs) {
 		Movie movie = null;
