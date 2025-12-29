@@ -23,7 +23,8 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getTicketsByUserId(int userId) {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT * FROM tickets WHERE user_id = ?";
+		String sql = "SELECT ticket_id, ticket_uid, ticket_price, payment_method"
+				+ ", ticket_status, created_at, updated_at, user_id, showtime_id FROM tickets WHERE user_id = ?";
 		try {
 			Connection conn = JDBCConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -47,7 +48,8 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getAllTickets() {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT * FROM tickets WHERE user_id = ?";
+		String sql = "SELECT ticket_id, ticket_uid, ticket_price, payment_method"
+				+ ", ticket_status, created_at, updated_at, user_id, showtime_id FROM tickets";
 		try {
 			Connection conn = JDBCConnection.getConnection();
 			Statement st = conn.createStatement();
@@ -117,6 +119,7 @@ public class TicketDAO implements ITicketDAO {
 	private Ticket mapResultSetToTicket(ResultSet rs) {
 		Ticket ticket = new Ticket();
 		try {
+			
 			ticket.setId(rs.getInt("ticket_id"));
 			ticket.setUid(rs.getString("ticket_uid"));
 			ticket.setTotalPrice(rs.getBigDecimal("ticket_price"));

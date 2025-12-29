@@ -1,7 +1,9 @@
 package model;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class Ticket {
@@ -138,7 +140,13 @@ public class Ticket {
 		this.createdAt = createdAt;
 	}
 	
+	public Date getCreatedAtAsDate() {
+		return Timestamp.valueOf(createdAt);
+	}
 	
+	public Date getUpdatedAtAsDate() {
+		return Timestamp.valueOf(updatedAt);
+	}
 	
 	
 }
