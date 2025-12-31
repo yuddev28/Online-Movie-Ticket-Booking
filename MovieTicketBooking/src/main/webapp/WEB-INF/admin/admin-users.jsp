@@ -10,10 +10,10 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<c:if test="${not empty sessionScope.roomMessage }">
+		<c:if test="${not empty sessionScope.userMessage }">
 			<div id="message"
 		         class="bg-success text-white px-3 py-2 rounded d-inline-flex align-items-center gap-2">
-		        <span>${sessionScope.roomMessage}</span>
+		        <span>${sessionScope.userMessage}</span>
 		        <button type="button"
 		                class="btn-close btn-close-white"
 		                aria-label="Close"
@@ -22,33 +22,31 @@
 	    	</div>
 		</c:if>
 		
-		<h1>Quản lý phòng chiếu</h1>
+		<h1>Quản lý tài khoản</h1>
 		
 		<div  class="mt-2 mb-2">
-			<a href="${pageContext.request.contextPath }/admin/room/add" class="btn btn-primary">Thêm rạp</a>
+			<a href="${pageContext.request.contextPath }/admin/user/add" class="btn btn-primary">Thêm tài khoản</a>
 		</div>
 		<table class="table">
 			<thread>
 				<tr>
-					<th style="width:20%">Tên</th>
-					<th style="width:40%">Chi nhánh</th>
-					<th style="width:10%">Số cột</th>
-					<th style="width:10%">Số hàng</th>
-					<th>Tổng số ghế</th>
-					<th>Hành động</th>
+					<th style="width:30%">Tên tài khoản</th>
+					<th>Email</th>
+					<th style="width:20%">Số điện thoại</th>
+					<th style="width:10%">Vai trò</th>
+					<th style="width:10%">Hành động</th>
 				</tr>
 			</thread>
 			<tbody>
-				<c:forEach var="r" items="${listRooms}">
+				<c:forEach var="u" items="${listUsers}">
 					<tr>
-						<td>${r.name }</td>
-						<td>${r.cinema.name }</td>
-						<td>${r.numberOfColumns }</td>
-						<td>${r.numberOfRows }</td>
-						<td>${r.numberOfColumns *  r.numberOfRows }</td>
+						<td>${u.username }</td>
+						<td>${u.email }</td>
+						<td>${u.phoneNumber }</td>
+						<td>${u.role }</td>
 						<td>
 							<div class="d-flex gap-2">
-								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-room-id="${r.id}">
+								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-user-id="${u.id}">
 									Xoá
 								</button>
 								
@@ -71,14 +69,14 @@
 	            </div>
 	
 	            <div class="modal-body text-center">
-	                <p>Bạn có chắc chắn muốn xoá phòng này không?</p>
+	                <p>Bạn có chắc chắn muốn xoá tài khoản này không?</p>
 	            </div>
 	
 	            <div class="modal-footer justify-content-center">
 	                <form id="deleteForm" 
-	                      action="${pageContext.request.contextPath}/admin/room/delete" 
+	                      action="${pageContext.request.contextPath}/admin/user/delete" 
 	                      method="post">
-	                    <input type="hidden" name="id" id="deleteRoomId">
+	                    <input type="hidden" name="id" id="deleteUserId">
 	                    <button type="submit" class="btn btn-danger">Xoá</button>
 	                </form>
 	
@@ -96,16 +94,10 @@
 	
 		deleteModal.addEventListener('show.bs.modal', function (event) {
 		    const button = event.relatedTarget;
-		    const roomId = button.getAttribute('data-room-id');
+		    const userId = button.getAttribute('data-user-id');
 	
-		    document.getElementById('deleteRoomId').value = roomId;
+		    document.getElementById('deleteUserId').value = userId;
 		});
-		function hideMessage() {
-			const msg = document.getElementById("message");
-			if (msg) {
-				msg.classList.add("d-none");
-			}
-		}
 	</script>
 </body>
 </html>

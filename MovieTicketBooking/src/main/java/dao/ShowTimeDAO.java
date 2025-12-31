@@ -33,7 +33,7 @@ public class ShowTimeDAO implements IShowTimeDAO {
 	public List<ShowTime> getAllShowTime() {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes;";
+			String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id FROM showtimes;";
 			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
 			ResultSet rs = st.executeQuery(query);
@@ -54,7 +54,7 @@ public class ShowTimeDAO implements IShowTimeDAO {
 	public ShowTime getShowTimeById(int id) {
 		ShowTime showTime = null;
 		try {
-			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes WHERE showtime_id = ?;";
+			String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id FROM showtimes WHERE showtime_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
@@ -76,7 +76,7 @@ public class ShowTimeDAO implements IShowTimeDAO {
 	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
 		List<ShowTime> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes "
+			String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id FROM showtimes "
 					+ "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
@@ -126,7 +126,7 @@ public class ShowTimeDAO implements IShowTimeDAO {
 			connect.commit();
 			connect.close();
 			// Create seats and add to db
-			ShowTime newShowTime = new ShowTime(newShowTimeId, showTime.getCinema(), showTime.getRoom(), showTime.getMovie(), showTime.getPricePerTicket(), showTime.getStartTime());
+			ShowTime newShowTime = new ShowTime(newShowTimeId, showTime.getCinema(), showTime.getRoom(), showTime.getMovie(), showTime.getPricePerTicket(), showTime.getStartTime(), LocalDateTime.now());
 			List<ShowTimeSeat> seats = newShowTime.createListShowTimeSeats();
 			IShowTimeSeatDAO stsDAO = new ShowTimeSeatDAO();
 			stsDAO.addShowTimeSeats(seats);
@@ -161,10 +161,11 @@ public class ShowTimeDAO implements IShowTimeDAO {
 			int id = rs.getInt("showtime_id");
 			BigDecimal price = rs.getBigDecimal("showtime_price");
 			LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
+			LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 			Movie movie = movieDAO.getMovieById(rs.getInt("movie_id"));
 			Cinema cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
 			Room room = roomDAO.getRoomById(rs.getInt("room_id"));
-			showTime = new ShowTime(id, cinema, room, movie, price, startTime);
+			showTime = new ShowTime(id, cinema, room, movie, price, startTime, createdAt);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

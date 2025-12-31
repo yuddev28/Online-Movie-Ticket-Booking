@@ -14,38 +14,63 @@
 	rel="stylesheet"
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
+<style>
+	.nav-pills .nav-link {
+		width: 100%;
+		background: transparent;
+		border: none;
+		text-align: left;
+		border-radius: 8px;
+	}
+	
+	.nav-pills .nav-link:hover {
+		background-color: #495057;
+	}
+	
+	.nav-pills .nav-link.active {
+		background-color: #0d6efd;
+		color: #fff;
+		font-weight: 500;
+	}
+</style>
 <script src="${pageContext.request.contextPath}/admin/admin.js "></script>
 </head>
 <body>
 	<div class="d-flex">
 		<!-- Sidebar -->
+		<div id="currentPage" current-page="${pageView }"></div>
 		<nav class="sidebar bg-dark text-white vh-100 p-3 d-flex flex-column" style="position: fixed;width: 250px;">
 			<h4 class="text-center mb-2">Admin Panel</h4>
 			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li class="nav-item">
-					<form action="${pageContext.request.contextPath}/admin/movies" method="post">
+					<form action="${pageContext.request.contextPath}/admin/movies" id="movie" method="post">
 						<input type="submit" value="Quản lý phim" class="nav-link p-3 text-white">
 					</form>
 				</li>
 				<li class="nav-item">
-					<form action="${pageContext.request.contextPath}/admin/cinemas" method="post">
+					<form action="${pageContext.request.contextPath}/admin/cinemas" id="cinema" method="post">
 						<input type="submit" value="Quản lý rạp" class="nav-link p-3 text-white">
 					</form>
 				</li>
 				<li class="nav-item">
-					<form action="${pageContext.request.contextPath}/admin/rooms" method="post">
+					<form action="${pageContext.request.contextPath}/admin/rooms" id="room" method="post">
 						<input type="submit" value="Quản lý phòng chiếu" class="nav-link p-3 text-white">
 					</form>
 				</li>
 				<li class="nav-item">
-					<form action="${pageContext.request.contextPath}/admin/showtimes" method="post">
+					<form action="${pageContext.request.contextPath}/admin/showtimes" id="showtime" method="post">
 						<input type="submit" value="Quản lý suất chiếu" class="nav-link p-3 text-white">
 					</form>
 				</li>
 				<li class="nav-item">
-					<form action="${pageContext.request.contextPath}/admin/tickets" method="post">
+					<form action="${pageContext.request.contextPath}/admin/tickets" id="ticket" method="post">
 						<input type="submit" value="Quản lý vé" class="nav-link p-3 text-white">
+					</form>
+				</li>
+				<li class="nav-item">
+					<form action="${pageContext.request.contextPath}/admin/users" id="user" method="post">
+						<input type="submit" value="Quản lý tài khoản" class="nav-link p-3 text-white">
 					</form>
 				</li>
 			</ul>
@@ -65,7 +90,37 @@
 	</div>
 
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+	document.addEventListener("DOMContentLoaded", function () {
+
+	    // Lấy page hiện tại
+	    const currentPageDiv = document.getElementById("currentPage");
+	    const currentPage = currentPageDiv.getAttribute("current-page");
+	
+	    if (!currentPage) return;
+	
+	    // Lấy ul chứa menu
+	    const listPage = document.getElementById("listPage");
+	
+	    // Xóa hết active cũ
+	    listPage.querySelectorAll(".nav-item").forEach(li => {
+	        li.classList.remove("active");
+	    });
+	
+	    const listId = ["movie", "cinema", "room", "showtime", "ticket", "user"];
+	 	// Duyệt mảng và set active
+	    for (let i = 0; i < listId.length; i++) {
+	        if (currentPage.includes(listId[i])) {
+	            const li = document.getElementById(listId[i]);
+	            if (li) {
+	                li.classList.add("active");
+	            }
+	            break;
+	        }
+	    }
+		});
+	</script>
+
 
 </body>
 </html>
