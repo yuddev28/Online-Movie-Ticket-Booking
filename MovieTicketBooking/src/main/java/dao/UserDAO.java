@@ -115,21 +115,23 @@ public class UserDAO implements IUserDAO {
 	public void updateUser(User user) {
 		try {
 			// cập nhật email sdt mk dựa trên id
-			String query = " UPDATE user SET email = ? , phonenumber = ? , password = ? WHERE user_id = ?";
+			String query = " UPDATE users SET username = ?, email = ? , phonenumber = ? , password = ? WHERE user_id = ?";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 
-			st.setString(1, user.getEmail());
-			st.setString(2, user.getPhoneNumber());
-			st.setString(3, user.getPassword());
-			st.setInt(4, user.getId());
+			st.setString(1, user.getUsername());
+			st.setString(2, user.getEmail());
+			st.setString(3, user.getPhoneNumber());
+			st.setString(4, user.getPassword());
+			st.setInt(5, user.getId());
+			
 
 			st.executeUpdate();
 
 			st.close();
 			connect.close();
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
