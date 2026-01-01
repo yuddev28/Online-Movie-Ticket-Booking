@@ -47,6 +47,10 @@ public class User {
 		this.username = username;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getPassword() {
 		return password;
 	}

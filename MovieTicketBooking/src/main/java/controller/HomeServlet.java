@@ -1,17 +1,18 @@
 package controller;
 
-import dao.MovieDAO;
-import model.Movie;
-import model.MovieStatus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import dao.MovieDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Movie;
+import model.MovieStatus;
 
 // Định nghĩa URL /home cho trang chủ
 @WebServlet(name = "HomeServlet", urlPatterns = {"/home","/index"})

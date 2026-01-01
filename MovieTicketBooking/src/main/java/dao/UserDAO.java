@@ -136,5 +136,32 @@ public class UserDAO implements IUserDAO {
 		}
 
 	}
+	// Trong UserDAO.java
+
+	// Hàm kiểm tra email có tồn tại không
+	public User getUserByEmail(String email) {
+	    User user = null;
+	    try {
+	        String query = "SELECT * FROM users WHERE email = ?";
+	        Connection connect = JDBCConnection.getConnection();
+	        PreparedStatement st = connect.prepareStatement(query);
+	        st.setString(1, email);
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	             // Lấy sơ bộ thông tin cần thiết
+	             user = new User();
+	             user.setId(rs.getInt("user_id"));
+	             user.setUsername(rs.getString("username"));
+	             user.setEmail(rs.getString("email"));
+	             user.setPassword(rs.getString("password"));
+	        }
+	        rs.close();
+	        st.close();
+	        connect.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return user;
+	}
 
 }
