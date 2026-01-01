@@ -13,6 +13,7 @@ import model.ShowTime;
 import model.ShowTimeSeat;
 import model.Ticket;
 import model.User;
+import util.PasswordUtil;
 
 public class UserDAO implements IUserDAO {
 	
@@ -100,21 +101,21 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public boolean addUser(User user) {
-		try {
-			String query = "INSERT INTO users (username, password, email, phonenumber, role) VALUES (?, ?, ?, ?, ?);";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
+		String query = "INSERT INTO users (username, password, email, phonenumber, role) VALUES (?, ?, ?, ?, ?);";
+		try (Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);) {
 			st.setString(1, user.getUsername());
-			st.setString(2, user.getPassword());
+			// Hash password of new user
+			String hashPassowrd = PasswordUtil.hashPassword(user.getPassword());
+			st.setString(2, hashPassowrd);
 			st.setString(3, user.getEmail());
 			st.setString(4, user.getPhoneNumber());
 			st.setString(5, user.getRole().toString());
-			st.executeUpdate();
-			st.close();
-			connect.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return true;
 	}
