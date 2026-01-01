@@ -47,8 +47,8 @@
 
         <%-- Nếu CHƯA đăng nhập -> Hiện nút Login/Register --%>
         <c:otherwise>
-            <a href="login.jsp" class="btn btn-secondary">Đăng Nhập</a> 
-            <a href="register.jsp" class="btn">Đăng Ký</a>
+            <a href="login" class="btn btn-secondary">Đăng Nhập</a> 
+            <a href="register" class="btn">Đăng Ký</a>
         </c:otherwise>
     </c:choose>
 </div>

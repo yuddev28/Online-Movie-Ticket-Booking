@@ -14,12 +14,13 @@ import model.Ticket;
 import model.User;
 
 public class UserDAO implements IUserDAO {
-	private ITicketDAO ticketDAO;
-	
+	//private ITicketDAO ticketDAO;
+
 	public UserDAO() {
-		ticketDAO = new TicketDAO();
+		//ticketDAO = new TicketDAO();
+		
 	}
-	
+
 	// Get user by user id
 	@Override
 	public User getUserById(int id) {
@@ -30,7 +31,8 @@ public class UserDAO implements IUserDAO {
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
-			if(!rs.next()) return null;
+			if (!rs.next())
+				return null;
 			String username;
 			String password;
 			String email;
@@ -43,8 +45,11 @@ public class UserDAO implements IUserDAO {
 				email = rs.getString("email");
 				phoneNumber = rs.getString("phonenumber");
 				role = Role.valueOf(rs.getString("role"));
-				tickets = ticketDAO.getTicketsByUserId(id);
-				user = new User(id, username, password, email, phoneNumber, role, tickets);
+				
+				TicketDAO localTicketDAO = new TicketDAO();
+	            List<Ticket> tickets1 = localTicketDAO.getTicketsByUserId(id);
+	            
+				user = new User(id, username, password, email, phoneNumber, role, tickets1);
 			}
 			rs.close();
 			st.close();
@@ -54,7 +59,7 @@ public class UserDAO implements IUserDAO {
 		}
 		return user;
 	}
-	
+
 	// Get user by username
 	@Override
 	public User getUserByUsername(String username) {
@@ -65,22 +70,20 @@ public class UserDAO implements IUserDAO {
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, username);
 			ResultSet rs = st.executeQuery();
-			if(!rs.next()) return null;
-			int id;
-			String password;
-			String email;
-			String phoneNumber;
-			Role role;
-			List<Ticket> tickets = null;
-			while (rs.next()) {
-				id = rs.getInt("user_id");
-				password = rs.getString("password");
-				email = rs.getString("email");
-				phoneNumber = rs.getString("phonenumber");
-				role = Role.valueOf(rs.getString("role"));
-				tickets = ticketDAO.getTicketsByUserId(id);
+			if (rs.next()) {
+				int id = rs.getInt("user_id");
+				String password = rs.getString("password");
+				String email = rs.getString("email");
+				String phoneNumber = rs.getString("phonenumber");
+				String roleStr = rs.getString("role");
+				Role role = (roleStr != null) ? Role.valueOf(roleStr) : Role.USER; // Tránh lỗi null pointer
+
+				TicketDAO ticketDAO = new TicketDAO(); 
+	            List<Ticket> tickets = ticketDAO.getTicketsByUserId(id);
+				
 				user = new User(id, username, password, email, phoneNumber, role, tickets);
 			}
+
 			rs.close();
 			st.close();
 			connect.close();
@@ -108,7 +111,28 @@ public class UserDAO implements IUserDAO {
 		}
 	}
 
+	@Override
+	public void updateUser(User user) {
+		try {
+			// cập nhật email sdt mk dựa trên id
+			String query = " UPDATE user SET email = ? , phonenumber = ? , password = ? WHERE user_id = ?";
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
 
+			st.setString(1, user.getEmail());
+			st.setString(2, user.getPhoneNumber());
+			st.setString(3, user.getPassword());
+			st.setInt(4, user.getId());
 
+			st.executeUpdate();
+
+			st.close();
+			connect.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }

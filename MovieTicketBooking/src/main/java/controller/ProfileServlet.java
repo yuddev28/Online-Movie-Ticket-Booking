@@ -26,7 +26,7 @@ public class ProfileServlet extends HttpServlet {
         if (user == null) {
             // Lưu lại thông báo lỗi để hiện ở trang login nếu muốn
             request.setAttribute("error", "Vui lòng đăng nhập để xem hồ sơ!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login").forward(request, response);
             return;
         }
         
