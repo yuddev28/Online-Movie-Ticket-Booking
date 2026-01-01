@@ -15,7 +15,7 @@ public class LoginServlet extends HttpServlet {
 	// GET: Để hiển thị trang đăng nhập
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
 	// POST: Xử lý đăng nhập
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         if (user == null) {
             // Trường hợp: Tài khoản không tồn tại
             request.setAttribute("error", "Tài khoản không tồn tại. <a href='register.jsp'>Đăng ký ngay</a>");
-            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             // Trường hợp: Tài khoản có tồn tại, kiểm tra mật khẩu
             if (user.getPassword().equals(pass)) {
@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 // Sai mật khẩu
                 request.setAttribute("error", "Sai mật khẩu! Vui lòng thử lại.");
-                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
     }
