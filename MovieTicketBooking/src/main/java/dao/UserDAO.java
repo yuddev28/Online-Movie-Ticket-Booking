@@ -13,7 +13,7 @@ import model.ShowTime;
 import model.ShowTimeSeat;
 import model.Ticket;
 import model.User;
-import util.PasswordUtil;
+import utils.PasswordUtils;
 
 public class UserDAO implements IUserDAO {
 
@@ -88,7 +88,7 @@ public class UserDAO implements IUserDAO {
 				PreparedStatement st = connect.prepareStatement(query);) {
 			st.setString(1, user.getUsername());
 			// Hash password of new user
-			String hashPassowrd = PasswordUtil.hashPassword(user.getPassword());
+			String hashPassowrd = PasswordUtils.hashPassword(user.getPassword());
 			st.setString(2, hashPassowrd);
 			st.setString(3, user.getEmail());
 			st.setString(4, user.getPhoneNumber());

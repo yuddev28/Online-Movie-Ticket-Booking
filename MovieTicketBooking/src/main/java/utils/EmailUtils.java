@@ -1,0 +1,52 @@
+package utils;
+
+import java.util.Properties;
+import java.util.Random;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+public class EmailUtils {
+    
+    // Tạo mã OTP ngẫu nhiên 6 số
+    public static String generateOTP() {
+        Random random = new Random();
+        int otp = 100000 + random.nextInt(900000);
+        return String.valueOf(otp);
+    }
+
+    public static void sendEmail(String toEmail, String subject, String body) {
+        // Cấu hình SMTP (Ví dụ dùng Gmail)
+        final String fromEmail = "email_cua_ban@gmail.com"; // Điền email của bạn
+        final String password = "mat_khau_ung_dung_16_ky_tu"; // Điền App Password
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com"); 
+        props.put("mail.smtp.port", "587"); 
+        props.put("mail.smtp.auth", "true"); 
+        props.put("mail.smtp.starttls.enable", "true"); 
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(fromEmail));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            msg.setSubject(subject, "UTF-8");
+            msg.setText(body, "UTF-8");
+
+            Transport.send(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,8 +1,8 @@
-package util;
+package utils;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class PasswordUtil {
+public class PasswordUtils {
 	
 	private static final int WORK_FACTOR = 10;
 	

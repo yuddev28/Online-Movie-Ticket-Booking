@@ -1,10 +1,10 @@
-package util;
+package utils;
 
 import dao.IUserDAO;
 import dao.UserDAO;
 import model.User;
 
-public class AuthUtil {
+public class AuthUtils {
 	// Check user exist
 	public static boolean checkUser(String username) {
 		if(username == null || username.isBlank()) return false;
@@ -17,7 +17,7 @@ public class AuthUtil {
 		IUserDAO dao = new UserDAO();
 		User user = dao.checkUser(username);
 		try {
-			if(user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
+			if(user != null && PasswordUtils.checkPassword(password, user.getPassword())) {
 				return user;
 			}
 		} catch (Exception e) {
