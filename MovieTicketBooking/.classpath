@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.mail-api-2.1.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.activation-api-2.1.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/angus-mail-2.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/DO_AN_NAM3/Online-Movie-Ticket-Booking/MovieTicketBooking/src/main/webapp/WEB-INF/lib/angus-activation-2.0.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

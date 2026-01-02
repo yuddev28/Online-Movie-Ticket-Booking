@@ -28,7 +28,7 @@
 					id="password" name="password" placeholder="Nhập mật khẩu" required>
 			</div>
 
-			<a href="#"
+			<a href="forgot-password"
 				style="color: var(--text-muted); font-size: 12px; text-align: right; display: block; margin-bottom: var(--spacing-md);">Quên
 				mật khẩu?</a>
 
