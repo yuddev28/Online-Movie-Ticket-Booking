@@ -9,6 +9,8 @@ public interface IUserDAO {
 	List<User> getAllUser();
 	User getUserById(int id);
 	User checkUser(String username);
+	User getUserByEmail(String email);
     boolean addUser(User user);
+    void updateUser(User user);
 	
 }

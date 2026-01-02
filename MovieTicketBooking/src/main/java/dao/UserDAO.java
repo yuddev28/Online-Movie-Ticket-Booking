@@ -79,6 +79,27 @@ public class UserDAO implements IUserDAO {
 		}
 		return user;
 	}
+	
+	// Get user by email
+	@Override
+	public User getUserByEmail(String email) {
+	    User user = null;
+	    String query = "SELECT user_id, username, password, email, phonenumber, role FROM users WHERE email = ?";
+	    try (Connection connect = JDBCConnection.getConnection();
+	        PreparedStatement st = connect.prepareStatement(query);) {
+	        st.setString(1, email);
+	        try (ResultSet rs = st.executeQuery();) {
+	        	if (rs.next()) {
+		             user = mapResultSetToUser(rs);
+		        }
+	        } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return user;
+	}
 
 	// Add new user (register user)
 	@Override
@@ -100,6 +121,25 @@ public class UserDAO implements IUserDAO {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	// Update user info by user id
+	@Override
+	public void updateUser(User user) {
+		String query = " UPDATE users SET username = ?, email = ? , phonenumber = ? , password = ? WHERE user_id = ?";
+		try (Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);){
+			st.setString(1, user.getUsername());
+			st.setString(2, user.getEmail());
+			st.setString(3, user.getPhoneNumber());
+			st.setString(4, user.getPassword());
+			st.setInt(5, user.getId());
+			
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	// Map result set to user
