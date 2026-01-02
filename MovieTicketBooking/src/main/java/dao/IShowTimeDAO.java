@@ -18,4 +18,6 @@ public interface IShowTimeDAO {
 	void addShowTime(ShowTime showTime);
 	// Delete show time by id
 	void deleteShowTimeById(int id);
+	List<ShowTime> getShowTimesByMovieId(int movieId);
+	
 }

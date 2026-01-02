@@ -151,5 +151,36 @@ public class ShowTimeDAO implements IShowTimeDAO{
 		}
 		return showTime;
 	}
+	// Thêm vào trong class ShowTimeDAO
+
+    // Lấy danh sách lịch chiếu của 1 phim trong 7 ngày tới (để hiển thị trang đặt vé)
+    public List<ShowTime> getShowTimesByMovieId(int movieId) {
+        List<ShowTime> list = new ArrayList<>();
+        // Query lấy lịch từ thời điểm hiện tại đến 7 ngày sau
+        // Lưu ý: Sửa lại cú pháp SELECT chuẩn SQL (bỏ dấu ngoặc đơn bao quanh danh sách cột)
+        String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id " +
+                       "FROM showtimes " +
+                       "WHERE movie_id = ? " +
+                       "AND start_time >= NOW() " +
+                       "AND start_time <= DATE_ADD(NOW(), INTERVAL 7 DAY) " +
+                       "ORDER BY start_time ASC"; 
+        try {
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setInt(1, movieId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                // Tái sử dụng hàm mapResultSetToShowTime bạn đã viết sẵn
+                list.add(mapResultSetToShowTime(rs));
+            }
+            rs.close();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+	
 
 }
