@@ -12,5 +12,5 @@ public interface IUserDAO {
 	User getUserByEmail(String email);
     boolean addUser(User user);
     void updateUser(User user);
-	
+	boolean deleteUser(int id);
 }

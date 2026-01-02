@@ -16,7 +16,7 @@ import model.User;
 import utils.PasswordUtils;
 
 public class UserDAO implements IUserDAO {
-
+	// Get all user
 	@Override
 	public List<User> getAllUser() {
 		List<User> list = new ArrayList<>();
@@ -45,7 +45,6 @@ public class UserDAO implements IUserDAO {
 			PreparedStatement st = connect.prepareStatement(query);) {
 			st.setInt(1, id);
 			try (ResultSet rs = st.executeQuery()) {
-				if (!rs.next())return null;
 				while (rs.next()) {
 					user = mapResultSetToUser(rs);
 				}
@@ -67,7 +66,6 @@ public class UserDAO implements IUserDAO {
 			PreparedStatement st = connect.prepareStatement(query);){
 			st.setString(1, username);
 			try (ResultSet rs = st.executeQuery()) {
-				if (!rs.next())return null;
 				while (rs.next()) {
 					user = mapResultSetToUser(rs);
 				}
@@ -114,11 +112,13 @@ public class UserDAO implements IUserDAO {
 			st.setString(3, user.getEmail());
 			st.setString(4, user.getPhoneNumber());
 			st.setString(5, user.getRole().toString());
+			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
@@ -142,6 +142,26 @@ public class UserDAO implements IUserDAO {
 
 	}
 
+	// Delete user by id
+	@Override
+	public boolean deleteUser(int id) {
+		try {
+			// Query string to get data
+			String queryString = "DELETE FROM users WHERE user_id = ?";
+			// Create connection
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(queryString);
+			st.setInt(1, id);
+			st.executeUpdate();
+			st.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 	// Map result set to user
 	private User mapResultSetToUser(ResultSet rs) {
 		User user = null;
@@ -158,5 +178,6 @@ public class UserDAO implements IUserDAO {
 		}
 		return user;
 	}
+
 
 }
