@@ -44,7 +44,7 @@
 
 			<div class="auth-link">
 				<p>
-					Chưa có tài khoản? <a href="register.jsp">Đăng ký ngay</a>
+					Chưa có tài khoản? <a href="register">Đăng ký ngay</a>
 				</p>
 			</div>
 		</form>

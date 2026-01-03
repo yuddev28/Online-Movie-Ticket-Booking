@@ -16,27 +16,34 @@ public class RoomDAO implements IRoomDAO{
 	
 	// Get room by room id
 	@Override
-	public Room getRoomById(int roomId) {
-		Room room = null;
-		try {
-			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE room_id = ?";
-			// Create connect
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, roomId);
-			ResultSet rs = st.executeQuery();
-			while(rs.next()) {
-				room = mapResultSetToRoom(rs);
-			}
-			st.executeUpdate();
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return room;
-	}
+    public Room getRoomById(int id) {
+        Room room = null;
+        // CÂU LỆNH SQL CHUẨN (KHÔNG CÓ NGOẶC ĐƠN BAO QUANH CỘT)
+        String query = "SELECT room_id, room_name, number_of_columns, number_of_rows, cinema_id FROM rooms WHERE room_id = ?";
+        
+        try {
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            
+            if (rs.next()) {
+                room = new Room();
+                room.setId(rs.getInt("room_id"));
+                room.setName(rs.getString("room_name"));
+                room.setNumberOfColumns(rs.getInt("number_of_columns"));
+                room.setNumberOfRows(rs.getInt("number_of_rows"));
+                // cinema_id có thể set nếu cần thiết
+            }
+            
+            rs.close();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return room;
+    }
 	
 	// Get list of rooms by cinema id
 	@Override

@@ -36,7 +36,7 @@
                             <h3>${m.name}</h3>
                             <div class="rating">★ ${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
-                            <a href="book-ticket.jsp?id=${m.id}" class="btn">Đặt Vé</a>
+                            <a href="book-ticket?id=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
                 </c:forEach>

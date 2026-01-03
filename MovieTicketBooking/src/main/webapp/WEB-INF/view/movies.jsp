@@ -61,7 +61,7 @@
                             <div class="rating">★ ${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             <%-- Nút Đặt Vé cho phim đang chiếu --%>
-                            <a href="book-ticket.jsp?id=${m.id}" class="btn">Đặt Vé</a>
+                            <a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
                 </c:forEach>

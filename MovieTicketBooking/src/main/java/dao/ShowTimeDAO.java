@@ -17,147 +17,157 @@ import model.Room;
 import model.ShowTime;
 import model.ShowTimeSeat;
 
-public class ShowTimeDAO implements IShowTimeDAO{
-	private ICinemaDAO cinemaDAO;
-	private IRoomDAO roomDAO;
-	private IMovieDAO movieDAO;
-	
-	public ShowTimeDAO() {
-		cinemaDAO = new CinemaDAO();
-		roomDAO = new RoomDAO();
-		movieDAO = new MovieDAO();
-	}
-	
-	// Get all show time
-	@Override
-	public List<ShowTime> getAllShowTime() {
-		List<ShowTime> list = new ArrayList<>();
-		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes;";
-			Connection connect = JDBCConnection.getConnection();
-			Statement st = connect.createStatement();
-			ResultSet rs = st.executeQuery(query);
-			while(rs.next()) {
-				list.add(mapResultSetToShowTime(rs));
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	// Get show time by id
-	@Override
-	public ShowTime getShowTimeById(int id) {
-		ShowTime showTime = null;
-		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes WHERE showtime_id = ?;";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, id);
-			ResultSet rs = st.executeQuery();
-			while(rs.next()) {
-				showTime = mapResultSetToShowTime(rs);
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return showTime;
-	}
-	// Get list of show time by cinema id and movie id and day have show time
-	@Override
-	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
-		List<ShowTime> list = new ArrayList<>();
-		try {
-			String query = "SELECT (showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id) FROM showtimes "
-					+ "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, cinemaId);
-			st.setInt(2, movieId);
-			st.setTimestamp(3, Timestamp.valueOf(day.toLocalDate().atStartOfDay()));
-			st.setTimestamp(4, Timestamp.valueOf(day.toLocalDate().plusDays(1).atStartOfDay()));
-			ResultSet rs = st.executeQuery();
-			ShowTime showTime;
-			while(rs.next()) {
-				showTime = mapResultSetToShowTime(rs);
-				list.add(showTime);
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	// Add show time and seats of it
-	@Override
-	public void addShowTime(ShowTime showTime) {
-		try {
-			String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES "
-					+ "(?, ?, ?, ?, ?);";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setBigDecimal(1, showTime.getPricePerTicket());
-			st.setTimestamp(2, Timestamp.valueOf(showTime.getStartTime()));
-			st.setInt(3, showTime.getMovieId());
-			st.setInt(4, showTime.getCinemaId());
-			st.setInt(5, showTime.getRoomId());
-			st.executeUpdate();
-			st.close();
-			connect.close();
-			// Create seats and add to db
-			List<ShowTimeSeat> seats = showTime.createListShowTimeSeats();
-			IShowTimeSeatDAO stsDAO = new ShowTimeSeatDAO();
-			stsDAO.addShowTimeSeats(seats);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	// Delete show time by showtime id
-	@Override
-	public void deleteShowTimeById(int id) {
-		try {
-			String query = "DELETE FROM showtimes WHERE showtime_id = ?;";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, id);
-			st.executeUpdate();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private ShowTime mapResultSetToShowTime(ResultSet rs) {
-		ShowTime showTime = null;
-		try {
-			int id = rs.getInt("showtime_id");
-			BigDecimal price = rs.getBigDecimal("showtime_price");
-			LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
-			Movie movie = movieDAO.getMovieById(rs.getInt("movie_id"));
-			Cinema cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
-			Room room = roomDAO.getRoomById(rs.getInt("room_id"));
-			showTime = new ShowTime(id, cinema, room, movie, price, startTime);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return showTime;
-	}
-	// Thêm vào trong class ShowTimeDAO
+public class ShowTimeDAO implements IShowTimeDAO {
+    private ICinemaDAO cinemaDAO;
+    private IRoomDAO roomDAO;
+    private IMovieDAO movieDAO;
+    
+    public ShowTimeDAO() {
+        cinemaDAO = new CinemaDAO();
+        roomDAO = new RoomDAO();
+        movieDAO = new MovieDAO();
+    }
+    
+    // Get all show time
+    @Override
+    public List<ShowTime> getAllShowTime() {
+        List<ShowTime> list = new ArrayList<>();
+        try {
+            // SỬA LỖI: Bỏ dấu ngoặc đơn () bao quanh danh sách cột
+            String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes;";
+            Connection connect = JDBCConnection.getConnection();
+            Statement st = connect.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()) {
+                list.add(mapResultSetToShowTime(rs));
+            }
+            rs.close();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
-    // Lấy danh sách lịch chiếu của 1 phim trong 7 ngày tới (để hiển thị trang đặt vé)
+    // Get show time by id (HÀM QUAN TRỌNG CHO TRANG CHỌN GHẾ)
+    @Override
+    public ShowTime getShowTimeById(int id) {
+        ShowTime showTime = null;
+        try {
+            // SỬA LỖI: Bỏ dấu ngoặc đơn ()
+            String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes WHERE showtime_id = ?;";
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            // Dùng if thay vì while vì ID là duy nhất
+            if (rs.next()) {
+                showTime = mapResultSetToShowTime(rs);
+            }
+            rs.close();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return showTime;
+    }
+
+    // Get list of show time by cinema id and movie id and day
+    @Override
+    public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
+        List<ShowTime> list = new ArrayList<>();
+        try {
+            // SỬA LỖI: Bỏ dấu ngoặc đơn ()
+            String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id FROM showtimes "
+                    + "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setInt(1, cinemaId);
+            st.setInt(2, movieId);
+            st.setTimestamp(3, Timestamp.valueOf(day.toLocalDate().atStartOfDay()));
+            st.setTimestamp(4, Timestamp.valueOf(day.toLocalDate().plusDays(1).atStartOfDay()));
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                list.add(mapResultSetToShowTime(rs));
+            }
+            rs.close();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Add show time
+    @Override
+    public void addShowTime(ShowTime showTime) {
+        try {
+            String query = "INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES (?, ?, ?, ?, ?);";
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setBigDecimal(1, showTime.getPricePerTicket());
+            st.setTimestamp(2, Timestamp.valueOf(showTime.getStartTime()));
+            st.setInt(3, showTime.getMovieId());
+            st.setInt(4, showTime.getCinemaId());
+            st.setInt(5, showTime.getRoomId());
+            st.executeUpdate();
+            st.close();
+            connect.close();
+            
+            // Logic thêm ghế (nếu cần thiết với logic cũ của bạn)
+            List<ShowTimeSeat> seats = showTime.createListShowTimeSeats();
+            IShowTimeSeatDAO stsDAO = new ShowTimeSeatDAO();
+            stsDAO.addShowTimeSeats(seats);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete show time
+    @Override
+    public void deleteShowTimeById(int id) {
+        try {
+            String query = "DELETE FROM showtimes WHERE showtime_id = ?;";
+            Connection connect = JDBCConnection.getConnection();
+            PreparedStatement st = connect.prepareStatement(query);
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Map ResultSet sang Object
+    private ShowTime mapResultSetToShowTime(ResultSet rs) {
+        ShowTime showTime = null;
+        try {
+            int id = rs.getInt("showtime_id");
+            BigDecimal price = rs.getBigDecimal("showtime_price");
+            LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
+            
+            // Lấy thông tin các bảng liên quan
+            // Đảm bảo movieDAO, cinemaDAO, roomDAO hoạt động tốt
+            Movie movie = movieDAO.getMovieById(rs.getInt("movie_id"));
+            Cinema cinema = cinemaDAO.getCinemaById(rs.getInt("cinema_id"));
+            Room room = roomDAO.getRoomById(rs.getInt("room_id"));
+            
+            showTime = new ShowTime(id, cinema, room, movie, price, startTime);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return showTime;
+    }
+
+    // Lấy lịch chiếu 7 ngày (Hàm này bạn đã thêm đúng, giữ nguyên logic nhưng bỏ dấu ngoặc nếu có)
     public List<ShowTime> getShowTimesByMovieId(int movieId) {
         List<ShowTime> list = new ArrayList<>();
-        // Query lấy lịch từ thời điểm hiện tại đến 7 ngày sau
-        // Lưu ý: Sửa lại cú pháp SELECT chuẩn SQL (bỏ dấu ngoặc đơn bao quanh danh sách cột)
+        // Query chuẩn không có ngoặc đơn
         String query = "SELECT showtime_id, showtime_price, start_time, movie_id, cinema_id, room_id " +
                        "FROM showtimes " +
                        "WHERE movie_id = ? " +
@@ -170,7 +180,6 @@ public class ShowTimeDAO implements IShowTimeDAO{
             st.setInt(1, movieId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                // Tái sử dụng hàm mapResultSetToShowTime bạn đã viết sẵn
                 list.add(mapResultSetToShowTime(rs));
             }
             rs.close();
@@ -181,6 +190,4 @@ public class ShowTimeDAO implements IShowTimeDAO{
         }
         return list;
     }
-	
-
 }

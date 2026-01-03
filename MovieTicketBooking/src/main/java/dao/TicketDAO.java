@@ -164,9 +164,8 @@ public class TicketDAO implements ITicketDAO {
             String ticketUid = "TCK-" + System.currentTimeMillis();
 
             // 2. Insert vào bảng TICKETS (Mỗi lần đặt là 1 Ticket cha chứa tổng tiền)
-            // Lưu ý: Logic DB của bạn hơi lạ (1 vé - 1 user), ở đây mình sẽ tạo 1 record ticket đại diện cho giao dịch này
-            // Hoặc tạo N record ticket cho N ghế. Theo DB của bạn: Ticket có User và ShowTime.
-            // Để đơn giản và đúng logic DB bạn đưa: Mình sẽ tạo N vé cho N ghế.
+            
+           
             
             String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
             psTicket = conn.prepareStatement(sqlTicket);
@@ -175,8 +174,7 @@ public class TicketDAO implements ITicketDAO {
             psSeat = conn.prepareStatement(sqlSeat);
 
             // Lấy Room ID từ Showtime (Cần query phụ hoặc truyền vào)
-            // Để nhanh, ta giả sử lấy được roomId từ servlet truyền xuống, hoặc query nhanh ở đây
-            // (Ở đây tôi sẽ query nhanh roomId)
+            
             int roomId = 0;
             PreparedStatement psRoom = conn.prepareStatement("SELECT room_id FROM showtimes WHERE showtime_id = ?");
             psRoom.setInt(1, showtimeId);

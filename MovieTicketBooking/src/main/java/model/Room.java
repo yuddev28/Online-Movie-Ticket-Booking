@@ -15,7 +15,7 @@ public class Room {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public Room(int id, String name, int numberOfColumns, int numberOfRows) {
 		this.id = id;
 		this.name = name;
@@ -75,6 +75,9 @@ public class Room {
 	public void setNumberOfRows(int numberOfRows) {
 		this.numberOfRows = numberOfRows;
 	}
-	
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

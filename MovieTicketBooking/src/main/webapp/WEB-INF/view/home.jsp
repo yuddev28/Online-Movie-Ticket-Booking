@@ -21,9 +21,9 @@
 				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');">
 			</div>
 			<div class="hero-overlay">
-				<h1>Avengers: Endgame</h1>
-				<p>Bộ phim siêu anh hùng đỉnh cao, kết thúc saga Infinity.</p>
-				<a href="book-ticket.jsp" class="btn">Đặt Vé Ngay</a>
+				<h1>Avatar 3: Fire and Ash</h1>
+				<p>Cuộc chiến khốc liệt nhất bắt đầu.</p>
+				<a href="book-ticket?movieId=1" class="btn">Đặt Vé Ngay</a>
 			</div>
 		</section>
 
@@ -54,7 +54,7 @@
 							<p class="genre">${m.type}</p>
 
 							<%-- Truyền ID phim vào link đặt vé --%>
-							<a href="book-ticket.jsp?id=${m.id}" class="btn">Đặt Vé</a>
+							<a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
 						</div>
 					</div>
 				</c:forEach>
