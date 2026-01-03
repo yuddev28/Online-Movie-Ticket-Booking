@@ -150,9 +150,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
             
             // Xử lý user có thể null
             User bookBy = null;
-            if(!rs.wasNull()) { // Nếu cột trước đó không null
-                 bookBy = userDAO.getUserById(userId);
-            }
+            if (userId > 0) { // Kiểm tra userId hợp lệ
+                bookBy = new User();
+                bookBy.setId(userId);
+           }
             
             ShowTime showTime = showtimeDAO.getShowTimeById(rs.getInt("showtime_id"));
             Room room = roomDAO.getRoomById(rs.getInt("room_id"));

@@ -9,11 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* CSS Layout riêng cho trang này như bạn yêu cầu */
         .booking-page-container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: var(--spacing-lg) var(--spacing-md);
-        }
+            padding: 20px;
+        } 
         
         /* Grid linh động theo DB */
         .seat-grid {
@@ -25,7 +26,7 @@
             background: #222;
             padding: 20px;
             border-radius: 10px;
-            gap: 5px; /* Khoảng cách giữa các ô */
+            gap: 5px; 
         }
     </style>
 </head>
@@ -38,10 +39,10 @@
             <h2 style="color: var(--primary-color); text-transform: uppercase; margin-bottom: 5px;">
                 ${showTime.movie.name}
             </h2>
-            <p style="color: var(--text-muted); font-size: 16px;">
+            <p style="color: #b3b3b3; font-size: 16px;">
                 ${showTime.cinema.name} - ${showTime.room.name}
                 <span style="margin: 0 10px;">|</span>
-                <span style="color: var(--text-color); font-weight: 700;">
+                <span style="color: #fff; font-weight: 700;">
                     <fmt:parseDate value="${showTime.startTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
                     <fmt:formatDate value="${parsedDate}" pattern="HH:mm - dd/MM/yyyy" />
                 </span>
@@ -49,7 +50,7 @@
         </div>
 
         <section class="seat-map active" style="display: block;">
-            <div class="seat-map-header">
+            <div class="seat-map-header" style="display:flex; justify-content:space-between; margin-bottom:15px; color:#fff;">
                 <h3>Sơ Đồ Ghế</h3>
                 <p>Giá tiêu chuẩn: <strong style="color: var(--secondary-color);"><fmt:formatNumber value="${showTime.pricePerTicket}" type="currency" currencySymbol="VNĐ"/></strong></p>
             </div>
@@ -66,6 +67,7 @@
             <div class="seat-grid">
                 <%-- Vòng lặp Hàng (Row) --%>
                 <c:forEach var="row" begin="1" end="${showTime.room.numberOfRows}">
+                    <%-- Tính toán ký tự hàng: A, B, C... --%>
                     <c:set var="rowChar" value="<%= (char)('A' + (int)pageContext.getAttribute(\"row\") - 1) %>" />
                     
                     <div class="row-label">${rowChar}</div>
@@ -77,6 +79,7 @@
                     <c:forEach var="col" begin="1" end="${showTime.room.numberOfColumns}">
                         <c:set var="seatName" value="${rowChar}${col}" />
                         
+                        <%-- LOGIC CHECK GHẾ ĐÃ ĐẶT (Được kết nối với Servlet) --%>
                         <c:set var="statusClass" value="available" />
                         <c:forEach var="booked" items="${bookedSeats}">
                             <c:if test="${booked == seatName}"> 
@@ -84,9 +87,9 @@
                             </c:if>
                         </c:forEach>
 
-                        <%-- LOGIC HIỂN THỊ --%>
+                        <%-- LOGIC HIỂN THỊ (Giữ nguyên code của bạn) --%>
                         <c:choose>
-                            <%-- TRƯỜNG HỢP 1: Hàng thường (Không phải hàng cuối) --%>
+                            <%-- TRƯỜNG HỢP 1: Hàng thường --%>
                             <c:when test="${not isLastRow}">
                                 <div class="seat-cell ${statusClass}" 
                                      onclick="toggleSeat(this, '${seatName}', ${showTime.pricePerTicket})"
@@ -97,10 +100,7 @@
 
                             <%-- TRƯỜNG HỢP 2: Hàng cuối (Ghế đôi) --%>
                             <c:otherwise>
-                                <%-- Logic xếp ghế đôi: [Ghế Đôi] [Bỏ qua] [Khoảng trống] --%>
-                                <%-- Dùng phép chia dư cho 3: 1, 2, 3 -> Nhóm 1; 4, 5, 6 -> Nhóm 2... --%>
-                                
-                                <%-- Vị trí 1, 4, 7... -> Vẽ ghế đôi (Chiếm 2 ô) --%>
+                                <%-- Logic xếp ghế đôi: 1, 4, 7... vẽ ghế --%>
                                 <c:if test="${(col - 1) % 3 == 0}">
                                     <div class="seat-cell couple ${statusClass}" 
                                          onclick="toggleSeat(this, '${seatName}', ${showTime.pricePerTicket * 2})"
@@ -109,9 +109,7 @@
                                     </div>
                                 </c:if>
 
-                                <%-- Vị trí 2, 5, 8... -> Bị ghế trước che (Skip) -> Không render gì cả --%>
-
-                                <%-- Vị trí 3, 6, 9... -> Vẽ khoảng trống (Spacer) --%>
+                                <%-- 3, 6, 9... vẽ khoảng trống --%>
                                 <c:if test="${(col - 1) % 3 == 2}">
                                     <div class="seat-cell spacer"></div>
                                 </c:if>
@@ -124,19 +122,19 @@
         </section>
 
         <div class="booking-summary" style="margin-top: 30px;">
-            <h2>Tổng Kết Đặt Vé</h2>
+            <h2 style="color: #fff;">Tổng Kết Đặt Vé</h2>
             <div style="margin: 20px 0; font-size: 16px;">
-                <p>Ghế đang chọn: <span id="display-seats" style="color: #fff; font-weight: bold;">Chưa chọn</span></p>
+                <p style="color: #ccc;">Ghế đang chọn: <span id="display-seats" style="color: #fff; font-weight: bold;">Chưa chọn</span></p>
             </div>
-            <div class="total-price" id="display-price-text">Tổng Tiền: 0 VNĐ</div>
+            <div class="total-price" id="display-price-text" style="color: var(--primary-color); font-size: 20px; font-weight: bold;">Tổng Tiền: 0 VNĐ</div>
             
-            <form action="checkout" method="post" id="bookingForm">
+            <form action="checkout" method="post" id="bookingForm" style="margin-top: 15px;">
                 <input type="hidden" name="showtimeId" value="${showTime.id}">
                 <input type="hidden" name="selectedSeats" id="input-seats">
                 <input type="hidden" name="totalPrice" id="input-price">
-                <button type="button" class="book-btn" onclick="submitBooking()">Xác Nhận & Thanh Toán</button>
+                <button type="button" class="btn" onclick="submitBooking()" style="background: var(--primary-color); color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Xác Nhận & Thanh Toán</button>
             </form>
-            <p style="color: var(--text-muted); font-size: 12px; text-align: center; margin-top: 20px;">* Vé đã mua không thể hoàn tiền.</p>
+            <p style="color: #777; font-size: 12px; text-align: center; margin-top: 20px;">* Vé đã mua không thể hoàn tiền.</p>
         </div>
     </main>
 
@@ -147,6 +145,7 @@
         let selectedPrices = {}; 
 
         function toggleSeat(element, seatName, price) {
+            // Chặn click nếu ghế đã đặt
             if (element.classList.contains('taken')) return;
 
             if (element.classList.contains('selected')) {
