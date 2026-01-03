@@ -126,5 +126,11 @@ public class ShowTime {
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	
 	
 }

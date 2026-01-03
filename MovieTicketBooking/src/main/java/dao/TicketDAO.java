@@ -148,9 +148,10 @@ public class TicketDAO implements ITicketDAO {
 		}
 		return ticket;
 	}
-// Thêm hàm này vào class TicketDAO
-    
-    // Hàm lưu vé (Transaction)
+
+    // --- CÁC HÀM MỚI ĐÃ ĐƯỢC CHỈNH SỬA ---
+
+    // Hàm lưu vé (Transaction): SỬA logic từ INSERT sang UPDATE ghế
     public boolean saveBooking(User user, int showtimeId, String[] seats, double totalPrice, String paymentMethod) {
         Connection conn = null;
         PreparedStatement psTicket = null;
@@ -163,42 +164,30 @@ public class TicketDAO implements ITicketDAO {
             // 1. Tạo mã vé (Ticket UID)
             String ticketUid = "TCK-" + System.currentTimeMillis();
 
-            // 2. Insert vào bảng TICKETS (Mỗi lần đặt là 1 Ticket cha chứa tổng tiền)
-            
-           
-            
+            // 2. Insert vào bảng TICKETS (Giữ nguyên)
             String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
             psTicket = conn.prepareStatement(sqlTicket);
 
-            String sqlSeat = "INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES (?, ?, ?, ?)";
+            // 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
+            // Tìm đúng ghế của suất chiếu đó và cập nhật user_id
+            String sqlSeat = "UPDATE showtimeseats SET user_id = ? WHERE showtime_id = ? AND seat_name = ?";
             psSeat = conn.prepareStatement(sqlSeat);
-
-            // Lấy Room ID từ Showtime (Cần query phụ hoặc truyền vào)
-            
-            int roomId = 0;
-            PreparedStatement psRoom = conn.prepareStatement("SELECT room_id FROM showtimes WHERE showtime_id = ?");
-            psRoom.setInt(1, showtimeId);
-            ResultSet rsRoom = psRoom.executeQuery();
-            if(rsRoom.next()) roomId = rsRoom.getInt("room_id");
-            rsRoom.close();
-            psRoom.close();
 
             double pricePerSeat = totalPrice / seats.length;
 
             for (String seat : seats) {
                 // Tạo Ticket
-                psTicket.setString(1, ticketUid + "-" + seat); // UID riêng cho từng vé
+                psTicket.setString(1, ticketUid + "-" + seat); 
                 psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(pricePerSeat));
                 psTicket.setString(3, paymentMethod);
                 psTicket.setInt(4, user.getId());
                 psTicket.setInt(5, showtimeId);
                 psTicket.addBatch();
 
-                // Đánh dấu ghế đã ngồi
-                psSeat.setString(1, seat);
-                psSeat.setInt(2, user.getId());
-                psSeat.setInt(3, showtimeId);
-                psSeat.setInt(4, roomId);
+                // Cập nhật ghế (Tham số theo thứ tự dấu ? trong sqlSeat)
+                psSeat.setInt(1, user.getId());   // user_id
+                psSeat.setInt(2, showtimeId);     // showtime_id
+                psSeat.setString(3, seat);        // seat_name
                 psSeat.addBatch();
             }
 
@@ -209,7 +198,7 @@ public class TicketDAO implements ITicketDAO {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+             e.printStackTrace();
             try {
                 if (conn != null) conn.rollback(); // Gặp lỗi thì hoàn tác
             } catch (SQLException ex) { ex.printStackTrace(); }
@@ -219,10 +208,11 @@ public class TicketDAO implements ITicketDAO {
         }
     }
     
-    // Hàm kiểm tra ghế đã đặt chưa (để vẽ màu xám trên sơ đồ)
+    // Hàm kiểm tra ghế đã đặt: SỬA logic chỉ lấy ghế có người (user_id khác NULL)
     public List<String> getBookedSeats(int showtimeId) {
         List<String> list = new ArrayList<>();
-        String sql = "SELECT seat_name FROM showtimeseats WHERE showtime_id = ?";
+        // THAY ĐỔI Ở ĐÂY: Thêm điều kiện user_id IS NOT NULL
+        String sql = "SELECT seat_name FROM showtimeseats WHERE showtime_id = ? AND user_id IS NOT NULL";
         try {
             Connection conn = JDBCConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -235,5 +225,4 @@ public class TicketDAO implements ITicketDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
-
 }

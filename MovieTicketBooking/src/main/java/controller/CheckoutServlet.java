@@ -13,18 +13,17 @@ import java.io.IOException;
 @WebServlet(name = "CheckoutServlet", urlPatterns = {"/checkout"})
 public class CheckoutServlet extends HttpServlet {
 
-    // POST 1: Nhận dữ liệu từ trang chọn ghế -> Hiển thị trang xác nhận
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        // Nếu action là "PAY", tức là người dùng bấm nút "Thanh toán" ở trang checkout.jsp
+        // Nếu là hành động thanh toán
         if ("PAY".equals(action)) {
             processPayment(request, response);
             return;
         }
 
-        // Mặc định: Hiển thị trang Checkout
+        // Mặc định: Hiển thị trang Checkout (giữ nguyên logic cũ)
         String showtimeId = request.getParameter("showtimeId");
         String selectedSeats = request.getParameter("selectedSeats");
         String totalPrice = request.getParameter("totalPrice");
@@ -36,31 +35,39 @@ public class CheckoutServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
     }
 
-    // Xử lý lưu vé vào DB
     private void processPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
         if (user == null) { response.sendRedirect("login"); return; }
 
-        int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
-        String seatsStr = request.getParameter("selectedSeats"); // "A1,A2"
-        double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
-        String paymentMethod = request.getParameter("paymentMethod");
-
-        String[] seats = seatsStr.split(",");
-        
-        TicketDAO dao = new TicketDAO();
-        // Gọi hàm Transaction vừa viết ở DAO
-        boolean success = dao.saveBooking(user, showtimeId, seats, totalPrice, paymentMethod);
-
-        if (success) {
-            // Chuyển sang trang "Vé của tôi" hoặc trang "Thành công"
-            // Ở đây mình chuyển về trang lịch sử đặt vé bạn đã có
-            response.sendRedirect("profile"); 
-        } else {
-            request.setAttribute("error", "Lỗi thanh toán! Ghế có thể đã bị người khác đặt.");
-            request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
+        try {
+            int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
+            String seatsStr = request.getParameter("selectedSeats");
+            double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
+            String paymentMethod = request.getParameter("paymentMethod");
+            
+            // Xử lý chuỗi ghế (ví dụ: "A1,A2" -> ["A1", "A2"])
+            String[] seats = seatsStr.split(",");
+            
+            TicketDAO dao = new TicketDAO();
+            // Lưu vé vào Database
+            boolean success = dao.saveBooking(user, showtimeId, seats, totalPrice, paymentMethod);
+    
+            if (success) {
+                // --- SỬA TẠI ĐÂY ---
+                // Chuyển hướng sang trang PaymentSuccessServlet vừa tạo
+                response.sendRedirect("payment-success"); 
+            } else {
+                request.setAttribute("error", "Lỗi thanh toán! Ghế có thể đã bị người khác đặt.");
+                request.setAttribute("showtimeId", String.valueOf(showtimeId));
+                request.setAttribute("selectedSeats", seatsStr);
+                request.setAttribute("totalPrice", String.valueOf(totalPrice));
+                request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("home");
         }
     }
 }

@@ -101,6 +101,7 @@ public class ProfileServlet extends HttpServlet {
 		// 4. Cập nhật các thông tin cá nhân khác
 		currentUser.setEmail(email);
 		currentUser.setPhoneNumber(phone);
+		currentUser.setUsername(newUsername);
 
 		// 5. Gọi DAO để lưu xuống Database
 		UserDAO dao = new UserDAO();

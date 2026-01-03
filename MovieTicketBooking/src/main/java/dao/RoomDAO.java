@@ -4,38 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import model.Movie;
-import model.MovieStatus;
 import model.Room;
 
-public class RoomDAO implements IRoomDAO{
+public class RoomDAO implements IRoomDAO {
 	
-	// Get room by room id
+	// Get room by room id (Hàm này bạn ĐÃ ĐÚNG, giữ nguyên logic)
 	@Override
     public Room getRoomById(int id) {
         Room room = null;
-        // CÂU LỆNH SQL CHUẨN (KHÔNG CÓ NGOẶC ĐƠN BAO QUANH CỘT)
         String query = "SELECT room_id, room_name, number_of_columns, number_of_rows, cinema_id FROM rooms WHERE room_id = ?";
-        
         try {
             Connection connect = JDBCConnection.getConnection();
             PreparedStatement st = connect.prepareStatement(query);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            
             if (rs.next()) {
-                room = new Room();
-                room.setId(rs.getInt("room_id"));
-                room.setName(rs.getString("room_name"));
-                room.setNumberOfColumns(rs.getInt("number_of_columns"));
-                room.setNumberOfRows(rs.getInt("number_of_rows"));
-                // cinema_id có thể set nếu cần thiết
+                room = mapResultSetToRoom(rs);
             }
-            
             rs.close();
             st.close();
             connect.close();
@@ -50,8 +37,8 @@ public class RoomDAO implements IRoomDAO{
 	public List<Room> getRoomByCinemaId(int id){
 		List<Room> list = new ArrayList<>();
 		try {
-			String query = "SELECT (room_id, room_name, number_of_columns, number_of_rows) FROM rooms WHERE cinema_id = ?;";
-			// Create connect
+            // SỬA LỖI: Bỏ dấu ngoặc đơn () ở đây
+			String query = "SELECT room_id, room_name, number_of_columns, number_of_rows FROM rooms WHERE cinema_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, id);
@@ -68,19 +55,16 @@ public class RoomDAO implements IRoomDAO{
 		return list;
 	}
 	
-	// Add room with cinema id, then add seats of room
+	// Add room
 	@Override
 	public void addRoom(Room room, int cinemaId) {
 		try {
 			String query = "INSERT INTO rooms (room_name, cinema_id) VALUES (?, ?);";
-			// Create connect
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setString(1, room.getName());
 			st.setInt(2, cinemaId);
 			st.executeUpdate();
-			// Add seats of this room to db
-			
 			st.close();
 			connect.close();
 		} catch (SQLException e) {
@@ -88,15 +72,12 @@ public class RoomDAO implements IRoomDAO{
 		}
 	}
 	
-	
 	// Delete room by id
 	@Override
 	public int deleteRoomById(int id) {
 		int update = 0;
 		try {
-			// Query string to get data
 			String queryString = "DELETE FROM rooms WHERE room_id = ?";
-			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(queryString);
 			st.setInt(1, id);
@@ -115,12 +96,10 @@ public class RoomDAO implements IRoomDAO{
 			String name = rs.getString("room_name");
 			int numberOfColumns = rs.getInt("number_of_columns");
 			int numberOfRows = rs.getInt("number_of_rows");
-
 			return new Room(id, name, numberOfColumns, numberOfRows);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
-}
+}	

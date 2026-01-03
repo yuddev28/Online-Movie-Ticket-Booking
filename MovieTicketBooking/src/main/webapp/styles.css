@@ -1891,5 +1891,37 @@ main {
 .status-cancelled { color: #f44336; font-weight: bold; }
 .status-pending { color: #ffc107; font-weight: bold; }
 
+/*---------------------------------------------------*/
+/* ==========================================================================
+   COUPLE SEAT UPDATE (Ghế đôi hàng cuối)
+   ========================================================================== */
 
+/* Ghế đôi chiếm 2 cột */
+.seat-cell.couple {
+    grid-column: span 2; /* Quan trọng: Chiếm 2 ô lưới */
+    width: 100%; /* Tràn đầy chiều rộng */
+    background-color: #ff69b4; /* Màu hồng */
+    border-color: #ff1493;
+    color: #fff;
+    aspect-ratio: auto; /* Bỏ tỷ lệ vuông */
+    height: 40px; /* Chiều cao cố định */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* Hiệu ứng chọn ghế đôi */
+.seat-cell.couple.selected {
+    background-color: var(--secondary-color);
+    color: #000;
+    box-shadow: 0 0 15px #ff69b4;
+    border-color: var(--secondary-color);
+}
+
+/* Khoảng trống giữa các ghế đôi */
+.seat-cell.spacer {
+    visibility: hidden; /* Ẩn đi nhưng vẫn chiếm chỗ trong Grid */
+    pointer-events: none;
+}
 

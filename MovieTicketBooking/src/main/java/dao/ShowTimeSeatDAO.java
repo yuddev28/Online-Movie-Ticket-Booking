@@ -92,6 +92,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
     // Các hàm add/update giữ nguyên nếu logic đúng...
     @Override
     public void addShowTimeSeats(List<ShowTimeSeat> list) {
+    	//Kiểm tra nếu list rỗng thì thoát ngay
+        if (list == null || list.isEmpty()) {
+            return;
+        }
         try {
             String sql = "INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES (?, ?, ?, ?)";
             Connection conn = JDBCConnection.getConnection();
