@@ -1769,5 +1769,127 @@ main {
 /*-------------------------------------------------End Profile Page Enhancements------------------------------------------*/
 
 
+/* ==========================================================================
+   HELPER / UTILITY CLASSES (Dùng chung để thay thế style inline)
+   ========================================================================== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-danger { color: #f44336; } /* Màu đỏ lỗi */
+.text-success { color: #4caf50; } /* Màu xanh thành công */
+.text-muted { color: var(--text-muted); }
+.font-bold { font-weight: bold; }
+.mt-10 { margin-top: 10px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+
+/* Alert Box (Thông báo lỗi/thành công) */
+.alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.alert-error {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+.alert-success {
+    background: rgba(0, 200, 81, 0.1);
+    color: #00C851;
+    border: 1px solid rgba(0, 200, 81, 0.2);
+}
+
+/* ==========================================================================
+   AUTH PAGES (Login, Register, Forgot Password...)
+   ========================================================================== */
+.auth-intro-text {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.auth-forgot-link {
+    color: var(--text-muted);
+    font-size: 12px;
+    text-align: right;
+    display: block;
+    margin-bottom: var(--spacing-md);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.auth-forgot-link:hover { color: var(--primary-color); }
+
+.otp-input {
+    letter-spacing: 2px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* ==========================================================================
+   PROFILE PAGE (Hồ sơ cá nhân)
+   ========================================================================== */
+.profile-not-logged {
+    text-align: center;
+    padding: 50px;
+    color: white;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+}
+
+.subsection-title {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+/* Nút bật tắt form đổi mật khẩu */
+.btn-toggle-wrapper {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+/* Container chứa các nút hành động (Lưu, Đăng xuất) */
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.required-star { color: red; }
+
+.empty-history {
+    text-align: center;
+    color: #aaa;
+    padding: 20px;
+}
+
+/* Khối đổi mật khẩu (Mặc định ẩn, sẽ hiện bằng JS hoặc class active) */
+#passwordSection {
+    display: none; /* Mặc định ẩn */
+    margin-top: var(--spacing-lg);
+    border-top: 1px dashed #555;
+    padding-top: var(--spacing-lg);
+}
+/* Khi có class .show (do JS thêm vào) thì sẽ hiện ra */
+#passwordSection.show {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Status Badges trong bảng lịch sử */
+.status-paid { color: #4caf50; font-weight: bold; }
+.status-cancelled { color: #f44336; font-weight: bold; }
+.status-pending { color: #ffc107; font-weight: bold; }
+
 
 

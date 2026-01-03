@@ -30,7 +30,7 @@ public class BookTicketServlet extends HttpServlet {
             // Nếu chưa đăng nhập -> Chuyển về trang login
             // Có thể lưu lại trang hiện tại để login xong quay lại (tùy chọn nâng cao)
             request.setAttribute("error", "Vui lòng đăng nhập để đặt vé!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login").forward(request, response);
             return;
         }
 
