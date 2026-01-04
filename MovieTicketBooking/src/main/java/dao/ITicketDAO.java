@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Ticket;
 import model.TicketStatus;
+import model.User;
 
 public interface ITicketDAO {
 	List<Ticket> getTicketsByUserId(int userId);

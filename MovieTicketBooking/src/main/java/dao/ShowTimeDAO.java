@@ -154,6 +154,29 @@ public class ShowTimeDAO implements IShowTimeDAO {
 		}
 		return true;
 	}
+	
+	public List<ShowTime> getShowTimesByMovieId(int movieId) {
+		List<ShowTime> list = new ArrayList<>();
+		// Query chuẩn không có ngoặc đơn
+		String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id "
+				+ "FROM showtimes " + "WHERE movie_id = ? " + "AND start_time >= NOW() "
+				+ "AND start_time <= DATE_ADD(NOW(), INTERVAL 7 DAY) " + "ORDER BY start_time ASC";
+		try {
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement st = connect.prepareStatement(query);
+			st.setInt(1, movieId);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				list.add(mapResultSetToShowTime(rs));
+			}
+			rs.close();
+			st.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	private ShowTime mapResultSetToShowTime(ResultSet rs) {
 		ShowTime showTime = null;

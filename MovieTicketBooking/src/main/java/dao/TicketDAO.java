@@ -116,6 +116,70 @@ public class TicketDAO implements ITicketDAO {
 	    }
 	}
 
+	 public boolean saveBooking(User user, int showtimeId, String[] seats, double totalPrice, String paymentMethod) {
+	        Connection conn = null;
+	        PreparedStatement psTicket = null;
+	        PreparedStatement psSeat = null;
+	        
+	        try {
+	            conn = JDBCConnection.getConnection();
+	            conn.setAutoCommit(false); // Bắt đầu Transaction
+
+	            // 1. Tạo mã vé (Ticket UID)
+	            String ticketUid = "TCK-" + System.currentTimeMillis();
+
+	            // 2. Insert vào bảng TICKETS (Giữ nguyên)
+	            String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
+	            psTicket = conn.prepareStatement(sqlTicket);
+
+	            // 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
+	            // Tìm đúng ghế của suất chiếu đó và cập nhật user_id
+	            String sqlSeat = "UPDATE showtimeseats SET user_id = ? WHERE showtime_id = ? AND seat_name = ?";
+	            psSeat = conn.prepareStatement(sqlSeat);
+
+	            double pricePerSeat = totalPrice / seats.length;
+
+	            for (String seat : seats) {
+	                // Tạo Ticket
+	                psTicket.setString(1, ticketUid + "-" + seat); 
+	                psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(pricePerSeat));
+	                psTicket.setString(3, paymentMethod);
+	                psTicket.setInt(4, user.getId());
+	                psTicket.setInt(5, showtimeId);
+	                psTicket.addBatch();
+
+	                // Cập nhật ghế (Tham số theo thứ tự dấu ? trong sqlSeat)
+	                psSeat.setInt(1, user.getId());   // user_id
+	                psSeat.setInt(2, showtimeId);     // showtime_id
+	                psSeat.setString(3, seat);        // seat_name
+	                psSeat.addBatch();
+	            }
+
+	            psTicket.executeBatch();
+	            int[] updateCounts = psSeat.executeBatch();
+	            
+	            // Kiểm tra xem có ghế nào update thất bại không
+	            for (int count : updateCounts) {
+	                if (count == 0) {
+	                    // Nếu count == 0 tức là không tìm thấy ghế để update (Sai tên hoặc sai ID)
+	                    System.out.println("LỖI: Không tìm thấy ghế trong DB để update. Kiểm tra lại tên ghế!");
+	                    throw new SQLException("Lỗi: Ghế không tồn tại hoặc đã bị người khác đặt.");
+	                }
+	            }
+	            conn.commit(); // Xác nhận lưu
+	            return true;
+
+	        } catch (Exception e) {
+	             e.printStackTrace();
+	            try {
+	                if (conn != null) conn.rollback(); // Gặp lỗi thì hoàn tác
+	            } catch (SQLException ex) { ex.printStackTrace(); }
+	            return false;
+	        } finally {
+	            try { if (conn != null) conn.close(); } catch (SQLException e) {}
+	        }
+	    }
+	 
 	private Ticket mapResultSetToTicket(ResultSet rs) {
 		Ticket ticket = new Ticket();
 		try {
