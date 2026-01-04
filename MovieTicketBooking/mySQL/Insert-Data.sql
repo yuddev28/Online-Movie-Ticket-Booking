@@ -17,10 +17,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ======================================================================================
 -- BƯỚC 2: THÊM DỮ LIỆU USERS
 -- ======================================================================================
-INSERT INTO users (username, password, email, phonenumber, role) VALUES 
-('admin', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'admin@cinestar.com.vn', '0909123456', 'ADMIN'),
-('minhkhang', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'khang.nguyen@gmail.com', '0912345678', 'USER'),
-('thaovy', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'vy.tran@gmail.com', '0987654321', 'USER');
+-- INSERT INTO users (username, password, email, phonenumber, role) VALUES 
+-- ('admin', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'admin@cinestar.com.vn', '0909123456', 'ADMIN'),
+-- ('minhkhang', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'khang.nguyen@gmail.com', '0912345678', 'USER'),
+-- ('thaovy', '$2a$10$Q7.u.3.r.t.y.u.i.o.p.1', 'vy.tran@gmail.com', '0987654321', 'USER');
 
 -- ======================================================================================
 -- BƯỚC 3: THÊM DỮ LIỆU CINEMAS
@@ -103,43 +103,43 @@ WHERE m.movie_status = 'NOW_SHOWING';
 -- ======================================================================================
 
 -- Avatar 3 (ID 1) - Chiếu rạp 1 (Quốc Thanh) và 2 (Hai Bà Trưng)
-INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
-(105000, CONCAT(CURDATE(), ' 18:00:00'), 1, 1, 1),
-(105000, CONCAT(CURDATE(), ' 21:00:00'), 1, 1, 1),
-(105000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 19:00:00'), 1, 2, 4);
+-- INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
+-- (105000, CONCAT(CURDATE(), ' 18:00:00'), 1, 1, 1),
+-- (105000, CONCAT(CURDATE(), ' 21:00:00'), 1, 1, 1),
+-- (105000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 19:00:00'), 1, 2, 4);
 
 -- Zootopia 2 (ID 2) - Chiếu rạp 3 (Sinh Viên) giá rẻ
 -- SỬA LỖI: Rạp 3 (Sinh Viên) dùng Room ID 6, 7 (không phải 5)
-INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
-(45000, CONCAT(CURDATE(), ' 10:00:00'), 2, 3, 6), -- Sửa room_id thành 6
-(45000, CONCAT(CURDATE(), ' 14:00:00'), 2, 3, 6), -- Sửa room_id thành 6
-(45000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 10:00:00'), 2, 3, 6); -- Sửa room_id thành 6
+-- INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
+-- (45000, CONCAT(CURDATE(), ' 10:00:00'), 2, 3, 6), -- Sửa room_id thành 6
+-- (45000, CONCAT(CURDATE(), ' 14:00:00'), 2, 3, 6), -- Sửa room_id thành 6
+-- (45000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 10:00:00'), 2, 3, 6); -- Sửa room_id thành 6
 
 -- Hoàng Tử Quỷ (ID 3) - Suất chiếu khuya
-INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
-(85000, CONCAT(CURDATE(), ' 23:00:00'), 3, 1, 2),
-(85000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 22:30:00'), 3, 2, 5);
+-- INSERT INTO showtimes (showtime_price, start_time, movie_id, cinema_id, room_id) VALUES
+-- (85000, CONCAT(CURDATE(), ' 23:00:00'), 3, 1, 2),
+-- (85000, CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), ' 22:30:00'), 3, 2, 5);
 
 -- ======================================================================================
 -- BƯỚC 8: TẠO VÉ GIẢ LẬP
 -- ======================================================================================
 
 -- User 'thaovy' đặt vé xem Zootopia 2
-INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES
-('TICKET-ZOO-001', 75000, 'CASH', 'PAID', 3, 6); -- ID 6 là suất chiếu Zootopia
+-- INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES
+-- ('TICKET-ZOO-001', 75000, 'CASH', 'PAID', 3, 6); -- ID 6 là suất chiếu Zootopia
 
-INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES
-('E5', 3, 6, 7); -- Lưu ý: room_id ở đây là 7 (Rạp Sinh Viên phòng 2), nhưng vé suất 6 dùng phòng 6. Để đồng bộ, nên sửa thành 6.
+-- INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES
+-- ('E5', 3, 6, 7); -- Lưu ý: room_id ở đây là 7 (Rạp Sinh Viên phòng 2), nhưng vé suất 6 dùng phòng 6. Để đồng bộ, nên sửa thành 6.
 -- Sửa lại cho đúng logic:
 -- ('E5', 3, 6, 6);
 
 -- User 'minhkhang' đặt vé xem Avatar 3
-INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES
-('TICKET-AVA-001', 95000, 'ONLINE', 'PAID', 2, 1),
-('TICKET-AVA-002', 95000, 'ONLINE', 'PAID', 2, 1);
+-- INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES
+-- ('TICKET-AVA-001', 95000, 'ONLINE', 'PAID', 2, 1),
+-- ('TICKET-AVA-002', 95000, 'ONLINE', 'PAID', 2, 1);
 
-INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES
-('H10', 2, 1, 1), 
-('H11', 2, 1, 1);
+-- INSERT INTO showtimeseats (seat_name, user_id, showtime_id, room_id) VALUES
+-- ('H10', 2, 1, 1), 
+-- ('H11', 2, 1, 1);
 
-SELECT 'Cập nhật dữ liệu phim Tháng 1/2026 thành công!' AS Status;
+-- SELECT 'Cập nhật dữ liệu phim Tháng 1/2026 thành công!' AS Status;
