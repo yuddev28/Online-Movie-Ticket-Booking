@@ -37,7 +37,7 @@ public class DeleteAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("userMessage", (res) ? "Xoá user thành công!" : "Xoá user thất bại!");
 
-        response.sendRedirect(request.getContextPath() + "/admin/rooms");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
 	}
 
 }
