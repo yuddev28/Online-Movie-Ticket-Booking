@@ -29,7 +29,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ? ORDER BY showtimeseat_id";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
@@ -161,13 +161,18 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		try {
 			int id = rs.getInt("showtimeseat_id");
 			String seatName = rs.getString("seat_name");
-			int userId = rs.getInt("user_id");
-			User bookBy = userDAO.getUserById(userId);
-			ShowTime showTime = showtimeDAO.getShowTimeById(rs.getInt("showtime_id"));
-			Room room = roomDAO.getRoomById(rs.getInt("room_id"));
+			// Check if no user book -> skip query get user by id
+			User bookedBy = null;
+			Object user = rs.getObject("user_id");
+			if(user != null) {
+				bookedBy = userDAO.getUserById((int) user);
+			}
+				
+			ShowTime showTime = null;
+			Room room = null;
 			LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 			LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
-			sts = new ShowTimeSeat(id, seatName, room, bookBy, showTime, createdAt, updatedAt);
+			sts = new ShowTimeSeat(id, seatName, room, bookedBy, showTime, createdAt, updatedAt);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
