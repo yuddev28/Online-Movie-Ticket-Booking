@@ -63,16 +63,15 @@
 						</td>
 						<td>${t.status }</td>
 						<td>
-							<div class="d-flex gap-2">
-	    						<form action="${pageContext.request.contextPath}/admin/ticket/paid" method="get">
-	    							<input type="hidden" name="id" value="${t.id }">
-									<input type="submit" value="Sửa" class="btn btn-warning">
-								</form>
-								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmPaidModal" data-ticket-id="${t.id}">
-									Xác nhận thanh toán
-								</button>
-								
-							</div>
+							<c:if test="${t.status != TicketStatus.PAID }">
+								<div class="d-flex gap-2">
+		    						<form action="${pageContext.request.contextPath}/admin/ticket/paid" method="get">
+		    							<input type="hidden" name="id" value="${t.id }">
+										<input type="submit" value="Xác nhận thanh toán" class="btn btn-success">
+									</form>
+								</div>
+							</c:if>
+							
 						</td>
 					</tr>
 				</c:forEach>
