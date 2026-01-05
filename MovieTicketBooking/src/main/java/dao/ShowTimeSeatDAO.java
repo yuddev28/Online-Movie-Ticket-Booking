@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import model.Room;
 import model.ShowTime;
@@ -95,6 +96,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		}
 		return list;
 	}
+	
 
 	// Add list of show time seats
 	@Override
@@ -130,6 +132,8 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			e.printStackTrace();
 		}
 	}
+	
+
 
 	// Update user of show time seat by show time seat id, user can be null
 	@Override
@@ -168,7 +172,8 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 				bookedBy = userDAO.getUserById((int) user);
 			}
 				
-			ShowTime showTime = null;
+			ShowTime showTime = new ShowTime();
+			showTime.setId(rs.getInt("showtime_id"));
 			Room room = null;
 			LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 			LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
@@ -178,5 +183,6 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		}
 		return sts;
 	}
+
 
 }

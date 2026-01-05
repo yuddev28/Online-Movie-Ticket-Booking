@@ -21,9 +21,7 @@ public class Ticket {
 	public Ticket() {}
 	
 	// constructor for create ticket
-	public Ticket(int id, User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
-		this.id = id;
-		this.uid = this.generateUid();
+	public Ticket(User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
 		this.user = user;
 		this.showTime = showTime;
 		this.seats = seats;
@@ -49,11 +47,6 @@ public class Ticket {
 		this.updatedAt = updatedAt;
 	}
 
-	// auto create uid of ticket
-	private String generateUid() {
-		return showTime.getId() + "-" + user.getId() + "-" + seats.size(); 
-	}
-	
 	// calculate total price of ticket by price per ticket * number of seat
 	private BigDecimal calculateTotalPrice() {
 		return showTime.getPricePerTicket().multiply(new BigDecimal(seats.size()));
