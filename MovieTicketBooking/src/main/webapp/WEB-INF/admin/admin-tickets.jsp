@@ -28,10 +28,10 @@
 		<table class="table">
 			<thread>
 				<tr>
-					<th style="width:10%">UID</th>
-					<th>Người mua</th>
+					<th style="width:20%">UID</th>
+					<th>Người đặt</th>
 					<th style="width:10%">Giá tiền</th>
-					<th style="width:20%">Phương thức thanh toán</th>
+					<th style="width:15%">Phương thức thanh toán</th>
 					<th style="width:10%">Mua vào lúc</th>
 					<th style="width:10%">Cập nhật vào lúc</th>
 					<th style="width:10%">Trạng thái</th>
@@ -61,16 +61,54 @@
 								        value="${t.updatedAtAsDate}" 
 								        pattern="dd/MM/yyyy HH:mm"/>
 						</td>
-						<td>${t.status }</td>
 						<td>
-							<c:if test="${t.status != TicketStatus.PAID }">
-								<div class="d-flex gap-2">
-		    						<form action="${pageContext.request.contextPath}/admin/ticket/paid" method="get">
-		    							<input type="hidden" name="id" value="${t.id }">
-										<input type="submit" value="Xác nhận thanh toán" class="btn btn-success">
-									</form>
-								</div>
-							</c:if>
+							<c:choose>
+						        <c:when test="${t.status == 'UNPAID'}">
+						            <span class="badge bg-warning text-dark">Chưa thanh toán</span>
+						        </c:when>
+						
+						        <c:when test="${t.status == 'PAID'}">
+						            <span class="badge bg-success">Đã thanh toán</span>
+						        </c:when>
+						
+						        <c:when test="${t.status == 'CANCELLED'}">
+						            <span class="badge bg-danger">Đã huỷ</span>
+						        </c:when>
+						
+						        <c:when test="${t.status == 'CHECKEDIN'}">
+						            <span class="badge bg-primary">Đã check-in</span>
+						        </c:when>
+						
+						        <c:otherwise>
+						            <span class="badge bg-secondary">Không xác định</span>
+						        </c:otherwise>
+						    </c:choose>
+						</td>
+						<td>
+							 <c:choose>
+						        <c:when test="${t.status == 'UNPAID'}">
+						            <form action="${pageContext.request.contextPath}/admin/ticket/action" method="post">
+						                <input type="hidden" name="id" value="${t.id}">
+						                <input type="hidden" name="action" value="pay">
+						                <button type="submit" class="btn btn-warning">
+						                    Thanh toán
+						                </button>
+						            </form>
+						        </c:when>
+						        <c:when test="${t.status == 'PAID' or (t.status == 'UNPAID' and t.paymentMethod == 'CASH')}">
+						            <form action="${pageContext.request.contextPath}/admin/ticket/action" method="post">
+						                <input type="hidden" name="id" value="${t.id}">
+						                <input type="hidden" name="action" value="checkin">
+						                <button type="submit" class="btn btn-success">
+						                    Check in
+						                </button>
+						            </form>
+						        </c:when>
+						        <c:otherwise>
+						            <span class="text-muted">Không khả dụng</span>
+						        </c:otherwise>
+						
+						    </c:choose>
 							
 						</td>
 					</tr>
@@ -79,46 +117,9 @@
 		</table>
 	</div>
 	
-	<!-- Thông báo xác nhận xoá phim -->
-	<div class="modal fade" id="confirmPaidModal" tabindex="-1">
-	    <div class="modal-dialog modal-dialog-centered">
-	        <div class="modal-content">
-	
-	            <div class="modal-header">
-	                <h5 class="modal-title text-danger">Xác nhận thanh toán</h5>
-	                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-	            </div>
-	
-	            <div class="modal-body text-center">
-	                <p>Vé này đã được thanh toán chưa?</p>
-	            </div>
-	
-	            <div class="modal-footer justify-content-center">
-	                <form id="deleteForm" 
-	                      action="${pageContext.request.contextPath}/admin/ticket/paid" 
-	                      method="post">
-	                    <input type="hidden" name="id" id="paidTicketId">
-	                    <button type="submit" class="btn btn-danger">Đã thanh toán</button>
-	                </form>
-	
-	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-	                    Chưa thanh toán
-	                </button>
-	            </div>
-	
-	        </div>
-	    </div>
-	</div>
 	
 	<script >
-		const deleteModal = document.getElementById('confirmPaidModal');
-	
-		deleteModal.addEventListener('show.bs.modal', function (event) {
-		    const button = event.relatedTarget;
-		    const cinemaId = button.getAttribute('data-ticket-id');
-	
-		    document.getElementById('paidTicketId').value = ticketId;
-		});
+		
 		function hideMessage() {
 			const msg = document.getElementById("message");
 			if (msg) {
