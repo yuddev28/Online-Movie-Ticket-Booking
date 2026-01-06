@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import model.PaymentMethod;
 import model.ShowTime;
@@ -80,7 +81,7 @@ public class TicketDAO implements ITicketDAO {
 			conn.setAutoCommit(false); // Bắt đầu Transaction
 
 			// 1. Tạo mã vé (Ticket UID)
-			String ticketUid = showtimeId + "-" + user.getId() + "-" + seats.length;
+			String ticketUid = UUID.randomUUID().toString();
 
 			double pricePerSeat = totalPrice / seats.length;
 

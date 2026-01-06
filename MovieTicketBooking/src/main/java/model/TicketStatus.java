@@ -3,5 +3,6 @@ package model;
 public enum TicketStatus {
 	PAID,
 	UNPAID,
-	CANCELLED
+	CANCELLED,
+	CHECKEDIN
 }
