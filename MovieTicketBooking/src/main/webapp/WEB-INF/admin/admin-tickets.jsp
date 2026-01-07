@@ -22,20 +22,32 @@
 		        </button>
 	    	</div>
 		</c:if>
+		<h1 class="mb-0">Quản lý vé</h1>
+		<form action="${pageContext.request.contextPath }/admin/ticket/search">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+			    <div class="input-group" style="width: 300px;">
+			        <input type="text"
+			               name="searchInput"
+			               class="form-control"
+			               placeholder="Tìm UID, người đặt...">
+			        <input type="submit" value="Tìm kiếm">
+			    </div>
+			</div>
+		</form>
 		
-		<h1>Quản lý vé</h1>
 		
 		<table class="table">
 			<thread>
 				<tr>
-					<th style="width:20%">UID</th>
-					<th>Người đặt</th>
-					<th style="width:10%">Giá tiền</th>
-					<th style="width:15%">Phương thức thanh toán</th>
+					<th style="width:15%">ID vé</th>
+					<th style="width:10%">Người đặt</th>
+					<th>Phòng</th>
+					<th style="width:10%">Ghế</th>
+					<th style="width:8%">Giá tiền</th>
+					<th style="width:8%">Phương thức</th>
 					<th style="width:10%">Mua vào lúc</th>
-					<th style="width:10%">Cập nhật vào lúc</th>
 					<th style="width:10%">Trạng thái</th>
-					<th style="width:10%">Hành động</th>
+					<th style="width:8%">Hành động</th>
 				</tr>
 			</thread>
 			<tbody>
@@ -43,6 +55,10 @@
 					<tr>
 						<td>${t.uid}</td>
 						<td>${t.user.username }</td>
+						<td>${t.showTime.movie.name} - ${ t.showTime.cinema.name},
+							 ${t.showTime.room.name} - 
+							 <fmt:formatDate value="${t.showTime.startTimeAsDate }" pattern="dd/MM/yyyy HH:mm"/></td>
+						<td>${t.allSeats }
 						<td>
 							<fmt:formatNumber 
 							        value="${t.totalPrice}" 
@@ -55,11 +71,6 @@
 							<fmt:formatDate 
 							        value="${t.createdAtAsDate}" 
 							        pattern="dd/MM/yyyy HH:mm"/>
-						</td>
-						<td>
-							<fmt:formatDate 
-								        value="${t.updatedAtAsDate}" 
-								        pattern="dd/MM/yyyy HH:mm"/>
 						</td>
 						<td>
 							<c:choose>
@@ -80,7 +91,7 @@
 						        </c:when>
 						
 						        <c:otherwise>
-						            <span class="badge bg-secondary">Không xác định</span>
+						            
 						        </c:otherwise>
 						    </c:choose>
 						</td>
@@ -105,7 +116,7 @@
 						            </form>
 						        </c:when>
 						        <c:otherwise>
-						            <span class="text-muted">Không khả dụng</span>
+						            
 						        </c:otherwise>
 						
 						    </c:choose>

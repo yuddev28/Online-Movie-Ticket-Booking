@@ -22,9 +22,11 @@ public class ListTicketsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("pageView", "/WEB-INF/admin/admin-tickets.jsp");
 		// Get list ticket in dao and put in request
-		ITicketDAO dao = new TicketDAO();
-		List<Ticket> listTickets = dao.getAllTickets();
-		request.setAttribute("listTickets", listTickets);
+		if(request.getAttribute("listTickets") == null) {
+			ITicketDAO dao = new TicketDAO();
+			List<Ticket> listTickets = dao.getAllTickets();
+			request.setAttribute("listTickets", listTickets);
+		}
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/admin-layout.jsp");
 		rd.forward(request, response);
 	}

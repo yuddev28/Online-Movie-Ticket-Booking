@@ -16,7 +16,7 @@
     <div class="card shadow p-4" style="width: 350px;">
         <h4 class="text-center mb-4">Admin Login</h4>
 
-        <form action="${pageContext.request.contextPath }/admin/login" method="post">
+        <form action="${pageContext.request.contextPath }/login-admin" method="post">
             <div class="mb-3">
                 <label class="form-label">Username</label>
                 <input type="text" name="username" class="form-control">

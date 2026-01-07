@@ -52,6 +52,17 @@ public class Ticket {
 		return showTime.getPricePerTicket().multiply(new BigDecimal(seats.size()));
 	}
 	
+	public String getAllSeats() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < seats.size(); i++) {
+			sb.append(seats.get(i).getSeatName());
+			if(i != seats.size() - 1) {
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
+	}
+	
 	// Getter and Setter
 	public User getUser() {
 		return user;

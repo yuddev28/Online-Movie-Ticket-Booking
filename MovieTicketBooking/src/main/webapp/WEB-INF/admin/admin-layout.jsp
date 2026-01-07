@@ -33,7 +33,6 @@
 		font-weight: 500;
 	}
 </style>
-<script src="${pageContext.request.contextPath}/admin/admin.js "></script>
 </head>
 <body>
 	<div class="d-flex">
@@ -76,7 +75,7 @@
 			</ul>
 
 			<div class="d-flex justify-content-center align-items-center">
-				<form action="${pageContext.request.contextPath}/admin/login" method="get" >
+				<form action="${pageContext.request.contextPath}/admin/logout" method="get" >
 					<input type="submit" value="Đăng xuất" class="nav-link text-white mt-auto text-center">
 				</form>
 			</div>

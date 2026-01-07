@@ -5,13 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Role;
 import model.User;
 import utils.AuthUtils;
 
 import java.io.IOException;
 
-@WebServlet("/admin/login")
+@WebServlet("/login-admin")
 public class LoginAdminServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,8 +39,9 @@ public class LoginAdminServlet extends HttpServlet {
 			backToLoginPage("Tài khoản không có quyền truy cập", request, response);
 			return;
 		}
-		request.setAttribute("admin", admin);
-		request.getRequestDispatcher("/admin/movies").forward(request, response);
+		HttpSession session = request.getSession(true);
+		session.setAttribute("admin", admin);
+		response.sendRedirect(request.getContextPath() + "/admin/movies");
 	}
 
 	private void backToLoginPage(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
