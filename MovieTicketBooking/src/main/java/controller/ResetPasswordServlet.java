@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
-import utils.PasswordUtils;
+
 
 @WebServlet(name = "ResetPasswordServlet", urlPatterns = {"/reset-password"})
 public class ResetPasswordServlet extends HttpServlet {
@@ -50,7 +50,7 @@ public class ResetPasswordServlet extends HttpServlet {
             
             if (user != null) {
                 // 1. Mã hóa và cập nhật mật khẩu mới
-                user.setPassword(PasswordUtils.hashPassword(newPass)); 
+                user.setPassword(newPass); 
                 
                 // 2. Lưu xuống DB (Dùng hàm updateUser đã sửa ở bước trước)
                 dao.updateUser(user); 

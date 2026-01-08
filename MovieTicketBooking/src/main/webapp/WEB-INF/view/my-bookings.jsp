@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lịch Sử Đặt Vé - MyCinema</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-bookings.css">
@@ -20,25 +22,15 @@
             </div>
         </section>
 
-        <div class="filter-bar">
-            <select class="filter-select">
-                <option>Tất Cả</option>
-                <option>Đã Xác Nhận</option>
-                <option>Đã Hủy</option>
-                <option>Đang Chờ</option>
-            </select>
-            <select class="filter-select">
-                <option>Tháng Này</option>
-                <option>Tuần Này</option>
-                <option>Tất Cả</option>
-            </select>
-            <button class="filter-btn">Lọc</button>
-        </div>
+        <c:if test="${not empty sessionScope.message}">
+            <div class="alert success" style="color: green; text-align: center; margin: 10px;">${sessionScope.message}</div>
+            <c:remove var="message" scope="session" />
+        </c:if>
 
         <table class="bookings-table">
             <thead>
                 <tr>
-                    <th>Ngày Đặt</th>
+                    <th>Mã Vé</th> <th>Ngày Đặt</th>
                     <th>Phim</th>
                     <th>Rạp & Suất</th>
                     <th>Ghế</th>
@@ -48,91 +40,72 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>09/11/2025</td>
-                    <td>Quái Thú Vô Hình</td>
-                    <td>Cinestar Q6 - 16:30</td>
-                    <td>B3, B10</td>
-                    <td>110,000 VNĐ</td>
-                    <td><span class="status-badge status-confirmed">Đã Xác Nhận</span></td>
-                    <td>
-                        <a href="#" class="action-btn">Xem Vé</a>
-                        <button class="action-btn">Hủy</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>05/11/2025</td>
-                    <td>Avengers: Endgame</td>
-                    <td>Cinestar Hai Bà Trưng - 19:00</td>
-                    <td>A5, B2</td>
-                    <td>90,000 VNĐ</td>
-                    <td><span class="status-badge status-confirmed">Đã Xác Nhận</span></td>
-                    <td>
-                        <a href="#" class="action-btn">Xem Vé</a>
-                        <button class="action-btn">Hủy</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01/11/2025</td>
-                    <td>Parasite</td>
-                    <td>Cinestar Quốc Thanh - 14:30</td>
-                    <td>C4</td>
-                    <td>45,000 VNĐ</td>
-                    <td><span class="status-badge status-cancelled">Đã Hủy</span></td>
-                    <td>
-                        <a href="#" class="action-btn">Chi Tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>28/10/2025</td>
-                    <td>Joker</td>
-                    <td>Cinestar Hai Bà Trưng - 20:00</td>
-                    <td>D2, D3</td>
-                    <td>90,000 VNĐ</td>
-                    <td><span class="status-badge status-confirmed">Đã Xác Nhận</span></td>
-                    <td>
-                        <a href="#" class="action-btn">Xem Vé</a>
-                        <button class="action-btn">Hủy</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>25/10/2025</td>
-                    <td>Frozen 2</td>
-                    <td>Cinestar Q6 - 14:00</td>
-                    <td>E6</td>
-                    <td>45,000 VNĐ</td>
-                    <td><span class="status-badge status-pending">Đang Chờ</span></td>
-                    <td>
-                        <button class="action-btn">Xác Nhận</button>
-                    </td>
-                </tr>
+                <c:forEach var="ticket" items="${ticketList}">
+                    <tr>
+                        <td><strong>${ticket.uid}</strong></td>
+                        
+                        <td>
+                             ${ticket.createdAt.toLocalDate()} <br>
+                             ${ticket.createdAt.toLocalTime()}
+                        </td>
+
+                        <td>${ticket.showTime.movie.title}</td> <td>
+                            ${ticket.showTime.cinema.name} <br> <span style="color: #e74c3c">
+                                ${ticket.showTime.startTime.toLocalTime()}
+                            </span>
+                        </td>
+
+                        <td>
+                            <c:forEach var="seat" items="${ticket.seats}" varStatus="loop">
+                                ${seat.seatName}${!loop.last ? ',' : ''}
+                            </c:forEach>
+                        </td>
+
+                        <td>
+                            <fmt:formatNumber value="${ticket.totalPrice}" type="currency" currencySymbol="VNĐ"/>
+                        </td>
+
+                        <td>
+                            <c:choose>
+                                <c:when test="${ticket.status == 'PAID' || ticket.status == 'UNPAID'}">
+                                    <span class="status-badge status-confirmed">Đã Đặt</span>
+                                </c:when>
+                                <c:when test="${ticket.status == 'CANCELLED'}">
+                                    <span class="status-badge status-cancelled">Đã Hủy</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="status-badge status-pending">${ticket.status}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+
+                        <td>
+                            <c:if test="${ticket.status != 'CANCELLED'}">
+                                <form action="cancel-ticket" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy vé này? Ghế sẽ được trả lại trống.');">
+                                    <input type="hidden" name="ticketId" value="${ticket.id}">
+                                    <button type="submit" class="action-btn" style="background-color: #e74c3c; color: white;">Hủy Vé</button>
+                                </form>
+                            </c:if>
+                            <c:if test="${ticket.status == 'CANCELLED'}">
+                                <span style="color: gray; font-size: 0.9em;">Đã hoàn tác</span>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                
+                <c:if test="${empty ticketList}">
+                    <tr>
+                        <td colspan="8" style="text-align: center;">Bạn chưa có lịch sử đặt vé nào.</td>
+                    </tr>
+                </c:if>
             </tbody>
         </table>
 
         <div style="text-align: center; margin-top: var(--spacing-lg);">
-            <a href="#" class="btn" style="width: 200px;">Tải Vé PDF</a>
-            <button class="btn btn-secondary" style="width: 200px; margin-left: var(--spacing-md);">Xóa Lịch Sử</button>
+            <a href="movies" class="btn">Đặt Vé Mới</a>
         </div>
     </main>
 
     <jsp:include page="footer.jsp" />
-
-    <script>
-        // Mock filter
-        const filterSelects = document.querySelectorAll('.filter-select');
-        filterSelects.forEach(select => {
-            select.addEventListener('change', function() {
-                // Mock filter logic: reload table
-                console.log('Filtering by:', this.value);
-            });
-        });
-        // Mock action buttons
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Tính năng này sẽ được triển khai sau!');
-            });
-        });
-    </script>
 </body>
 </html>

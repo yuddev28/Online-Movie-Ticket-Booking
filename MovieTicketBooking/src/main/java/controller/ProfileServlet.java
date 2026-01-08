@@ -1,7 +1,7 @@
 package controller;
 
 import model.User;
-import utils.PasswordUtils;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -71,7 +71,7 @@ public class ProfileServlet extends HttpServlet {
 
 			// a. Kiểm tra mật khẩu hiện tại
 			// Mã hóa mật khẩu nhập vào -> so sánh với mật khẩu hash trong User object
-			String currentPassHash = PasswordUtils.hashPassword(currentPass);
+			String currentPassHash = currentPass;
 
 			if (!currentUser.getPassword().equals(currentPassHash)) {
 				request.setAttribute("error", "Mật khẩu hiện tại không đúng!");
@@ -94,8 +94,8 @@ public class ProfileServlet extends HttpServlet {
 			}
 
 			// d. Mã hóa mật khẩu mới và cập nhật vào object User
-			String newPassHash = PasswordUtils.hashPassword(newPass);
-			currentUser.setPassword(newPassHash);
+			//String newPassHash = PasswordUtils.hashPassword(newPass);
+			currentUser.setPassword(newPass);
 		}
 
 		// 4. Cập nhật các thông tin cá nhân khác

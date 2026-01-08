@@ -58,7 +58,10 @@ public class EmailUtils {
 //        String nguoiNhan = "golike0000020@gmail.com"; 
 //
 //        System.out.println("=== ĐANG BẮT ĐẦU GỬI EMAIL... ===");
-//        System.out.println("Người gửi: (Cấu hình trong hàm sendEmail)");
+//        System.o
+    
+    
+   // ut.println("Người gửi: (Cấu hình trong hàm sendEmail)");
 //        System.out.println("Người nhận: " + nguoiNhan);
 //
 //        try {

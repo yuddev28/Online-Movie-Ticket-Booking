@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import utils.PasswordUtils;
+
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
@@ -49,9 +49,9 @@ public class RegisterServlet extends HttpServlet {
 
         // 4. Tạo đối tượng User và Lưu xuống DB
         //mã hóa mật khẩu trước khi lưu
-        String hashedPassword = PasswordUtils.hashPassword(pass);
+        //String hashedPassword = PasswordUtils.hashPassword(pass);
         // Constructor này khớp với User.java của bạn
-        User newUser = new User(username, hashedPassword, email, phone);
+        User newUser = new User(username, pass, email, phone);
         dao.addUser(newUser);
 
         // 5. Đăng ký thành công -> Chuyển sang trang đăng nhập
