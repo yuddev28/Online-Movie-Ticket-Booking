@@ -41,7 +41,7 @@ public class HomeServlet extends HttpServlet {
                 // Kiểm tra null để tránh lỗi nếu dữ liệu DB bị thiếu status
                 if (m.getMovieStatus() != null) {
                     if (m.getMovieStatus() == MovieStatus.NOW_SHOWING) {
-                        listShowing.add(m);
+                         listShowing.add(m);
                     } else if (m.getMovieStatus() == MovieStatus.COMING_SOON) {
                         listUpcoming.add(m);
                     }

@@ -123,33 +123,63 @@
 							<thead>
 								<tr>
 									<th>Mã Vé</th>
-									<th>Phim</th>
-									<th>Ngày Chiếu</th>
+									<th>Phim & Rạp</th>
+									<th>Thời Gian</th>
 									<th>Ghế</th>
 									<th>Tổng Tiền</th>
 									<th>Trạng Thái</th>
+									<th>Thao Tác</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${ticketHistory}" var="t">
 									<tr>
-										<td>#${t.id}</td>
-										<td>${t.showtime.movie.name}</td>
-										<td><fmt:parseDate value="${t.showtime.startTime}"
+										<td><strong>${t.uid}</strong></td>
+
+										<td>${t.showTime.movie.name}<br> <small>${t.showTime.cinema.name}
+												- ${t.showTime.room.name}</small>
+										</td>
+
+										<td><fmt:parseDate value="${t.showTime.startTime}"
 												pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
 											<fmt:formatDate value="${parsedDate}"
-												pattern="dd/MM/yyyy HH:mm" /></td>
+												pattern="HH:mm dd/MM/yyyy" /></td>
+
 										<td><c:forEach items="${t.seats}" var="s"
 												varStatus="loop">
-                                                ${s.seatRow}${s.seatNumber}${!loop.last ? ',' : ''}
-                                            </c:forEach></td>
+												<span class="seat-badge">${s.seatName}</span>${!loop.last ? ',' : ''}
+                    </c:forEach></td>
+
 										<td><fmt:formatNumber value="${t.totalPrice}"
 												type="currency" currencySymbol="₫" /></td>
-										<td><span
-											style="color: ${t.status == 'PAID' ? '#4caf50' : '#f44336'}; font-weight: bold;">
-												${t.status} </span></td>
+
+										<td><c:choose>
+												<c:when test="${t.status == 'CANCELLED'}">
+													<span style="color: red; font-weight: bold;">Đã Hủy</span>
+												</c:when>
+												<c:otherwise>
+													<span style="color: green; font-weight: bold;">${t.status}</span>
+												</c:otherwise>
+											</c:choose></td>
+
+										<td><c:if test="${t.status != 'CANCELLED'}">
+												<form action="cancel-ticket" method="post"
+													onsubmit="return confirm('Bạn có chắc chắn muốn hủy vé ${t.uid}? Tất cả ghế sẽ bị hủy.');">
+													<input type="hidden" name="ticketId" value="${t.id}">
+													<button type="submit"
+														style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+														Hủy Vé</button>
+												</form>
+											</c:if></td>
 									</tr>
 								</c:forEach>
+
+								<c:if test="${empty ticketHistory}">
+									<tr>
+										<td colspan="7" style="text-align: center;">Chưa có lịch
+											sử đặt vé.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>
 					</c:if>

@@ -18,7 +18,7 @@
         
         /* Grid linh động theo DB */
         .seat-grid {
-            display: grid;
+            display: grid;   	
             /* Cột A,B,C rộng 40px, còn lại chia đều */
             grid-template-columns: 40px repeat(${showTime.room.numberOfColumns}, 1fr) !important;
             max-width: fit-content !important; 

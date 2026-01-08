@@ -49,7 +49,7 @@
                              ${ticket.createdAt.toLocalTime()}
                         </td>
 
-                        <td>${ticket.showTime.movie.title}</td> <td>
+                        <td>${ticket.showTime.movie.name}</td> <td>
                             ${ticket.showTime.cinema.name} <br> <span style="color: #e74c3c">
                                 ${ticket.showTime.startTime.toLocalTime()}
                             </span>

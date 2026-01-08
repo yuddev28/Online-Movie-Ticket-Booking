@@ -100,12 +100,13 @@ public class CheckoutServlet extends HttpServlet {
                 request.setAttribute("showtimeId", String.valueOf(showtimeId));
                 request.setAttribute("selectedSeats", seatsStr);
                 request.setAttribute("totalPrice", String.valueOf(totalPrice));
-                request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/view/payment-failure.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Đã xảy ra lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
+            //request.getRequestDispatcher("/WEB-INF/view/checkout.jsp").forward(request, response);
+            response.sendRedirect("payment-failure.jsp");
         }
     }
 }

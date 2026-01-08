@@ -13,4 +13,5 @@ public interface ITicketDAO {
 	void updateTicketStatus(Ticket ticket, TicketStatus newStatus);
 	public boolean saveBooking(User user, int showtimeId, String[] seats, double totalPrice, String paymentMethod);
 	public List<String> getBookedSeats(int showtimeId);
+	Ticket getTicketById(int ticketId);
 }

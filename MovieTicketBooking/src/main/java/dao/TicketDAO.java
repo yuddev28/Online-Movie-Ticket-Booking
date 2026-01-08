@@ -1,12 +1,11 @@
 package dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,46 +78,47 @@ public class TicketDAO implements ITicketDAO {
 	public void addTicket(Ticket ticket) {
 		String sql = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) "
 				+ " VALUES (?, ?, ?, ?, ?, ?);";
-	    try {
-	    	Connection conn = JDBCConnection.getConnection();
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        ps.setString(1, ticket.getUid());
-	        ps.setBigDecimal(2, ticket.getTotalPrice());
-	        ps.setString(3, ticket.getPaymentMethod().name());
-	        ps.setString(4, ticket.getStatus().name());
-	        ps.setInt(5, ticket.getUser().getId());
-	        ps.setInt(6, ticket.getShowTime().getId());
-	        ps.executeUpdate();
-	        ps.close();
-	        conn.close();
-	        for(ShowTimeSeat sts : ticket.getSeats()) {
-	        	showTimeSeatDAO.updateShowTimeSeat(sts.getId(), ticket.getUser());
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, ticket.getUid());
+			ps.setBigDecimal(2, ticket.getTotalPrice());
+			ps.setString(3, ticket.getPaymentMethod().name());
+			ps.setString(4, ticket.getStatus().name());
+			ps.setInt(5, ticket.getUser().getId());
+			ps.setInt(6, ticket.getShowTime().getId());
+			ps.executeUpdate();
+			ps.close();
+			conn.close();
+			for (ShowTimeSeat sts : ticket.getSeats()) {
+				showTimeSeatDAO.updateShowTimeSeat(sts.getId(), ticket.getUser());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void updateTicketStatus(Ticket ticket, TicketStatus newStatus) {
 		String sql = "UPDATE tickets SET ticket_status = ? WHERE ticket_id = ?;";
-	    try {
-	    	Connection conn = JDBCConnection.getConnection();
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        ps.setString(1, newStatus.name());
-	        ps.setInt(2, ticket.getId());
-	        ps.executeUpdate();
-	        ps.close();
-	        conn.close();
-	        // If user cancelled ticket => all show time seat in that ticket will be not booked
-	        if(newStatus.equals(TicketStatus.CANCELLED)) {
-	        	for(ShowTimeSeat sts : ticket.getSeats()) {
-		        	showTimeSeatDAO.updateShowTimeSeat(sts.getId(), null);
-		        }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, newStatus.name());
+			ps.setInt(2, ticket.getId());
+			ps.executeUpdate();
+			ps.close();
+			conn.close();
+			// If user cancelled ticket => all show time seat in that ticket will be not
+			// booked
+			if (newStatus.equals(TicketStatus.CANCELLED)) {
+				for (ShowTimeSeat sts : ticket.getSeats()) {
+					showTimeSeatDAO.updateShowTimeSeat(sts.getId(), null);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private Ticket mapResultSetToTicket(ResultSet rs) {
@@ -140,8 +140,9 @@ public class TicketDAO implements ITicketDAO {
 
 			ShowTime showTime = showTimeDAO.getShowTimeById(showtimeId);
 			ticket.setShowTime(showTime);
-			
-			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showtimeId, userId);
+
+			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showtimeId,
+					userId);
 			ticket.setSeats(showTimeSeats);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -149,88 +150,116 @@ public class TicketDAO implements ITicketDAO {
 		return ticket;
 	}
 
-    // --- CÁC HÀM MỚI ĐÃ ĐƯỢC CHỈNH SỬA ---
+	// --- CÁC HÀM MỚI ĐÃ ĐƯỢC CHỈNH SỬA ---
 
-    // Hàm lưu vé (Transaction): SỬA logic từ INSERT sang UPDATE ghế
-    public boolean saveBooking(User user, int showtimeId, String[] seats, double totalPrice, String paymentMethod) {
-        Connection conn = null;
-        PreparedStatement psTicket = null;
-        PreparedStatement psSeat = null;
-        
-        try {
-            conn = JDBCConnection.getConnection();
-            conn.setAutoCommit(false); // Bắt đầu Transaction
+	// Hàm lưu vé (Transaction): SỬA logic từ INSERT sang UPDATE ghế
+	public boolean saveBooking(User user, int showtimeId, String[] seats, double totalPrice, String paymentMethod) {
+		Connection conn = null;
+		PreparedStatement psTicket = null;
+		PreparedStatement psSeat = null;
 
-            // 1. Tạo mã vé (Ticket UID)
-            String ticketUid = "TCK-" + System.currentTimeMillis();
+		try {
+			conn = JDBCConnection.getConnection();
+			conn.setAutoCommit(false); // Bắt đầu Transaction
 
-            // 2. Insert vào bảng TICKETS (Giữ nguyên)
-            String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
-            psTicket = conn.prepareStatement(sqlTicket);
+			// 1. Tạo mã vé (Ticket UID) dùng chung cho cả nhóm ghế
+			String ticketUid = "TCK-" + System.currentTimeMillis();
 
-            // 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
-            // Tìm đúng ghế của suất chiếu đó và cập nhật user_id
-            String sqlSeat = "UPDATE showtimeseats SET user_id = ? WHERE showtime_id = ? AND seat_name = ?";
-            psSeat = conn.prepareStatement(sqlSeat);
+			// 2. Insert vào bảng TICKETS ĐÚNG 1 DÒNG 
+			String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id,created_at) VALUES (?, ?, ?, 'PAID', ?, ?,NOW())";
+			psTicket = conn.prepareStatement(sqlTicket);
+			
+			psTicket.setString(1, ticketUid );
+			psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(totalPrice));
+			psTicket.setString(3, paymentMethod);
+			psTicket.setInt(4, user.getId());
+			psTicket.setInt(5, showtimeId);
+			int rowTicket = psTicket.executeUpdate();
+	        if (rowTicket == 0) throw new SQLException("Lỗi: Không thể tạo vé trong bảng tickets.");
+			// 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
+			// Tìm đúng ghế của suất chiếu đó và cập nhật user_id
+			String sqlSeat = "UPDATE showtimeseats SET user_id = ? WHERE showtime_id = ? AND seat_name = ?";
+			psSeat = conn.prepareStatement(sqlSeat);
+			
 
-            double pricePerSeat = totalPrice / seats.length;
+			for (String seat : seats) {
+				
+				// Cập nhật ghế (Tham số theo thứ tự dấu ? trong sqlSeat)
+				psSeat.setInt(1, user.getId()); // user_id
+				psSeat.setInt(2, showtimeId); // showtime_id
+				psSeat.setString(3, seat); // seat_name
+				psSeat.addBatch();//gom lại chạy 1 lần
+			}	
 
-            for (String seat : seats) {
-                // Tạo Ticket
-                psTicket.setString(1, ticketUid + "-" + seat); 
-                psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(pricePerSeat));
-                psTicket.setString(3, paymentMethod);
-                psTicket.setInt(4, user.getId());
-                psTicket.setInt(5, showtimeId);
-                psTicket.addBatch();
+			
+			int[] updateCounts = psSeat.executeBatch();
 
-                // Cập nhật ghế (Tham số theo thứ tự dấu ? trong sqlSeat)
-                psSeat.setInt(1, user.getId());   // user_id
-                psSeat.setInt(2, showtimeId);     // showtime_id
-                psSeat.setString(3, seat);        // seat_name
-                psSeat.addBatch();
-            }
+			// Kiểm tra xem có ghế nào update thất bại không
+			for (int count : updateCounts) {
+				if (count == 0) {
+					// Nếu count == 0 tức là không tìm thấy ghế để update (Sai tên hoặc sai ID)
+					System.out.println("LỖI: Không tìm thấy ghế trong DB để update. Kiểm tra lại tên ghế!");
+					throw new SQLException("Lỗi: Ghế không tồn tại hoặc đã bị người khác đặt.");
+				}
+			}
+			conn.commit(); // Xác nhận lưu
+			return true;
 
-            psTicket.executeBatch();
-            int[] updateCounts = psSeat.executeBatch();
-            
-            // Kiểm tra xem có ghế nào update thất bại không
-            for (int count : updateCounts) {
-                if (count == 0) {
-                    // Nếu count == 0 tức là không tìm thấy ghế để update (Sai tên hoặc sai ID)
-                    System.out.println("LỖI: Không tìm thấy ghế trong DB để update. Kiểm tra lại tên ghế!");
-                    throw new SQLException("Lỗi: Ghế không tồn tại hoặc đã bị người khác đặt.");
-                }
-            }
-            conn.commit(); // Xác nhận lưu
-            return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				if (conn != null)
+					conn.rollback(); // Gặp lỗi thì hoàn tác
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return false;
+		} finally {
+			try { if (psSeat != null) psSeat.close(); } catch (SQLException e) {}
+	        try { if (psTicket != null) psTicket.close(); } catch (SQLException e) {}
+	        try { if (conn != null) conn.close(); } catch (SQLException e) {}
+		}
+	}
 
-        } catch (Exception e) {
-             e.printStackTrace();
-            try {
-                if (conn != null) conn.rollback(); // Gặp lỗi thì hoàn tác
-            } catch (SQLException ex) { ex.printStackTrace(); }
-            return false;
-        } finally {
-            try { if (conn != null) conn.close(); } catch (SQLException e) {}
-        }
-    }
-    
-    // Hàm kiểm tra ghế đã đặt: SỬA logic chỉ lấy ghế có người (user_id khác NULL)
-    public List<String> getBookedSeats(int showtimeId) {
-        List<String> list = new ArrayList<>();
-        // THAY ĐỔI Ở ĐÂY: Thêm điều kiện user_id IS NOT NULL
-        String sql = "SELECT seat_name FROM showtimeseats WHERE showtime_id = ? AND user_id IS NOT NULL";
-        try {
-            Connection conn = JDBCConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, showtimeId);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                list.add(rs.getString("seat_name"));
-            }
-            conn.close();
-        } catch (Exception e) { e.printStackTrace(); }
-        return list;
-    }
+	// Hàm kiểm tra ghế đã đặt: SỬA logic chỉ lấy ghế có người (user_id khác NULL)
+	public List<String> getBookedSeats(int showtimeId) {
+		List<String> list = new ArrayList<>();
+		// THAY ĐỔI Ở ĐÂY: Thêm điều kiện user_id IS NOT NULL
+		String sql = "SELECT seat_name FROM showtimeseats WHERE showtime_id = ? AND user_id IS NOT NULL";
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, showtimeId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString("seat_name"));
+			}
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// Thêm vào TicketDAO.java
+	@Override
+	public Ticket getTicketById(int ticketId) {
+		String sql = "SELECT * FROM tickets WHERE ticket_id = ?";
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ticketId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				Ticket ticket = mapResultSetToTicket(rs);
+				rs.close();
+				ps.close();
+				conn.close();
+				return ticket;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

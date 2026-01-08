@@ -91,8 +91,8 @@
 			<%-- Nút điều hướng: Tái sử dụng .btn và .btn-secondary --%>
 			<div
 				style="margin-top: var(--spacing-lg); display: flex; gap: 10px; justify-content: center;">
-				<a href="home" class="btn">Về Trang Chủ</a> <a href="profile"
-					class="btn btn-secondary">Lịch Sử Đặt Vé</a>
+				<a href="home" class="btn">Về Trang Chủ</a> 
+				<a href="${pageContext.request.contextPath}/my-bookings" class="btn">Lịch Sử Đặt Vé</a>
 			</div>
 		</div>
 	</main>

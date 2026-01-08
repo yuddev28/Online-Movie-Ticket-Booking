@@ -1,5 +1,6 @@
 package controller;
 
+import model.Ticket;
 import model.User;
 
 import jakarta.servlet.ServletException;
@@ -9,7 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
+import dao.TicketDAO;
 import dao.UserDAO;
 
 @WebServlet(name = "ProfileServlet", urlPatterns = { "/profile" })
@@ -33,12 +37,25 @@ public class ProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("login").forward(request, response);
 			return;
 		}
-
 		// 4. Nếu đã đăng nhập -> Chuyển sang trang giao diện profile
 		// (Dữ liệu user đã có sẵn trong session, nên bên JSP có thể lấy ra dùng luôn)
-		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
-	}
+		TicketDAO ticketDAO = new TicketDAO();
+	    // Lấy danh sách vé của user hiện tại
+	    List<Ticket> history = ticketDAO.getTicketsByUserId(user.getId());
+	    
+	    // (Tùy chọn) Đảo ngược để vé mới nhất lên đầu
+	    if(history != null) {
+	        Collections.reverse(history);
+	    }
 
+	    // Đẩy dữ liệu sang JSP với tên biến là "ticketHistory"
+	    request.setAttribute("ticketHistory", history);
+	    // ------------------------------------
+
+	    request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+	}
+	
+	
 	// --- PHẦN DOPOST: THÊM MỚI ĐỂ XỬ LÝ ĐỔI MẬT KHẨU ---
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
