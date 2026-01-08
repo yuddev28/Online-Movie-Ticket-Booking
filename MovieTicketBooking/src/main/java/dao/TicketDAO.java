@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import model.Cinema;
+import model.Movie;
 import model.PaymentMethod;
+import model.Role;
+import model.Room;
 import model.ShowTime;
 import model.ShowTimeSeat;
 import model.Ticket;
@@ -19,7 +23,8 @@ import model.TicketStatus;
 import model.User;
 
 public class TicketDAO implements ITicketDAO {
-
+	
+	
 	// get tickets by user id
 	@Override
 	public List<Ticket> getTicketsByUserId(int userId) {
@@ -49,14 +54,55 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getAllTickets() {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT ticket_id, ticket_uid, ticket_price, payment_method"
-				+ ", ticket_status, created_at, updated_at, user_id, showtime_id FROM tickets";
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+				+ "u.user_id, u.username, u.email, u.phonenumber, u.role,"
+				+ "m.movie_id,  m.movie_name,"
+				+ "c.cinema_id, c.cinema_name, c.cinema_address,"
+				+ "r.room_id, r.room_name,"
+				+ "s.showtime_id, s.start_time, s.showtime_price "
+				+ "FROM tickets t "
+				+ "JOIN users u "
+				+ "ON t.user_id = u.user_id "
+				+ "JOIN showtimes s "
+				+ "ON t.showtime_id = s.showtime_id "
+				+ "JOIN movies m "
+				+ "ON s.movie_id = m.movie_id "
+				+ "JOIN cinemas c "
+				+ "ON s.cinema_id = c.cinema_id "
+				+ "JOIN rooms r "
+				+ "ON s.room_id = r.room_id "
+				+ "ORDER BY t.created_at DESC;";
 		try {
 			Connection conn = JDBCConnection.getConnection();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
+			Ticket ticket;
+			User user;
+			ShowTime showTime;
+			Cinema cinema;
+			Room room;
+			Movie movie;
+			List<ShowTimeSeat> seats; 
+			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
 			while (rs.next()) {
-				Ticket ticket = mapResultSetToTicket(rs);
+				user = new User(rs.getInt("user_id"), rs.getString("username"), null, rs.getString("email"),
+						rs.getString("phonenumber"), Role.valueOf(rs.getString("role")));
+				
+				cinema = new Cinema(rs.getInt("cinema_id"), rs.getString("cinema_name"), rs.getString("cinema_address"));
+				
+				room = new Room(rs.getInt("room_id"), rs.getString("room_name"));
+				
+				movie = new Movie(rs.getInt("movie_id"), rs.getString("movie_name"));
+				
+				showTime = new ShowTime(rs.getInt("showtime_id"), cinema, room, movie,
+						rs.getBigDecimal("showtime_price"), rs.getTimestamp("start_time").toLocalDateTime(), null);
+				
+				seats = seatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showTime.getId(), user.getId());
+				
+				ticket = new Ticket(rs.getInt("ticket_id"), rs.getString("ticket_uid"), user, showTime, seats,
+						rs.getBigDecimal("ticket_price"), PaymentMethod.valueOf(rs.getString("payment_method")),
+						TicketStatus.valueOf(rs.getString("ticket_status")),
+						rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("created_at").toLocalDateTime());
 				list.add(ticket);
 			}
 			rs.close();
