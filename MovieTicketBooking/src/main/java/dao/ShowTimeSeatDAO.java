@@ -168,5 +168,27 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
             e.printStackTrace();
         }
         return sts;
+        
     }
+ // Trong file ShowTimeSeatDAO.java
+
+ // Hàm mới: Lấy ghế theo Ticket ID
+ public List<ShowTimeSeat> getSeatsByTicketId(int ticketId) {
+     List<ShowTimeSeat> list = new ArrayList<>();
+     String sql = "SELECT * FROM showtimeseats WHERE ticket_id = ?";
+     
+     try {
+         Connection conn = JDBCConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ps.setInt(1, ticketId);
+         ResultSet rs = ps.executeQuery();
+         while (rs.next()) {
+             list.add(mapResultSetToShowTimeSeat(rs)); // Sử dụng lại hàm map có sẵn của bạn
+         }
+         conn.close();
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+     return list;
+ }
 }
