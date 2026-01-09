@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "BookTicketServlet", urlPatterns = {"/book-ticket"})
+@WebServlet("/book-ticket")
 public class BookTicketServlet extends HttpServlet {
 
     @Override

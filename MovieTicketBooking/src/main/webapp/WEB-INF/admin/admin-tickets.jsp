@@ -23,14 +23,15 @@
 	    	</div>
 		</c:if>
 		<h1 class="mb-0">Quản lý vé</h1>
+		<br>
 		<form action="${pageContext.request.contextPath }/admin/ticket/search">
 			<div class="d-flex justify-content-between align-items-center mb-3">
 			    <div class="input-group" style="width: 300px;">
 			        <input type="text"
 			               name="searchInput"
 			               class="form-control"
-			               placeholder="Tìm UID, người đặt...">
-			        <input type="submit" value="Tìm kiếm">
+			               placeholder="Tìm ID, người đặt">
+			        <input type="submit" class="btn btn-primary" value="Tìm kiếm">
 			    </div>
 			</div>
 		</form>

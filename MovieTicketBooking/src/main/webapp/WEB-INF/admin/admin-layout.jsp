@@ -15,7 +15,7 @@
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
 <style>
-	.nav-pills .nav-link {
+	.nav-pills .nav-item {
 		width: 100%;
 		background: transparent;
 		border: none;
@@ -23,11 +23,11 @@
 		border-radius: 8px;
 	}
 	
-	.nav-pills .nav-link:hover {
+	.nav-pills .nav-item:hover {
 		background-color: #495057;
 	}
 	
-	.nav-pills .nav-link.active {
+	.nav-pills .nav-item.active {
 		background-color: #0d6efd;
 		color: #fff;
 		font-weight: 500;
@@ -37,11 +37,10 @@
 <body>
 	<div class="d-flex">
 		<!-- Sidebar -->
-		<div id="currentPage" current-page="${pageView }"></div>
 		<nav class="sidebar bg-dark text-white vh-100 p-3 d-flex flex-column" style="position: fixed;width: 250px;">
 			<h4 class="text-center mb-2">Admin Panel</h4>
 			<hr>
-			<ul class="nav nav-pills flex-column mb-auto">
+			<ul class="nav nav-pills flex-column mb-auto" id="listPage">
 				<li class="nav-item">
 					<form action="${pageContext.request.contextPath}/admin/movies" id="movie" method="post">
 						<input type="submit" value="Quản lý phim" class="nav-link p-3 text-white">
@@ -73,7 +72,7 @@
 					</form>
 				</li>
 			</ul>
-
+			
 			<div class="d-flex justify-content-center align-items-center">
 				<form action="${pageContext.request.contextPath}/admin/logout" method="get" >
 					<input type="submit" value="Đăng xuất" class="nav-link text-white mt-auto text-center">
@@ -81,7 +80,7 @@
 			</div>
 			
 		</nav>
-
+		<div id="currentPage" current-page="${pageView }"></div>
 		<!-- Main content -->
 		<main class="flex-fill p-4" style="margin-left: 250px;">
 			<jsp:include page="${pageView}" />
@@ -93,7 +92,6 @@
 	document.addEventListener("DOMContentLoaded", function () {
 
 	    // Lấy page hiện tại
-	    const currentPageDiv = document.getElementById("currentPage");
 	    const currentPage = currentPageDiv.getAttribute("current-page");
 	
 	    if (!currentPage) return;

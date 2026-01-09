@@ -23,6 +23,7 @@ public class SearchTicketServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/admin/tickets");
 			return;
 		}
+		// Get list ticket and filter by uid
 		ITicketDAO dao = new TicketDAO();
 		List<Ticket> listTickets = dao.getAllTickets();
 		List<Ticket> newList = listTickets.stream().filter(t -> t.getUid().contains(searchInput)).toList();

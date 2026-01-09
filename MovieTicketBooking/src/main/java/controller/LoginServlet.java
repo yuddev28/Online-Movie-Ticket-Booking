@@ -11,29 +11,50 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-	// GET: Để hiển thị trang đăng nhập
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(req, resp);
     }
-	// POST: Xử lý đăng nhập
+	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         String username = request.getParameter("username");
         String pass = request.getParameter("password");
-
-        UserDAO dao = new UserDAO();
         
-        // 1. Lấy thông tin user từ DB dựa vào username
+        // Check input validation
+        if(username == null || username.isBlank()) {
+        	backToPage("Vui lòng nhập tên đăng nhập!", request, response);
+            return;
+        }
+        if(!username.matches("^[a-z0-9]+$")) {
+        	backToPage("Tên đăng nhập chỉ gồm chữ thường và số.", request, response);
+            return;
+        }
+        if(username.length() < 3 || username.length() > 30) {
+        	backToPage("Tên đăng nhập phải có độ dài 3-20 kí tự.", request, response);
+            return;
+        }
+        // check password
+        if (pass == null || pass.length() == 0) {
+            backToPage("Mật khẩu không được để trống.", request, response);
+            return;
+        }
+        if (pass.length() > 40) {
+            backToPage("Mật khẩu tối đa 40 kí tự.", request, response);
+            return;
+        }
+        if (!pass.matches("^[a-z0-9]+$")) {
+            backToPage("Mật khẩu chỉ được chứa chữ thường và số.", request, response);
+            return;
+        } 
+        
+        UserDAO dao = new UserDAO();
         User user = dao.checkUser(username);
-
-        // 2. Kiểm tra logic đăng nhập
         if (user == null) {
-            // Trường hợp: Tài khoản không tồn tại
             request.setAttribute("error", "Tài khoản không tồn tại. <a href='register.jsp'>Đăng ký ngay</a>");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         } else {
@@ -59,5 +80,19 @@ public class LoginServlet extends HttpServlet {
 			}
         	
         }
+    }
+    
+ // Back to register page if fail validation
+    private void backToPage(String message, HttpServletRequest request, HttpServletResponse response) {
+        try {
+        	request.setAttribute("error", message);
+			request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
