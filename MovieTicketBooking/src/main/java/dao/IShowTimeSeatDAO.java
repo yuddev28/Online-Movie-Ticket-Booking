@@ -7,8 +7,7 @@ import model.User;
 
 public interface IShowTimeSeatDAO {
 	List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId);
-	List<ShowTimeSeat> getShowTimeSeatsByUserId(int userId);
-	List<ShowTimeSeat> getShowTimeSeatsByShowTimeIdAndUserId(int showTimeId, int userId);
+	List<ShowTimeSeat> getShowTimeSeatsByShowTimeAndUserAndTicket(int showTimeId, int userId, int ticketId);
 	void addShowTimeSeats(List<ShowTimeSeat> list);
 	void updateShowTimeSeat(int showTimeSeatId, User user);
 }

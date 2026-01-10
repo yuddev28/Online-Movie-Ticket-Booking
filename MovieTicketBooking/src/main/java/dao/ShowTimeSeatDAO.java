@@ -30,34 +30,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ? ORDER BY showtimeseat_id";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id, ticket_id FROM showtimeseats WHERE showtime_id = ? ORDER BY showtimeseat_id";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
-			ResultSet rs = st.executeQuery();
-			ShowTimeSeat sts;
-			while (rs.next()) {
-				sts = mapResultSetToShowTimeSeat(rs);
-				list.add(sts);
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	// Get list of show time seats of user by user id
-	@Override
-	public List<ShowTimeSeat> getShowTimeSeatsByUserId(int userId) {
-		List<ShowTimeSeat> list = new ArrayList<>();
-		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE user_id = ?;";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
 			ShowTimeSeat sts;
 			while (rs.next()) {
@@ -74,14 +50,16 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	}
 	
 	@Override
-	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeIdAndUserId(int showTimeId, int userId) {
+	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeAndUserAndTicket(int showTimeId, int userId, int ticketId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ? AND user_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id, ticket_id FROM showtimeseats"
+					+ " WHERE showtime_id = ? AND user_id = ? AND ticket_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
 			st.setInt(2, userId);
+			st.setInt(3, ticketId);
 			ResultSet rs = st.executeQuery();
 			ShowTimeSeat sts;
 			while (rs.next()) {

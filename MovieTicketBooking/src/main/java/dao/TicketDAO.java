@@ -83,6 +83,7 @@ public class TicketDAO implements ITicketDAO {
 			Room room;
 			Movie movie;
 			List<ShowTimeSeat> seats; 
+			int ticketId;
 			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
 			while (rs.next()) {
 				user = new User(rs.getInt("user_id"), rs.getString("username"), null, rs.getString("email"),
@@ -97,9 +98,10 @@ public class TicketDAO implements ITicketDAO {
 				showTime = new ShowTime(rs.getInt("showtime_id"), cinema, room, movie,
 						rs.getBigDecimal("showtime_price"), rs.getTimestamp("start_time").toLocalDateTime(), null);
 				
-				seats = seatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showTime.getId(), user.getId());
+				ticketId = rs.getInt("ticket_id");
+				seats = seatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showTime.getId(), user.getId(), ticketId);
 				
-				ticket = new Ticket(rs.getInt("ticket_id"), rs.getString("ticket_uid"), user, showTime, seats,
+				ticket = new Ticket(ticketId, rs.getString("ticket_uid"), user, showTime, seats,
 						rs.getBigDecimal("ticket_price"), PaymentMethod.valueOf(rs.getString("payment_method")),
 						TicketStatus.valueOf(rs.getString("ticket_status")),
 						rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("created_at").toLocalDateTime());
@@ -121,6 +123,7 @@ public class TicketDAO implements ITicketDAO {
 		Connection conn = null;
 		PreparedStatement psTicket = null;
 		PreparedStatement psSeat = null;
+		ResultSet rs = null;
 
 		try {
 			conn = JDBCConnection.getConnection();
@@ -133,7 +136,7 @@ public class TicketDAO implements ITicketDAO {
 
 			// 2. Insert vào bảng TICKETS (Giữ nguyên)
 			String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
-			psTicket = conn.prepareStatement(sqlTicket);
+			psTicket = conn.prepareStatement(sqlTicket, Statement.RETURN_GENERATED_KEYS);
 			psTicket.setString(1, ticketUid);
 			psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(pricePerSeat));
 			psTicket.setString(3, paymentMethod);
@@ -141,16 +144,24 @@ public class TicketDAO implements ITicketDAO {
 			psTicket.setInt(5, showtimeId);
 			psTicket.executeUpdate();
 
+			int newTicketId = 0;
+	        rs = psTicket.getGeneratedKeys();
+	        if (rs.next()) {
+	            newTicketId = rs.getInt(1);
+	        } else {
+	            throw new SQLException("Không lấy được ID vé vừa tạo.");
+	        }
 			// 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
 			// Tìm đúng ghế của suất chiếu đó và cập nhật user_id
-			String sqlSeat = "UPDATE showtimeseats SET user_id = ? WHERE showtime_id = ? AND seat_name = ?";
+			String sqlSeat = "UPDATE showtimeseats SET user_id = ?, ticket_id = ? WHERE showtime_id = ? AND seat_name = ?";
 			psSeat = conn.prepareStatement(sqlSeat);
 
 			for (String seat : seats) {
 				// Cập nhật ghế (Tham số theo thứ tự dấu ? trong sqlSeat)
-				psSeat.setInt(1, user.getId()); // user_id
-				psSeat.setInt(2, showtimeId); // showtime_id
-				psSeat.setString(3, seat); // seat_name
+				psSeat.setInt(1, user.getId());
+				psSeat.setInt(2, newTicketId);
+				psSeat.setInt(3, showtimeId);
+				psSeat.setString(4, seat.trim());
 				psSeat.addBatch();
 			}
 
@@ -215,8 +226,8 @@ public class TicketDAO implements ITicketDAO {
 	private Ticket mapResultSetToTicket(ResultSet rs) {
 		Ticket ticket = new Ticket();
 		try {
-
-			ticket.setId(rs.getInt("ticket_id"));
+			int ticketId = rs.getInt("ticket_id");
+			ticket.setId(ticketId);
 			ticket.setUid(rs.getString("ticket_uid"));
 			ticket.setTotalPrice(rs.getBigDecimal("ticket_price"));
 			ticket.setPaymentMethod(PaymentMethod.valueOf(rs.getString("payment_method")));
@@ -235,8 +246,8 @@ public class TicketDAO implements ITicketDAO {
 			ticket.setShowTime(showTime);
 
 			IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
-			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeIdAndUserId(showtimeId,
-					userId);
+			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showtimeId,
+					userId, ticketId);
 			ticket.setSeats(showTimeSeats);
 		} catch (SQLException e) {
 			e.printStackTrace();
