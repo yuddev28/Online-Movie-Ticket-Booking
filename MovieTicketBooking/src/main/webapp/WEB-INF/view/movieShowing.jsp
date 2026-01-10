@@ -15,7 +15,7 @@
     <jsp:include page="header.jsp" />
 
     <main>
-        <section class="hero">
+        <section class="hero" style="height: 200px;">
             <div class="hero-banner"
                 style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');"></div>
             <div class="hero-overlay">

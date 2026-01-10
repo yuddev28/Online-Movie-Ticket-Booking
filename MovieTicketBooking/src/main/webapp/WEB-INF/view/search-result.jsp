@@ -12,7 +12,7 @@
     <jsp:include page="header.jsp" />
 
     <main>
-        <section class="hero" style="height: 300px;">
+        <section class="hero" style="height: 200px;">
             <div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1400x300?text=Search');"></div>
             <div class="hero-overlay">
                 <h1>Kết Quả Tìm Kiếm</h1>
@@ -31,6 +31,7 @@
                                     <h3>${m.name}</h3>
                                     <p class="genre">${m.type}</p>
                                     <a href="movie-detail?id=${m.id}" class="btn">Chi Tiết</a>
+                                    <a href="book-ticket?id=${m.id}" class="btn">Đặt Vé</a>
                                 </div>
                             </div>
                         </c:forEach>

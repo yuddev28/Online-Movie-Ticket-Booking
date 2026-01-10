@@ -298,12 +298,22 @@ main {
 }
 
 /* Movie-grid: Grid responsive cho cards phim - Auto-fit columns như Cinestar */
-.movie-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: var(--spacing-md);
+.section .movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+@media (max-width: 1024px) {
+    .section .movie-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
+@media (max-width: 768px) {
+    .section .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 /* Movie-card: Card phim với hover lift, shadow - Compact như Cinestar */
 .movie-card {
 	background-color: var(--bg-secondary);
