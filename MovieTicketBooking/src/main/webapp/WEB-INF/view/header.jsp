@@ -10,7 +10,7 @@
 <header>
     <div class="top-nav">
         <%-- Logo --%>
-        <a href="home.jsp" class="logo">MyCinema</a>
+        <a href="home" class="logo">MyCinema</a>
 
         <ul class="nav-links">
             <li><a href="home">Trang Chủ</a></li>

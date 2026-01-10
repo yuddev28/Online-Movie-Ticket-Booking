@@ -21,24 +21,14 @@
 				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');">
 			</div>
 			<div class="hero-overlay">
-				<h1>Avatar 3: Fire and Ash</h1>
-				<p>Cuộc chiến khốc liệt nhất bắt đầu.</p>
-				<a href="book-ticket?movieId=1" class="btn">Đặt Vé Ngay</a>
+				<c:set var="movie" value="${listShowing[0]}" />
+				<img src="${movie.imageUrl}" alt="${movie.name}" loading="lazy"
+							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
+				<h1>${movie.name }</h1>
+				<a href="book-ticket?movieId=${movie.id }" class="btn">Đặt Vé Ngay</a>
 			</div>
 		</section>
 
-		<%-- Cinema-select: Giữ nguyên --%>
-		<section class="cinema-select">
-			<div class="cinema-tab active">Tất Cả Rạp</div>
-			<div class="cinema-tab">Hà Nội</div>
-			<div class="cinema-tab">TP.HCM</div>
-			<div class="cinema-tab">Đà Nẵng</div>
-		</section>
-
-		<%-- ================================================= --%>
-		<%-- PHẦN 1: PHIM ĐANG CHIẾU (Dùng vòng lặp JSTL)      --%>
-		<%-- Biến hứng dữ liệu: listShowing                     --%>
-		<%-- ================================================= --%>
 		<section class="section">
 			<h2>Phim Đang Chiếu</h2>
 			<div class="movie-grid">
@@ -64,10 +54,6 @@
 				Tất Cả</a>
 		</section>
 
-		<%-- ================================================= --%>
-		<%-- PHẦN 2: PHIM SẮP CHIẾU (Dùng vòng lặp JSTL)       --%>
-		<%-- Biến hứng dữ liệu: listUpcoming                    --%>
-		<%-- ================================================= --%>
 		<section class="section">
 			<h2>Phim Sắp Chiếu</h2>
 			<div class="movie-grid">

@@ -14,7 +14,9 @@ import model.MovieStatus;
 public interface IMovieDAO {
 	// Get list of all movies in database
 	List<Movie> getAllMovies();
-
+	
+	List<Movie> getNMoviesWithStatus(int n, MovieStatus status);
+	
 	// Get movie have name contains a string
 	List<Movie> getMoviesHaveNameLikeString(String str);
 
@@ -28,7 +30,6 @@ public interface IMovieDAO {
 	int deleteMovieById(int id);
 	
 	// Update detail of movie with id
-	
 	int updateMovie(int id, Movie newMovie);
 
 	// Update movie status by movie id
