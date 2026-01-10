@@ -454,8 +454,8 @@ main {
 }
 
 .dropdown li a:hover {
-	background-color: var(--primary-color);
-	padding-left: calc(var(--spacing-md)+ 4px);
+	background-color: #222222;
+	padding-left: calc(var(--spacing-md)+ 2px);
 	
 }
 
