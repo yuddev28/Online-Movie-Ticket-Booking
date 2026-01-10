@@ -24,19 +24,18 @@ public class BookTicketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Kiểm tra đăng nhập (Yêu cầu của bạn)
+        // Kiểm tra đăng nhập 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
         if (user == null) {
             // Nếu chưa đăng nhập -> Chuyển về trang login
-            // Có thể lưu lại trang hiện tại để login xong quay lại (tùy chọn nâng cao)
             request.setAttribute("error", "Vui lòng đăng nhập để đặt vé!");
             request.getRequestDispatcher("login").forward(request, response);
             return;
         }
 
-        // 2. Lấy movieId từ tham số URL
+        // Lấy movieId từ tham số URL
         String movieIdStr = request.getParameter("movieId");
         if (movieIdStr == null || movieIdStr.isEmpty()) {
             response.sendRedirect("home"); // Nếu không có ID phim thì về trang chủ
@@ -47,8 +46,8 @@ public class BookTicketServlet extends HttpServlet {
             int movieId = Integer.parseInt(movieIdStr);
             ShowTimeDAO dao = new ShowTimeDAO();
             
-            // 3. Lấy danh sách tất cả suất chiếu của phim này trong 7 ngày tới
-            List<ShowTime> allShowTimes = dao.getShowTimesByMovieId(movieId);
+            // Lấy danh sách tất cả suất chiếu của phim này trong 7 ngày tới
+            List<ShowTime> allShowTimes = dao.getShowTimesByMovieIdAndNextNDays(movieId, 7);
             
             // 4. Tạo danh sách 7 ngày tới để hiển thị Tabs
             List<LocalDate> next7Days = new ArrayList<>();
@@ -64,7 +63,7 @@ public class BookTicketServlet extends HttpServlet {
             // Lấy tên phim từ suất chiếu đầu tiên (nếu có) để hiển thị tiêu đề
             IMovieDAO movieDao = new MovieDAO();
             if (!allShowTimes.isEmpty()) {
-                request.setAttribute("movieName", movieDao.getMovieById(movieId).getName()); // Dùng getName() theo file Movie bạn có
+                request.setAttribute("movieName", movieDao.getMovieById(movieId).getName());
             }
 
             request.getRequestDispatcher("/WEB-INF/view/book-ticket.jsp").forward(request, response);

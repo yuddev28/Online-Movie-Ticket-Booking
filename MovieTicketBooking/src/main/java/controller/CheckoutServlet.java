@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "CheckoutServlet", urlPatterns = {"/checkout"})
+@WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
 
     // POST 1: Nhận dữ liệu từ trang chọn ghế -> Hiển thị trang xác nhận

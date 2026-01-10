@@ -70,25 +70,24 @@ public class ShowTimeDAO implements IShowTimeDAO {
 		}
 		return showTime;
 	}
-
-	// Get list of show time by cinema id and movie id and day have show time
+	
+	// Get show time in next n days by movie id
+	// Ex: day = 7, now = 1/1/2026 => 1/1/2026 to 7/1/2026
 	@Override
-	public List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day) {
+	public List<ShowTime> getShowTimesByMovieIdAndNextNDays(int movieId, int day) {
 		List<ShowTime> list = new ArrayList<>();
+		// Query chuẩn không có ngoặc đơn
+		String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id "
+				+ "FROM showtimes " + "WHERE movie_id = ? " + "AND start_time >= NOW() "
+				+ "AND start_time <= DATE_ADD(NOW(), INTERVAL ? DAY) " + "ORDER BY start_time ASC";
 		try {
-			String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id FROM showtimes "
-					+ "WHERE cinema_id = ? AND movie_id = ? AND start_time >= ? AND start_time < ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, cinemaId);
-			st.setInt(2, movieId);
-			st.setTimestamp(3, Timestamp.valueOf(day.toLocalDate().atStartOfDay()));
-			st.setTimestamp(4, Timestamp.valueOf(day.toLocalDate().plusDays(1).atStartOfDay()));
+			st.setInt(1, movieId);
+			st.setInt(2, day);
 			ResultSet rs = st.executeQuery();
-			ShowTime showTime;
 			while (rs.next()) {
-				showTime = mapResultSetToShowTime(rs);
-				list.add(showTime);
+				list.add(mapResultSetToShowTime(rs));
 			}
 			rs.close();
 			st.close();
@@ -153,29 +152,6 @@ public class ShowTimeDAO implements IShowTimeDAO {
 			return false;
 		}
 		return true;
-	}
-	
-	public List<ShowTime> getShowTimesByMovieId(int movieId) {
-		List<ShowTime> list = new ArrayList<>();
-		// Query chuẩn không có ngoặc đơn
-		String query = "SELECT showtime_id, showtime_price, start_time, created_at, movie_id, cinema_id, room_id "
-				+ "FROM showtimes " + "WHERE movie_id = ? " + "AND start_time >= NOW() "
-				+ "AND start_time <= DATE_ADD(NOW(), INTERVAL 7 DAY) " + "ORDER BY start_time ASC";
-		try {
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, movieId);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				list.add(mapResultSetToShowTime(rs));
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
 	}
 
 	private ShowTime mapResultSetToShowTime(ResultSet rs) {

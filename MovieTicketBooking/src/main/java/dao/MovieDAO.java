@@ -64,6 +64,33 @@ public class MovieDAO implements IMovieDAO {
 		}
 		return list;
 	}
+	
+	// Get all movie with status
+	@Override
+	public List<Movie> getMoviesWithStatus(MovieStatus status) {
+		List<Movie> list = new ArrayList<>();
+		try {
+			// Query string to get data
+			String queryString = "SELECT movie_id, movie_name, movie_type, director_name, names_of_actors, movie_description,"
+					+ " movie_duration, movie_country, movie_image_url, movie_status"
+					+ " FROM movies WHERE movie_status = ?";
+			// Create connection
+			Connection connect = JDBCConnection.getConnection();
+			PreparedStatement ps = connect.prepareStatement(queryString);
+			ps.setString(1, status.name());
+			ResultSet rs = ps.executeQuery();
+			// Iterate result set to get data
+			while (rs.next()) {
+				list.add(mapResultSetToMovie(rs));
+			}
+			rs.close();
+			ps.close();
+			connect.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	// Get movie have name contains a string
 	// Ex: if u want "The walking dead" just type "the walking"
@@ -281,5 +308,7 @@ public class MovieDAO implements IMovieDAO {
 		}
 		return movie;
 	}
+
+
 
 }

@@ -12,21 +12,21 @@ import java.io.IOException;
 
 import dao.UserDAO;
 
-@WebServlet(name = "ProfileServlet", urlPatterns = { "/profile" })
+@WebServlet("/profile" )
 public class ProfileServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 1. Lấy phiên làm việc hiện tại (Session)
+		// Lấy phiên làm việc hiện tại
 		HttpSession session = request.getSession();
 
-		// 2. Kiểm tra xem trong session có lưu user chưa (key "user" thường được set
+		// Kiểm tra xem trong session có lưu user chưa (key "user" thường được set
 		// khi đăng nhập thành công)
 		User user = (User) session.getAttribute("user");
 
-		// 3. Nếu chưa đăng nhập (user là null) -> Chuyển hướng sang trang Login
+		// Nếu chưa đăng nhập (user là null) -> Chuyển hướng sang trang Login
 		if (user == null) {
 			// Lưu lại thông báo lỗi để hiện ở trang login nếu muốn
 			request.setAttribute("error", "Vui lòng đăng nhập để xem hồ sơ!");
@@ -34,12 +34,12 @@ public class ProfileServlet extends HttpServlet {
 			return;
 		}
 
-		// 4. Nếu đã đăng nhập -> Chuyển sang trang giao diện profile
+		// Nếu đã đăng nhập -> Chuyển sang trang giao diện profile
 		// (Dữ liệu user đã có sẵn trong session, nên bên JSP có thể lấy ra dùng luôn)
 		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}
 
-	// --- PHẦN DOPOST: THÊM MỚI ĐỂ XỬ LÝ ĐỔI MẬT KHẨU ---
+	// XỬ LÝ ĐỔI MẬT KHẨU 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,7 +47,7 @@ public class ProfileServlet extends HttpServlet {
 		// Thiết lập tiếng Việt
 		request.setCharacterEncoding("UTF-8");
 
-		// 1. Lấy user từ session
+		// Lấy user từ session
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
 
@@ -57,7 +57,7 @@ public class ProfileServlet extends HttpServlet {
 			return;
 		}
 
-		// 2. Lấy dữ liệu từ form (giữ nguyên tên tham số như form JSP)
+		// Lấy dữ liệu từ form (giữ nguyên tên tham số như form JSP)
 		String newUsername = request.getParameter("username");
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
@@ -66,10 +66,10 @@ public class ProfileServlet extends HttpServlet {
 		String confirmPass = request.getParameter("confirmPass");
 		
 		
-		// 3. Xử lý logic Đổi Mật Khẩu (Chỉ chạy khi người dùng nhập mật khẩu mới)
+		// Xử lý logic Đổi Mật Khẩu (Chỉ chạy khi người dùng nhập mật khẩu mới)
 		if (newPass != null && !newPass.isEmpty()) {
 
-			// a. Kiểm tra mật khẩu hiện tại
+			// Kiểm tra mật khẩu hiện tại
 			// Mã hóa mật khẩu nhập vào -> so sánh với mật khẩu hash trong User object
 			try {
 				String currentPassHash = PasswordUtils.hashPassword(currentPass);
@@ -80,43 +80,42 @@ public class ProfileServlet extends HttpServlet {
 					return;
 				}
 				
-				// b. Kiểm tra xác nhận mật khẩu
+				// Kiểm tra xác nhận mật khẩu
 				if (!newPass.equals(confirmPass)) {
 					request.setAttribute("error", "Mật khẩu xác nhận không khớp!");
 					request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 					return;
 				}
 
-				// c. Kiểm tra độ dài (Tùy chọn)
+				// Kiểm tra độ dài (Tùy chọn)
 				if (newPass.length() < 6) {
 					request.setAttribute("error", "Mật khẩu mới phải từ 6 ký tự trở lên!");
 					request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 					return;
 				}
 
-				// d. Mã hóa mật khẩu mới và cập nhật vào object User
+				// Mã hóa mật khẩu mới và cập nhật vào object User
 				String newPassHash = PasswordUtils.hashPassword(newPass);
 
 				currentUser.setPassword(newPassHash);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 
-		// 4. Cập nhật các thông tin cá nhân khác
+		// Cập nhật các thông tin cá nhân khác
 		currentUser.setEmail(email);
 		currentUser.setPhoneNumber(phone);
 
-		// 5. Gọi DAO để lưu xuống Database
+		// lưu xuống Database
 		UserDAO dao = new UserDAO();
 		dao.updateUser(currentUser); // Bạn cần đảm bảo đã thêm hàm updateUser vào UserDAO như hướng dẫn trước
 
-		// 6. Cập nhật lại Session (để hiển thị thông tin mới ngay lập tức)
+		// Cập nhật lại Session (để hiển thị thông tin mới ngay lập tức)
 		session.setAttribute("user", currentUser);
 
-		// 7. Thông báo thành công và reload trang
+		// Thông báo thành công và reload trang
 		request.setAttribute("message", "Cập nhật thông tin thành công!");
 		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}

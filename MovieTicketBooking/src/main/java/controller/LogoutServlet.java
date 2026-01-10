@@ -8,24 +8,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-// 1. Định nghĩa đường dẫn /logout để khớp với thẻ <a href="logout"> trên header
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+@WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 2. Lấy session hiện tại (nếu có)
+        // Lấy session hiện tại (nếu có)
         HttpSession session = request.getSession(false);
         
-        // 3. Xóa sạch Session -> Đây là lệnh quan trọng nhất để "Quay lại trạng thái chưa đăng nhập"
+        // Xóa sạch Session
         if (session != null) {
             session.invalidate(); 
         }
         
-        // 4. Chuyển hướng về trang chủ hoặc trang đăng nhập
+        // Chuyển hướng về trang chủ
         response.sendRedirect("home");
     }
 }

@@ -16,6 +16,7 @@ import dao.MovieDAO;
 @WebServlet("/search")
 public class SearchMovieServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get keyword form input and find movie with name contain keyword in database
 		String keyword = request.getParameter("keyword");
 		IMovieDAO dao = new MovieDAO();
 		List<Movie> movies = dao.getMoviesHaveNameLikeKeyword(keyword);

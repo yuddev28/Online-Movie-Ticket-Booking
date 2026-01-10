@@ -12,8 +12,9 @@ public interface IShowTimeDAO {
 	List<ShowTime> getAllShowTime();
 	// Get show time by id
 	ShowTime getShowTimeById(int id);
-	// Get list of show time by cinema id and movie id and start time
-	List<ShowTime> getShowTimeByCinemaAndMovieAndStartDay(int cinemaId, int movieId, LocalDateTime day);
+	// Get show time in next n days by movie id
+	// Ex: day = 7, now = 1/1/2026 => 1/1/2026 to 7/1/2026
+	List<ShowTime> getShowTimesByMovieIdAndNextNDays(int movieId, int day);
 	// Add show time
 	boolean addShowTime(ShowTime showTime);
 	// Delete show time by id

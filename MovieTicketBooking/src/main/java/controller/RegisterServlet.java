@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import utils.PasswordUtils;
 
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
 	// Thêm hàm doGet để mở trang đăng ký
@@ -102,10 +102,8 @@ public class RegisterServlet extends HttpServlet {
         	request.setAttribute("error", message);
 			request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
 		} catch (ServletException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

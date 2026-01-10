@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import utils.PasswordUtils;
 
-@WebServlet(name = "ResetPasswordServlet", urlPatterns = {"/reset-password"})
+@WebServlet("/reset-password")
 public class ResetPasswordServlet extends HttpServlet {
 
     @Override
@@ -20,7 +20,7 @@ public class ResetPasswordServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        // Bảo mật: Nếu chưa xác thực email (chưa có resetEmail trong session) thì đá về login
+        // Nếu chưa xác thực email (chưa có resetEmail trong session) thì đá về login
         if (session.getAttribute("resetEmail") == null) {
             response.sendRedirect("login"); 
             return;
@@ -49,21 +49,20 @@ public class ResetPasswordServlet extends HttpServlet {
             User user = dao.getUserByEmail(email); // Lấy user từ DB lên
             
             if (user != null) {
-                // 1. Mã hóa và cập nhật mật khẩu mới
+                // Mã hóa và cập nhật mật khẩu mới
                 try {
 					user.setPassword(PasswordUtils.hashPassword(newPass));
-					// 2. Lưu xuống DB (Dùng hàm updateUser đã sửa ở bước trước)
+					// Lưu xuống DB (Dùng hàm updateUser đã sửa ở bước trước)
 	                dao.updateUser(user); 
 	                
-	                // 3. Xóa session OTP để bảo mật
+	                // Xóa session OTP để bảo mật
 	                session.removeAttribute("otp");
 	                session.removeAttribute("resetEmail");
 	                
-	                // 4. Thông báo và về trang login
+	                // Thông báo và về trang login
 	                request.setAttribute("message", "Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
 	                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
                 

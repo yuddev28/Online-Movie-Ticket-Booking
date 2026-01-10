@@ -1,5 +1,6 @@
 package controller;
 
+import dao.IMovieDAO;
 import dao.MovieDAO;
 import model.Movie;
 import model.MovieStatus;
@@ -12,39 +13,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// URL này sẽ được gọi khi bấm vào menu "Phim"
-@WebServlet(name = "MoviesServlet", urlPatterns = {"/movies"})
+@WebServlet("/movies")
 public class MoviesServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+      
+        IMovieDAO dao = new MovieDAO();
         
-        // 1. Gọi DAO lấy TẤT CẢ phim
-        MovieDAO dao = new MovieDAO();
-        List<Movie> allMovies = dao.getAllMovies();
-        
-        // 2. Tạo 2 danh sách chứa
-        List<Movie> listShowing = new ArrayList<>();
-        List<Movie> listUpcoming = new ArrayList<>();
+        List<Movie> listShowing = dao.getMoviesWithStatus(MovieStatus.NOW_SHOWING);
+        List<Movie> listUpcoming = dao.getMoviesWithStatus(MovieStatus.COMING_SOON);
 
-        // 3. Phân loại phim
-        if (allMovies != null) {
-            for (Movie m : allMovies) {
-                if (m.getMovieStatus() == MovieStatus.NOW_SHOWING) {
-                    listShowing.add(m);
-                } else if (m.getMovieStatus() == MovieStatus.COMING_SOON) {
-                    listUpcoming.add(m);
-                }
-            }
-        }
-
-        // 4. Gửi dữ liệu sang trang JSP
+        // Gửi dữ liệu sang trang JSP
         request.setAttribute("listShowing", listShowing);
         request.setAttribute("listUpcoming", listUpcoming);
         
-        // 5. Chuyển hướng về trang giao diện
+        // Chuyển hướng về trang giao diện
         request.getRequestDispatcher("/WEB-INF/view/movies.jsp").forward(request, response);
     }
 }

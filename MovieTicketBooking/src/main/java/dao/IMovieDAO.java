@@ -15,7 +15,11 @@ public interface IMovieDAO {
 	// Get list of all movies in database
 	List<Movie> getAllMovies();
 	
+	// Get n movies with status
 	List<Movie> getNMoviesWithStatus(int n, MovieStatus status);
+	
+	//Get all movies with status
+	List<Movie> getMoviesWithStatus(MovieStatus status);
 	
 	// Get movie have name contains a string
 	List<Movie> getMoviesHaveNameLikeKeyword(String keyword);

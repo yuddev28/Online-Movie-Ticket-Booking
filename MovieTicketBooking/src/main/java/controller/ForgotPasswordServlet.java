@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse; // Đã dùng đúng tên
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/forgot-password"})
+@WebServlet("/forgot-password")
 public class ForgotPasswordServlet extends HttpServlet {
 
     @Override

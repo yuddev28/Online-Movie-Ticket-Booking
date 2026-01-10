@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Map các URL cho trang tĩnh
-@WebServlet(name = "PageRouterServlet", urlPatterns = {"/about", "/contact", "/news"})
+@WebServlet(urlPatterns = {"/about", "/contact", "/news"})
 public class PageRouterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

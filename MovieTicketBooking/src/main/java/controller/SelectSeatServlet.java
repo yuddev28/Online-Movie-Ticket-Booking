@@ -16,13 +16,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-@WebServlet(name = "SelectSeatServlet", urlPatterns = { "/select-seat" })
+@WebServlet("/select-seat" )
 public class SelectSeatServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1. Kiểm tra đăng nhập
+		// Kiểm tra đăng nhập
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user") == null) {
 			response.sendRedirect("login");
@@ -33,11 +33,13 @@ public class SelectSeatServlet extends HttpServlet {
 			int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
 			ShowTimeDAO stDao = new ShowTimeDAO();
 			ShowTimeSeatDAO stsDao = new ShowTimeSeatDAO();
-			// 2. Lấy thông tin suất chiếu
+			// Lấy thông tin suất chiếu
 			ShowTime showTime = stDao.getShowTimeById(showtimeId);
-			// 3. Load toàn bộ ghế từ DB
+			
+			// Load toàn bộ ghế từ DB
 			List<ShowTimeSeat> seatList = stsDao.getShowTimeSeatsByShowTimeId(showtimeId);
 			
+			// Lấy bảng alphabet để đánh dấu hàng ghế khi hiển thị
 			List<String> alphabet = new ArrayList<>();
 			char c = 'A';
 			for(int i = 0; i < showTime.getRoom().getNumberOfRows(); i++) {
