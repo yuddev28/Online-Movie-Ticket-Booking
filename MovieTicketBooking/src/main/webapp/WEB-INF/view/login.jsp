@@ -12,7 +12,7 @@
 		
 		<form class="auth-form" action="login" method="post">
 			<div class="auth-logo">
-				<a href="home.jsp" class="logo">MyCinema</a>
+				<a href="home" class="logo">MyCinema</a>
 			</div>
 
 			<h2>Đăng Nhập</h2>

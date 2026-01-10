@@ -22,13 +22,6 @@ public class SelectSeatServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Kiểm tra đăng nhập
-		HttpSession session = request.getSession();
-		if (session.getAttribute("user") == null) {
-			response.sendRedirect("login");
-			return;
-		}
-
 		try {
 			int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
 			ShowTimeDAO stDao = new ShowTimeDAO();
@@ -55,5 +48,10 @@ public class SelectSeatServlet extends HttpServlet {
 			e.printStackTrace();
 			response.sendRedirect("home");
 		}
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		super.doPost(request, response);
 	}
 }

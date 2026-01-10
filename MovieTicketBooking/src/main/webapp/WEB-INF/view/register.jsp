@@ -11,7 +11,7 @@
     <div class="auth-container">
         <form class="auth-form" action="register" method="post">
             <div class="auth-logo">
-                <a href="home.jsp" class="logo">MyCinema</a>
+                <a href="home" class="logo">MyCinema</a>
             </div>
             <h2>Đăng Ký</h2>
             

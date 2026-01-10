@@ -18,24 +18,6 @@ public class ProfileServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// Lấy phiên làm việc hiện tại
-		HttpSession session = request.getSession();
-
-		// Kiểm tra xem trong session có lưu user chưa (key "user" thường được set
-		// khi đăng nhập thành công)
-		User user = (User) session.getAttribute("user");
-
-		// Nếu chưa đăng nhập (user là null) -> Chuyển hướng sang trang Login
-		if (user == null) {
-			// Lưu lại thông báo lỗi để hiện ở trang login nếu muốn
-			request.setAttribute("error", "Vui lòng đăng nhập để xem hồ sơ!");
-			request.getRequestDispatcher("login").forward(request, response);
-			return;
-		}
-
-		// Nếu đã đăng nhập -> Chuyển sang trang giao diện profile
-		// (Dữ liệu user đã có sẵn trong session, nên bên JSP có thể lấy ra dùng luôn)
 		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}
 

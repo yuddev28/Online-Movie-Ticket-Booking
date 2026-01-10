@@ -15,7 +15,7 @@ import model.Role;
 import model.User;
 
 @WebFilter("/admin/*")
-public class AdminFilter implements Filter{
+public class AdminAuthFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

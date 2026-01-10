@@ -40,8 +40,6 @@ public class CheckoutServlet extends HttpServlet {
     private void processPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
-        if (user == null) { response.sendRedirect("login"); return; }
 
         int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
         String seatsStr = request.getParameter("selectedSeats"); // "A1,A2"

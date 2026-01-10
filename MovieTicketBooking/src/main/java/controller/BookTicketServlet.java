@@ -23,18 +23,6 @@ public class BookTicketServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // Kiểm tra đăng nhập 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        
-        if (user == null) {
-            // Nếu chưa đăng nhập -> Chuyển về trang login
-            request.setAttribute("error", "Vui lòng đăng nhập để đặt vé!");
-            request.getRequestDispatcher("login").forward(request, response);
-            return;
-        }
-
         // Lấy movieId từ tham số URL
         String movieIdStr = request.getParameter("movieId");
         if (movieIdStr == null || movieIdStr.isEmpty()) {
