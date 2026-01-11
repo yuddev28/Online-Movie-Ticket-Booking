@@ -1,5 +1,6 @@
 package controller;
 
+import model.Ticket;
 import model.User;
 import utils.PasswordUtils;
 import jakarta.servlet.ServletException;
@@ -9,7 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
+import dao.ITicketDAO;
+import dao.TicketDAO;
 import dao.UserDAO;
 
 @WebServlet("/profile" )
@@ -18,7 +22,15 @@ public class ProfileServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		ITicketDAO ticketDAO = new TicketDAO();
+	    // Lấy danh sách vé của user hiện tại
+	    List<Ticket> history = ticketDAO.getTicketsByUserId(user.getId());
+	    
+	    request.setAttribute("ticketHistory", history);
+	    request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}
 
 	// XỬ LÝ ĐỔI MẬT KHẨU 
@@ -32,14 +44,8 @@ public class ProfileServlet extends HttpServlet {
 		// Lấy user từ session
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
-
-		// Nếu session hết hạn, bắt đăng nhập lại
-		if (currentUser == null) {
-			response.sendRedirect("login");
-			return;
-		}
-
-		// Lấy dữ liệu từ form (giữ nguyên tên tham số như form JSP)
+		
+		// Lấy dữ liệu từ form 
 		String newUsername = request.getParameter("username");
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
@@ -48,11 +54,10 @@ public class ProfileServlet extends HttpServlet {
 		String confirmPass = request.getParameter("confirmPass");
 		
 		
-		// Xử lý logic Đổi Mật Khẩu (Chỉ chạy khi người dùng nhập mật khẩu mới)
+		// Xử lý logic Đổi Mật Khẩu
 		if (newPass != null && !newPass.isEmpty()) {
 
-			// Kiểm tra mật khẩu hiện tại
-			// Mã hóa mật khẩu nhập vào -> so sánh với mật khẩu hash trong User object
+			// Kiểm tra mật khẩu hiện tại từ input với mật khẩu hash từ user
 			try {
 				String currentPassHash = PasswordUtils.hashPassword(currentPass);
 

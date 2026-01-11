@@ -1,53 +1,102 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+
+<%-- Cấu hình hiển thị tiền tệ Việt Nam --%>
+<fmt:setLocale value="vi_VN" />
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán Thành Công - MyCinema</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thanh Toán Thành Công - MyCinema</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+	<jsp:include page="header.jsp" />
 
-    <main class="success-container">
-        <section class="hero">
-            <div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1400x500?text=Payment+Success');"></div>
-            <div class="hero-overlay">
-                <h1>Thanh Toán Thành Công!</h1>
-                <p>Cảm ơn bạn đã đặt vé tại MyCinema. Vé đã được gửi qua email.</p>
-            </div>
-        </section>
+	<main class="success-container">
+		<%-- Phần Hero Banner: Tái sử dụng class .hero từ styles.css --%>
+		<%-- Nếu showTime có ảnh phim, ta dùng làm nền, nếu không dùng ảnh mặc định --%>
+		<section class="hero">
+			<div class="hero-banner active"
+				style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${not empty showTime.movie.imageUrl ? showTime.movie.imageUrl : 'https://via.placeholder.com/1400x500?text=Cinema'}');">
+			</div>
+			<div class="hero-overlay">
+				<h1>Thanh Toán Thành Công!</h1>
 
-        <div class="success-hero">
-            <div style="font-size: 64px; color: #28a745; margin-bottom: var(--spacing-sm);">✓</div>
-            <h2 class="success-title">Đơn Vé Của Bạn Đã Được Xác Nhận</h2>
-            <p style="color: var(--text-muted); margin-bottom: var(--spacing-lg);">Mã đơn: <strong>MCN-20251109-001</strong></p>
+				<p>Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi.</p>
+			</div>
+		</section>
 
-            <section class="success-summary">
-                <div class="summary-item">
-                    <span>Phim: Quái Thú Vô Hình: Vùng Đất Chết Chóc</span>
-                    <span>TPHCM - 16:30, 09/11/2025</span>
-                </div>
-                <div class="summary-item">
-                    <span>Ghế: B3, B10 (Standard)</span>
-                    <span>2 vé</span>
-                </div>
-                <div class="summary-item">
-                    <span>Tổng Tiền</span>
-                    <span>80,000 VNĐ</span>
-                </div>
-                <div class="success-code">Mã Vé: MCN-V-20251109-001</div>
-                <p style="color: var(--text-muted); font-size: 14px;">Vé sẽ được gửi qua email trong 5 phút. Kiểm tra thư rác nếu không nhận được.</p>
-            </section>
+		<%-- Phần nội dung chính: Tái sử dụng .success-hero và .success-summary --%>
+		<div class="success-hero">
+			<div class="success-icon">✓</div>
+			<h2 class="success-title">Vé Của Bạn Đã Được Xác Nhận</h2>
+			<p
+				style="color: var(--text-muted); margin-bottom: var(--spacing-lg);">
+				Mã đơn hàng: <strong style="color: var(--text-color);">#BOOKING-${System.currentTimeMillis()}</strong>
+			</p>
 
-            <div style="margin-top: var(--spacing-lg);">
-                <a href="home.jsp" class="btn" style="margin-right: var(--spacing-md);">Về Trang Chủ</a>
-                <a href="profile.jsp" class="btn btn-secondary">Xem Hồ Sơ</a>
-            </div>
-        </div>
-    </main>
+			<section class="success-summary">
+				<%-- Tên Phim --%>
+				<div class="summary-item">
+					<span style="color: var(--text-muted);">Phim</span> <span
+						style="font-weight: bold; text-transform: uppercase;">${showTime.movie.name}</span>
+				</div>
 
-    <jsp:include page="footer.jsp" />
+				<%-- Thời gian chiếu --%>
+				<div class="summary-item">
+					<span style="color: var(--text-muted);">Suất chiếu</span> <span>
+						<%-- BƯỚC 1: Chuyển đổi (Parse) LocalDateTime dạng chuỗi sang java.util.Date --%>
+						<fmt:parseDate value="${showTime.startTime}"
+							pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" /> <%-- BƯỚC 2: Hiển thị Date đã chuyển đổi --%>
+						<fmt:formatDate value="${parsedDate}" pattern="HH:mm" /> - <fmt:formatDate
+							value="${parsedDate}" pattern="dd/MM/yyyy" />
+					</span>
+				</div>
+
+				<%-- Rạp và Phòng --%>
+				<div class="summary-item">
+					<span style="color: var(--text-muted);">Rạp / Phòng</span> 
+					<span>${showTime.cinema.name} - ${showTime.room.name}</span> - ${showTime.room.name}</span>
+				</div>
+
+				<%-- Ghế ngồi --%>
+				<div class="summary-item">
+					<span style="color: var(--text-muted);">Ghế đã chọn</span> <span
+						style="color: var(--primary-color); font-weight: bold;">${seats}</span>
+				</div>
+
+				<%-- Tổng tiền --%>
+				<div class="summary-item" style="border-bottom: none;">
+					<span style="color: var(--text-muted);">Tổng thanh toán</span> <span
+						style="color: var(--secondary-color); font-size: 18px; font-weight: 700;">
+						<fmt:formatNumber value="${totalPrice}" type="currency" />
+					</span>
+				</div>
+
+				<%-- Mã vé giả lập (hoặc lấy từ DB nếu có) --%>
+				<div class="success-code"
+					style="margin-top: 20px; border-top: 1px dashed #333; padding-top: 20px;">
+					Mã Vé: V-${showTime.id}-${seats.replace(',','')}</div>
+
+				<p
+					style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">
+					* Vui lòng chụp màn hình hoặc kiểm tra email để lấy mã vé khi đến
+					rạp.</p>
+			</section>
+
+			<%-- Nút điều hướng: Tái sử dụng .btn và .btn-secondary --%>
+			<div
+				style="margin-top: var(--spacing-lg); display: flex; gap: 10px; justify-content: center;">
+				<a href="home" class="btn">Về Trang Chủ</a> 
+				<a href="${pageContext.request.contextPath}/my-bookings" class="btn">Lịch Sử Đặt Vé</a>
+			</div>
+		</div>
+	</main>
+
+	<jsp:include page="footer.jsp" />
 </body>
 </html>

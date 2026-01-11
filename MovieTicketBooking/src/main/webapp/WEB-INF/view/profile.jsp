@@ -15,14 +15,6 @@
 
 	<main class="profile-container">
 
-		<%-- Nếu chưa đăng nhập --%>
-		<c:if test="${empty sessionScope.user}">
-			<div style="text-align: center; padding: 50px; color: white;">
-				<h2>Bạn chưa đăng nhập!</h2>
-				<a href="login" class="btn">Đăng Nhập Ngay</a>
-			</div>
-		</c:if>
-
 		<%-- Nếu đã đăng nhập --%>
 		<c:if test="${not empty sessionScope.user}">
 
@@ -123,33 +115,80 @@
 							<thead>
 								<tr>
 									<th>Mã Vé</th>
-									<th>Phim</th>
-									<th>Ngày Chiếu</th>
+									<th>Phim & Rạp</th>
+									<th>Thời Gian</th>
 									<th>Ghế</th>
 									<th>Tổng Tiền</th>
 									<th>Trạng Thái</th>
+									<th>Thao Tác</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${ticketHistory}" var="t">
 									<tr>
-										<td>#${t.id}</td>
-										<td>${t.showtime.movie.name}</td>
-										<td><fmt:parseDate value="${t.showtime.startTime}"
+										<td><strong>${t.uid}</strong></td>
+
+										<td>
+											${t.showTime.movie.name}<br> <small>${t.showTime.cinema.name}
+												- ${t.showTime.room.name}</small>
+										</td>
+										<td>
+											<fmt:parseDate value="${t.showTime.startTime}"
 												pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
 											<fmt:formatDate value="${parsedDate}"
-												pattern="dd/MM/yyyy HH:mm" /></td>
-										<td><c:forEach items="${t.seats}" var="s"
+												pattern="HH:mm dd/MM/yyyy" />
+										</td>
+
+										<td>
+											<c:forEach items="${t.seats}" var="s"
 												varStatus="loop">
-                                                ${s.seatRow}${s.seatNumber}${!loop.last ? ',' : ''}
-                                            </c:forEach></td>
-										<td><fmt:formatNumber value="${t.totalPrice}"
-												type="currency" currencySymbol="₫" /></td>
-										<td><span
-											style="color: ${t.status == 'PAID' ? '#4caf50' : '#f44336'}; font-weight: bold;">
-												${t.status} </span></td>
+												<span class="seat-badge">${s.seatName}</span>${!loop.last ? ',' : ''}
+                    						</c:forEach>
+                    					</td>
+
+										<td>
+											<fmt:formatNumber 
+									        value="${st.pricePerTicket}" 
+									        type="currency" 
+									        currencySymbol="₫" 
+									        maxFractionDigits="0"/>
+									    </td>
+										<td>
+											<c:choose>
+												<c:when test="${t.status == 'PAID'}">
+													<span style="color: green; font-weight: bold;">Đã thanh toán</span>
+												</c:when>
+												<c:when test="${t.status == 'CHECKEDIN'}">
+													<span style="color: blue; font-weight: bold;">Đã check in</span>
+												</c:when>
+												<c:when test="${t.status == 'CANCELLED'}">
+													<span style="color: red; font-weight: bold;">Đã hủy</span>
+												</c:when>
+												<c:when test="${t.status == 'UNPAID'}">
+													<span style="color: yellow; font-weight: bold;">Chưa thanh toán</span>
+												</c:when>
+											</c:choose></td>
+
+										<td>
+											<c:if test="${t.status != 'CANCELLED'}">
+												<form action="cancel-ticket" method="post"
+													onsubmit="return confirm('Bạn có chắc chắn muốn hủy vé ${t.uid}?');">
+													<input type="hidden" name="ticketId" value="${t.id}">
+													<button type="submit"
+														style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+														Hủy Vé</button>
+												</form>
+											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
+
+								<c:if test="${empty ticketHistory}">
+									<tr>
+										<td colspan="7" style="text-align: center;">Chưa có lịch
+											sử đặt vé.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>
 					</c:if>

@@ -50,8 +50,7 @@
 							<fmt:formatNumber 
 						        value="${st.pricePerTicket}" 
 						        type="currency" 
-						        currencySymbol="₫" 
-						        maxFractionDigits="0"/>
+						        maxFractionDigits="0"/>đ
 						</td>
 						<td>
 							<fmt:formatDate 

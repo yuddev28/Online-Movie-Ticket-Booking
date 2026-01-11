@@ -23,26 +23,33 @@ import model.TicketStatus;
 import model.User;
 
 public class TicketDAO implements ITicketDAO {
-	
-	
+
 	// get tickets by user id
 	@Override
 	public List<Ticket> getTicketsByUserId(int userId) {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT ticket_id, ticket_uid, ticket_price, payment_method"
-				+ ", ticket_status, created_at, updated_at, user_id, showtime_id FROM tickets WHERE user_id = ?";
-		try {
-			Connection conn = JDBCConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
+				+ "m.movie_id,  m.movie_name,"
+				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
+				+ "r.room_id, r.room_name,"
+				+ "s.showtime_id, s.start_time, s.showtime_price " 
+				+ "FROM tickets t " 
+				+ "JOIN users u ON t.user_id = u.user_id " 
+				+ "JOIN showtimes s ON t.showtime_id = s.showtime_id "
+				+ "JOIN movies m ON s.movie_id = m.movie_id " 
+				+ "JOIN cinemas c ON s.cinema_id = c.cinema_id "
+				+ "JOIN rooms r ON s.room_id = r.room_id " 
+				+ "WHERE u.user_id = ? "
+				+ "ORDER BY t.created_at DESC;";
+		try (Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);){
 			ps.setInt(1, userId);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				Ticket ticket = mapResultSetToTicket(rs);
-				list.add(ticket);
+			try (ResultSet rs = ps.executeQuery();){
+				while (rs.next()) {
+					list.add(mapResultSetToTicket(rs));
+				}
 			}
-			rs.close();
-			ps.close();
-			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,66 +57,62 @@ public class TicketDAO implements ITicketDAO {
 		return list;
 	}
 
+	// Get ticket by ticket id
+	@Override
+	public Ticket getTicketById(int ticketId) {
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
+				+ "m.movie_id,  m.movie_name,"
+				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
+				+ "r.room_id, r.room_name,"
+				+ "s.showtime_id, s.start_time, s.showtime_price " 
+				+ "FROM tickets t " 
+				+ "JOIN users u ON t.user_id = u.user_id " 
+				+ "JOIN showtimes s ON t.showtime_id = s.showtime_id "
+				+ "JOIN movies m ON s.movie_id = m.movie_id " 
+				+ "JOIN cinemas c ON s.cinema_id = c.cinema_id "
+				+ "JOIN rooms r ON s.room_id = r.room_id " 
+				+ "WHERE t.ticket_id = ? "
+				+ "ORDER BY t.created_at DESC;";
+		try (Connection conn = JDBCConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);){
+			ps.setInt(1, ticketId);
+			try (ResultSet rs = ps.executeQuery();){
+				while (rs.next()) {
+					Ticket ticket = mapResultSetToTicket(rs);
+					return ticket;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	// get all tickets
 	@Override
 	public List<Ticket> getAllTickets() {
 		List<Ticket> list = new ArrayList<>();
 		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
-				+ "u.user_id, u.username, u.email, u.phonenumber, u.role,"
+				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
-				+ "c.cinema_id, c.cinema_name, c.cinema_address,"
+				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
 				+ "r.room_id, r.room_name,"
-				+ "s.showtime_id, s.start_time, s.showtime_price "
-				+ "FROM tickets t "
-				+ "JOIN users u "
-				+ "ON t.user_id = u.user_id "
-				+ "JOIN showtimes s "
-				+ "ON t.showtime_id = s.showtime_id "
-				+ "JOIN movies m "
-				+ "ON s.movie_id = m.movie_id "
-				+ "JOIN cinemas c "
-				+ "ON s.cinema_id = c.cinema_id "
-				+ "JOIN rooms r "
-				+ "ON s.room_id = r.room_id "
+				+ "s.showtime_id, s.start_time, s.showtime_price " 
+				+ "FROM tickets t " 
+				+ "JOIN users u ON t.user_id = u.user_id " 
+				+ "JOIN showtimes s ON t.showtime_id = s.showtime_id "
+				+ "JOIN movies m ON s.movie_id = m.movie_id " 
+				+ "JOIN cinemas c ON s.cinema_id = c.cinema_id "
+				+ "JOIN rooms r ON s.room_id = r.room_id " 
 				+ "ORDER BY t.created_at DESC;";
-		try {
-			Connection conn = JDBCConnection.getConnection();
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-			Ticket ticket;
-			User user;
-			ShowTime showTime;
-			Cinema cinema;
-			Room room;
-			Movie movie;
-			List<ShowTimeSeat> seats; 
-			int ticketId;
-			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
-			while (rs.next()) {
-				user = new User(rs.getInt("user_id"), rs.getString("username"), null, rs.getString("email"),
-						rs.getString("phonenumber"), Role.valueOf(rs.getString("role")));
-				
-				cinema = new Cinema(rs.getInt("cinema_id"), rs.getString("cinema_name"), rs.getString("cinema_address"));
-				
-				room = new Room(rs.getInt("room_id"), rs.getString("room_name"));
-				
-				movie = new Movie(rs.getInt("movie_id"), rs.getString("movie_name"));
-				
-				showTime = new ShowTime(rs.getInt("showtime_id"), cinema, room, movie,
-						rs.getBigDecimal("showtime_price"), rs.getTimestamp("start_time").toLocalDateTime(), null);
-				
-				ticketId = rs.getInt("ticket_id");
-				seats = seatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showTime.getId(), user.getId(), ticketId);
-				
-				ticket = new Ticket(ticketId, rs.getString("ticket_uid"), user, showTime, seats,
-						rs.getBigDecimal("ticket_price"), PaymentMethod.valueOf(rs.getString("payment_method")),
-						TicketStatus.valueOf(rs.getString("ticket_status")),
-						rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("created_at").toLocalDateTime());
-				list.add(ticket);
+		try (Connection conn = JDBCConnection.getConnection();
+			Statement st = conn.createStatement();){
+			try (ResultSet rs = st.executeQuery(sql);){
+				while (rs.next()) {
+					list.add(mapResultSetToTicket(rs));
+				}
 			}
-			rs.close();
-			st.close();
-			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,12 +148,12 @@ public class TicketDAO implements ITicketDAO {
 			psTicket.executeUpdate();
 
 			int newTicketId = 0;
-	        rs = psTicket.getGeneratedKeys();
-	        if (rs.next()) {
-	            newTicketId = rs.getInt(1);
-	        } else {
-	            throw new SQLException("Không lấy được ID vé vừa tạo.");
-	        }
+			rs = psTicket.getGeneratedKeys();
+			if (rs.next()) {
+				newTicketId = rs.getInt(1);
+			} else {
+				throw new SQLException("Không lấy được ID vé vừa tạo.");
+			}
 			// 3. Update bảng SHOWTIMESEATS (THAY ĐỔI Ở ĐÂY: Dùng UPDATE thay vì INSERT)
 			// Tìm đúng ghế của suất chiếu đó và cập nhật user_id
 			String sqlSeat = "UPDATE showtimeseats SET user_id = ?, ticket_id = ? WHERE showtime_id = ? AND seat_name = ?";
@@ -226,29 +229,29 @@ public class TicketDAO implements ITicketDAO {
 	private Ticket mapResultSetToTicket(ResultSet rs) {
 		Ticket ticket = new Ticket();
 		try {
+			User user = new User(rs.getInt("user_id"), rs.getString("username"), null, rs.getString("email"),
+					rs.getString("phonenumber"), Role.valueOf(rs.getString("role")));
+
+			Cinema cinema = new Cinema(rs.getInt("cinema_id"), rs.getString("cinema_name"),
+					rs.getString("cinema_address"));
+
+			Room room = new Room(rs.getInt("room_id"), rs.getString("room_name"));
+
+			Movie movie = new Movie(rs.getInt("movie_id"), rs.getString("movie_name"));
+
+			ShowTime showTime = new ShowTime(rs.getInt("showtime_id"), cinema, room, movie,
+					rs.getBigDecimal("showtime_price"), rs.getTimestamp("start_time").toLocalDateTime(), null);
+
 			int ticketId = rs.getInt("ticket_id");
-			ticket.setId(ticketId);
-			ticket.setUid(rs.getString("ticket_uid"));
-			ticket.setTotalPrice(rs.getBigDecimal("ticket_price"));
-			ticket.setPaymentMethod(PaymentMethod.valueOf(rs.getString("payment_method")));
-			ticket.setStatus(TicketStatus.valueOf(rs.getString("ticket_status")));
-			ticket.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-			ticket.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
 
-			int userId = rs.getInt("user_id");
-			int showtimeId = rs.getInt("showtime_id");
-			IUserDAO userDAO = new UserDAO();
-			User user = userDAO.getUserById(userId);
-			ticket.setUser(user);
+			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
+			List<ShowTimeSeat> seats = seatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showTime.getId(),
+					user.getId(), ticketId);
 
-			IShowTimeDAO showTimeDAO = new ShowTimeDAO();
-			ShowTime showTime = showTimeDAO.getShowTimeById(showtimeId);
-			ticket.setShowTime(showTime);
-
-			IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
-			List<ShowTimeSeat> showTimeSeats = showTimeSeatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showtimeId,
-					userId, ticketId);
-			ticket.setSeats(showTimeSeats);
+			ticket = new Ticket(ticketId, rs.getString("ticket_uid"), user, showTime, seats,
+					rs.getBigDecimal("ticket_price"), PaymentMethod.valueOf(rs.getString("payment_method")),
+					TicketStatus.valueOf(rs.getString("ticket_status")),
+					rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("created_at").toLocalDateTime());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

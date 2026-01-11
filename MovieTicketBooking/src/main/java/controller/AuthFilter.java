@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/checkout", "/book-ticket", "/profile", "/select-seat"})
+@WebFilter(urlPatterns = {"/checkout", "/book-ticket", "/profile", "/select-seat",
+		"/my-bookings", "/cancel-ticket"})
 public class AuthFilter extends HttpFilter implements Filter {
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
