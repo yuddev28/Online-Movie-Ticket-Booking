@@ -11,7 +11,7 @@ public class Ticket {
 	private String uid;
 	private User user;
 	private ShowTime showTime;
-	private List<ShowTimeSeat> seats;
+	private String seats;
 	private BigDecimal totalPrice;
 	private PaymentMethod paymentMethod;
 	private TicketStatus status;
@@ -20,20 +20,8 @@ public class Ticket {
 	
 	public Ticket() {}
 	
-	// constructor for create ticket
-	public Ticket(User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
-		this.user = user;
-		this.showTime = showTime;
-		this.seats = seats;
-		this.totalPrice = this.calculateTotalPrice();
-		this.paymentMethod = paymentMethod;
-		this.status = TicketStatus.UNPAID;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = createdAt;
-	}
-	
 	// constructor for get data from db
-	public Ticket(int id, String uid, User user, ShowTime showTime, List<ShowTimeSeat> seats, BigDecimal totalPrice,
+	public Ticket(int id, String uid, User user, ShowTime showTime, String seats, BigDecimal totalPrice,
 			PaymentMethod paymentMethod, TicketStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
 		this.uid = uid;
@@ -45,22 +33,6 @@ public class Ticket {
 		this.status = status;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-	}
-
-	// calculate total price of ticket by price per ticket * number of seat
-	private BigDecimal calculateTotalPrice() {
-		return showTime.getPricePerTicket().multiply(new BigDecimal(seats.size()));
-	}
-	
-	public String getAllSeats() {
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < seats.size(); i++) {
-			sb.append(seats.get(i).getSeatName());
-			if(i != seats.size() - 1) {
-				sb.append(", ");
-			}
-		}
-		return sb.toString();
 	}
 	
 	// Getter and Setter
@@ -80,11 +52,11 @@ public class Ticket {
 		this.showTime = showTime;
 	}
 
-	public List<ShowTimeSeat> getSeats() {
+	public String getSeats() {
 		return seats;
 	}
 
-	public void setSeats(List<ShowTimeSeat> seats) {
+	public void setSeats(String seats) {
 		this.seats = seats;
 	}
 

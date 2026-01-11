@@ -9,5 +9,5 @@ public interface IShowTimeSeatDAO {
 	List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId);
 	List<ShowTimeSeat> getShowTimeSeatsByShowTimeAndUserAndTicket(int showTimeId, int userId, int ticketId);
 	void addShowTimeSeats(List<ShowTimeSeat> list);
-	void updateShowTimeSeat(int showTimeSeatId, User user);
+	void updateShowTimeSeat(int showTimeSeatId, User user, int ticketId);
 }

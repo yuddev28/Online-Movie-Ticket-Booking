@@ -28,7 +28,7 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getTicketsByUserId(int userId) {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
@@ -60,7 +60,7 @@ public class TicketDAO implements ITicketDAO {
 	// Get ticket by ticket id
 	@Override
 	public Ticket getTicketById(int ticketId) {
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
@@ -93,7 +93,7 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getAllTickets() {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
@@ -138,13 +138,14 @@ public class TicketDAO implements ITicketDAO {
 			double pricePerSeat = totalPrice / seats.length;
 
 			// 2. Insert vào bảng TICKETS (Giữ nguyên)
-			String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?)";
+			String sqlTicket = "INSERT INTO tickets (ticket_uid, ticket_price, payment_method, ticket_status, ticket_seats, user_id, showtime_id) VALUES (?, ?, ?, 'PAID', ?, ?, ?)";
 			psTicket = conn.prepareStatement(sqlTicket, Statement.RETURN_GENERATED_KEYS);
 			psTicket.setString(1, ticketUid);
 			psTicket.setBigDecimal(2, java.math.BigDecimal.valueOf(pricePerSeat));
 			psTicket.setString(3, paymentMethod);
-			psTicket.setInt(4, user.getId());
-			psTicket.setInt(5, showtimeId);
+			psTicket.setString(4, convertListToString(seats));
+			psTicket.setInt(5, user.getId());
+			psTicket.setInt(6, showtimeId);
 			psTicket.executeUpdate();
 
 			int newTicketId = 0;
@@ -211,12 +212,12 @@ public class TicketDAO implements ITicketDAO {
 			ps.executeUpdate();
 			ps.close();
 			conn.close();
-			IShowTimeSeatDAO showTimeSeatDAO = new ShowTimeSeatDAO();
+			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
 			// If user cancelled ticket => all show time seat in that ticket will be not
 			// booked
 			if (newStatus.equals(TicketStatus.CANCELLED)) {
-				for (ShowTimeSeat sts : ticket.getSeats()) {
-					showTimeSeatDAO.updateShowTimeSeat(sts.getId(), null);
+				for (ShowTimeSeat sts : seatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(ticket.getShowTime().getId(), ticket.getUser().getId(), ticket.getId())) {
+					seatDAO.updateShowTimeSeat(sts.getId(), null, 0);
 				}
 			}
 		} catch (Exception e) {
@@ -244,18 +245,27 @@ public class TicketDAO implements ITicketDAO {
 
 			int ticketId = rs.getInt("ticket_id");
 
-			IShowTimeSeatDAO seatDAO = new ShowTimeSeatDAO();
-			List<ShowTimeSeat> seats = seatDAO.getShowTimeSeatsByShowTimeAndUserAndTicket(showTime.getId(),
-					user.getId(), ticketId);
-
-			ticket = new Ticket(ticketId, rs.getString("ticket_uid"), user, showTime, seats,
+			ticket = new Ticket(ticketId, rs.getString("ticket_uid"), user, showTime, rs.getString("ticket_seats"),
 					rs.getBigDecimal("ticket_price"), PaymentMethod.valueOf(rs.getString("payment_method")),
 					TicketStatus.valueOf(rs.getString("ticket_status")),
-					rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("created_at").toLocalDateTime());
+					rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ticket;
+	}
+	
+	// Convert list of seats to seat have ',' between 2 seat
+	// EX: A1, A2,... , B5
+	private String convertListToString(String[] seats) {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < seats.length; i++) {
+			sb.append(seats[i]);
+			if(i < seats.length - 1) {
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
 	}
 
 }

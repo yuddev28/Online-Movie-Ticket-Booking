@@ -113,20 +113,22 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	
 
 
-	// Update user of show time seat by show time seat id, user can be null
+	// Update user and ticket of show time seat by show time seat id, user can be null
 	@Override
-	public void updateShowTimeSeat(int showTimeSeatId, User user) {
+	public void updateShowTimeSeat(int showTimeSeatId, User user, int ticketId) {
 
 		try {
-			String sql = "UPDATE showtimeseats SET user_id = ? WHERE showtimeseat_id = ?;";
+			String sql = "UPDATE showtimeseats SET user_id = ?, ticket_id = ? WHERE showtimeseat_id = ?;";
 
 			Connection conn = JDBCConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			if (user != null) {
 				ps.setInt(1, user.getId());
+				ps.setInt(2, ticketId);
 			} else {
 				ps.setNull(1, java.sql.Types.INTEGER);
+				ps.setNull(2, java.sql.Types.INTEGER);
 			}
 			ps.setInt(2, showTimeSeatId);
 			ps.executeUpdate();
