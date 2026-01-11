@@ -138,17 +138,10 @@
 											<fmt:formatDate value="${parsedDate}"
 												pattern="HH:mm dd/MM/yyyy" />
 										</td>
-
-										<td>
-											<c:forEach items="${t.seats}" var="s"
-												varStatus="loop">
-												<span class="seat-badge">${s.seatName}</span>${!loop.last ? ',' : ''}
-                    						</c:forEach>
-                    					</td>
-
+										<td>${t.seats}</td>
 										<td>
 											<fmt:formatNumber 
-									        value="${st.pricePerTicket}" 
+									        value="${t.totalPrice}" 
 									        type="currency" 
 									        currencySymbol="₫" 
 									        maxFractionDigits="0"/>

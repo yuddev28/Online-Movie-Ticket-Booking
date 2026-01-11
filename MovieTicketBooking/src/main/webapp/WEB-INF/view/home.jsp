@@ -11,21 +11,13 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<%-- Gọi Header chung --%>
 	<jsp:include page="header.jsp" />
 
 	<main>
-		<%-- Hero Section: Giữ nguyên --%>
 		<section class="hero">
-			<div class="hero-banner"
-				style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2019/posters/avengers_endgame.jpg');">
-			</div>
-			<div class="hero-overlay">
-				<c:set var="movie" value="${listShowing[0]}" />
-				<img src="${movie.imageUrl}" alt="${movie.name}" loading="lazy"
-							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
-				<h1>${movie.name }</h1>
-				<a href="book-ticket?movieId=${movie.id }" class="btn">Đặt Vé Ngay</a>
+			<div class="hero-overlay" style="display:flex; justify-content:center; align-items:center;">
+				<img style=" border: 3px solid #888; border-radius: 8px;" 
+				alt="" src="https://iguov8nhvyobj.vcdn.cloud/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/9/8/980x448_23__8.jpg">
 			</div>
 		</section>
 
@@ -75,7 +67,6 @@
 		</section>
 	</main>
 
-	<%-- Gọi Footer chung --%>
 	<jsp:include page="footer.jsp" />
 </body>
 </html>

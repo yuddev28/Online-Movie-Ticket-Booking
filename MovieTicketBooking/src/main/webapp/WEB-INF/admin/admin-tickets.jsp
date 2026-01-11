@@ -59,7 +59,7 @@
 						<td>${t.showTime.movie.name} - ${ t.showTime.cinema.name},
 							 ${t.showTime.room.name} - 
 							 <fmt:formatDate value="${t.showTime.startTimeAsDate }" pattern="dd/MM/yyyy HH:mm"/></td>
-						<td>${t.allSeats }
+						<td>${t.seats}</td>
 						<td>
 							<fmt:formatNumber 
 							        value="${t.totalPrice}" 
