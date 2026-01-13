@@ -23,7 +23,7 @@
 			<div class="hero-overlay">
 				<h1>Avatar 3: Fire and Ash</h1>
 				<p>Cuộc chiến khốc liệt nhất bắt đầu.</p>
-				<a href="book-ticket?movieId=1" class="btn">Đặt Vé Ngay</a>
+				<a href="movie-detail?movieId=1" class="btn">Đặt Vé Ngay</a>
 			</div>
 		</section>
 
@@ -54,7 +54,7 @@
 							<p class="genre">${m.type}</p>
 
 							<%-- Truyền ID phim vào link đặt vé --%>
-							<a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
+							<a href="movie-detail?movieId=${m.id}" class="btn">Đặt Vé</a>
 						</div>
 					</div>
 				</c:forEach>

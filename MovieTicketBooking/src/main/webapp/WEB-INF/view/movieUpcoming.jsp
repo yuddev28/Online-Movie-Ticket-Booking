@@ -42,7 +42,7 @@
                             
                             <%-- SỬA LINK: Đổi id thành movieId --%>
                             <%-- Lưu ý: Vẫn trỏ về movie-detail.jsp vì chưa có Servlet cho chi tiết phim --%>
-                            <a href="movie-detail.jsp?movieId=${m.id}" class="btn" style="background: #555;">Chi Tiết</a>
+                            <a href="movie-detail?movieId=${m.id}" class="btn" style="background: #555;">Chi Tiết</a>
                         </div>
                     </div>
                 </c:forEach>

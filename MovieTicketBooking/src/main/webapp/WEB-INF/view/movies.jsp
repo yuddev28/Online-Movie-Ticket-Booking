@@ -61,7 +61,7 @@
                             <div class="rating">★ ${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             <%-- Nút Đặt Vé cho phim đang chiếu --%>
-                            <a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
                 </c:forEach>
@@ -97,7 +97,7 @@
                             <p class="genre">${m.type}</p>
                             
                             <%-- Phim sắp chiếu thì nút chuyển thành Chi Tiết (Màu xám) --%>
-                            <a href="movie-detail.jsp?id=${m.id}" class="btn" 
+                            <a href="movie-detail?movieId=${m.id}" class="btn" 
                                style="background-color: #555; text-align: center;">Chi Tiết</a>
                         </div>
                     </div>

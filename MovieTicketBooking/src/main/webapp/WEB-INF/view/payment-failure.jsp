@@ -44,7 +44,7 @@
 
             <div style="margin-top: var(--spacing-lg);">
                 <a href="payment.jsp" class="retry-btn">Thử Thanh Toán Lại</a>
-                <a href="book-ticket.jsp" class="back-btn">Quay Lại Đặt Vé</a>
+                <a href="movies" class="back-btn">Quay Lại Đặt Vé</a>
             </div>
         </div>
     </main>

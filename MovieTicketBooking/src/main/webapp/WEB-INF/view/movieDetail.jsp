@@ -1,211 +1,251 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đặt Vé - Quái Thú Vô Hình: Vùng Đất Chết Chóc - MyCinema</title>
+    <title>${movie != null ? movie.name : 'Chi tiết phim'} - MyCinema</title>
     <link rel="stylesheet" href="styles.css">
+
+    <%-- CSS riêng cho trang movieDetail (giữ gọn, không đụng tới styles.css chung) --%>
+    <style>
+        .movie-detail-page { padding: var(--spacing-lg) 0; }
+
+        /* Hero (giống kiểu Cinestar: poster + thông tin trên nền ảnh) */
+        .md-hero {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            background-size: cover;
+            background-position: center;
+        }
+        .md-hero::before {
+            content: "";
+            display: block;
+            background: rgba(0,0,0,0.55);
+        }
+        .md-hero-inner {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: var(--spacing-lg);
+            padding: clamp(16px, 3vw, 28px);
+            background: linear-gradient(
+                90deg,
+                rgba(0,0,0,0.85) 0%,
+                rgba(0,0,0,0.72) 45%,
+                rgba(0,0,0,0.55) 100%
+            );
+        }
+
+        .md-poster img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a2a;
+            background: #111;
+        }
+
+        .md-info h1 {
+            font-size: clamp(22px, 3vw, 34px);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .md-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0 14px;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid #333;
+            background: rgba(20,20,20,0.6);
+            color: var(--text-color);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .chip-status {
+            border-color: rgba(229,9,20,0.6);
+            background: rgba(229,9,20,0.12);
+        }
+
+        .md-kv {
+            display: grid;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .kv-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+        .kv-label { color: var(--text-muted); }
+        .kv-value { color: var(--text-color); }
+
+        .md-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .btn.disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .md-note {
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Nội dung chi tiết (giữ phần mô tả) */
+        .md-content {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        .md-card {
+            background: var(--bg-secondary);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: clamp(14px, 2.2vw, 20px);
+        }
+        .md-card h2, .md-card h3 {
+            margin-bottom: 10px;
+        }
+        .md-desc {
+            color: var(--text-color);
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .md-specs {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+        .md-specs li {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #2a2a2a;
+            background: rgba(0,0,0,0.2);
+        }
+        .md-specs li span:first-child { color: var(--text-muted); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .md-hero-inner { grid-template-columns: 180px 1fr; }
+            .md-poster img { height: 270px; }
+            .md-content { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 560px) {
+            .md-hero-inner { grid-template-columns: 1fr; }
+            .md-poster img { height: 420px; }
+            .kv-row { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
+
 <body>
     <jsp:include page="header.jsp" />
 
-    <main>
-        <%-- Movie Hero --%>
-        <section class="movie-hero">
-            <div class="movie-poster">
-                <img src="http://www.impawards.com/2024/posters/a_quiet_place_day_one.jpg" alt="Quái Thú Vô Hình: Vùng Đất Chết Chóc">
-            </div>
-            <div class="movie-details">
-                <h1>Quái Thú Vô Hình: Vùng Đất Chết Chóc (T16)</h1>
-                <div class="movie-meta">
-                    <span class="meta-tag">PG-13</span>
-                    <span class="meta-tag">Kinh Dị</span>
-                    <span class="meta-tag">99 phút</span>
-                    <span class="meta-tag">Đang Chiếu</span>
-                </div>
-                <p class="movie-synopsis">Vào ngày mà người ngoài hành tinh tấn công Trái Đất, một nhóm người sống sót ở New York phải tìm cách sống sót trong im lặng tuyệt đối.</p>
-                <a href="https://www.youtube.com/watch?v=example" target="_blank" class="trailer-btn">Xem Trailer</a>
-            </div>
-        </section>
+    <main class="movie-detail-page">
+        <%-- Fallback ảnh --%>
+        <c:set var="posterUrl" value="${empty movie.imageUrl ? 'https://via.placeholder.com/400x600?text=No+Image' : movie.imageUrl}" />
 
-        <%-- Date Tabs --%>
-        <section class="date-tabs">
-            <div class="date-tab active" data-date="09/11">09/11</div>
-            <div class="date-tab" data-date="10/11">10/11</div>
-            <div class="date-tab" data-date="11/11">11/11</div>
-        </section>
+        <%-- HERO: Poster + thông tin nhanh + nút Đặt vé (chuyển sang chọn suất chiếu) --%>
+        <section class="md-hero" style="background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85)), url('${posterUrl}');">
+            <div class="md-hero-inner">
+                <div class="md-poster">
+                    <img src="${posterUrl}" alt="${movie.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x600?text=No+Image'">
+                </div>
 
-        <%-- Theater List --%>
-        <section class="theater-list">
-            <h2>Chọn Rạp & Suất Chiếu</h2>
-            <div class="theater-item active">
-                <div class="theater-header">
-                    <div>
-                        <div class="theater-name">Cinestar Satra Quận 6 (TPHCM)</div>
-                        <div class="theater-location">Tầng 4, TTTM Satra, 1466 Võ Văn Kiệt, P.1, Q.6</div>
+                <div class="md-info">
+                    <h1>${movie.name}</h1>
+
+                    <div class="md-chips">
+                        <span class="chip">${movie.type}</span>
+                        <span class="chip">${movie.duration} phút</span>
+                        <span class="chip">${movie.country}</span>
+                        <span class="chip chip-status">
+                            <c:choose>
+                                <c:when test="${movie.movieStatus == 'NOW_SHOWING'}">Đang chiếu</c:when>
+                                <c:otherwise>Sắp chiếu</c:otherwise>
+                            </c:choose>
+                        </span>
                     </div>
-                    <span class="theater-expand">+</span>
-                </div>
-                <div class="showtime-list">
-                    <div class="showtime-row">
-                        <div class="showtime-slot">14:30 (45K)</div>
-                        <div class="showtime-slot selected">16:30 (45K)</div>
-                        <div class="showtime-slot">19:40 (55K)</div>
-                        <div class="showtime-slot">21:50 (55K)</div>
+
+                    <div class="md-kv">
+                        <div class="kv-row">
+                            <span class="kv-label">Đạo diễn</span>
+                            <span class="kv-value">${empty movie.directorName ? 'Đang cập nhật' : movie.directorName}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="kv-label">Diễn viên</span>
+                            <span class="kv-value">${empty movie.actorsName ? 'Đang cập nhật' : movie.actorsName}</span>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="theater-item">
-                <div class="theater-header">
-                    <div>
-                        <div class="theater-name">Cinestar Quận Thanh (TPHCM)</div>
-                        <div class="theater-location">271 Nguyễn Trãi, P. Nguyễn Cư Trinh, Q.1</div>
+
+                    <div class="md-actions">
+                        <%-- Nút Đặt vé: chuyển sang trang chọn suất chiếu (book-ticket.jsp) --%>
+                        <c:choose>
+                            <c:when test="${movie.movieStatus == 'NOW_SHOWING'}">
+                                <a class="btn" href="book-ticket?movieId=${movie.id}">Đặt vé</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="btn disabled" href="#">Sắp chiếu</a>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <a class="btn btn-secondary" href="movies">Quay lại</a>
                     </div>
-                    <span class="theater-expand">+</span>
-                </div>
-                <div class="showtime-list">
-                    <div class="showtime-row">
-                        <div class="showtime-slot">14:30 (45K)</div>
-                        <div class="showtime-slot">18:00 (55K)</div>
-                        <div class="showtime-slot">20:30 (55K)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="theater-item">
-                <div class="theater-header">
-                    <div>
-                        <div class="theater-name">Cinestar Hai Bà Trưng (TPHCM)</div>
-                        <div class="theater-location">135 Hai Bà Trưng, P. Bến Nghé, Q.1</div>
-                    </div>
-                    <span class="theater-expand">+</span>
-                </div>
-                <div class="showtime-list">
-                    <div class="showtime-row">
-                        <div class="showtime-slot">15:00 (45K)</div>
-                        <div class="showtime-slot">17:30 (45K)</div>
-                        <div class="showtime-slot">20:00 (55K)</div>
-                        <div class="showtime-slot">22:10 (55K)</div>
-                    </div>
+
+                    <p class="md-note">* Nhấn “Đặt vé” để chuyển sang bước chọn ngày/rạp/suất chiếu.</p>
                 </div>
             </div>
         </section>
 
-        <%-- Ticket Type & Seat Map --%>
-        <div style="display: flex; gap: var(--spacing-lg);">
-            <section style="flex: 0 0 250px; background: var(--bg-secondary); padding: var(--spacing-md); border-radius: var(--border-radius);">
-                <h3>Loại Vé</h3>
-                <div class="ticket-type">
-                    <div class="ticket-option active">
-                        <div>Standard</div>
-                        <div class="ticket-price">45,000 VNĐ</div>
-                    </div>
-                    <div class="ticket-option">
-                        <div>VIP</div>
-                        <div class="ticket-price">75,000 VNĐ</div>
-                    </div>
-                    <div class="ticket-option">
-                        <div>3D</div>
-                        <div class="ticket-price">55,000 VNĐ</div>
-                    </div>
-                </div>
-                <div class="form-group-booking">
-                    <label>Số Lượng:</label>
-                    <input type="number" value="1" min="1" max="10">
-                </div>
-            </section>
-            
-            <%-- Seat Map Section --%>
-            <section class="seat-map active">
-                <div class="seat-map-header">
-                    <h3>Chọn Ghế - Phòng 02</h3>
-                    <p>Suất 16:30, Standard | 45,000 VNĐ/ghế</p>
-                </div>
-                <div class="seat-legend">
-                    <div class="legend-item"><div class="legend-color available"></div><span>Ghế thường</span></div>
-                    <div class="legend-item"><div class="legend-color double"></div><span>Ghế đôi</span></div>
-                    <div class="legend-item"><div class="legend-color selected"></div><span>Ghế chọn</span></div>
-                    <div class="legend-item"><div class="legend-color taken"></div><span>Ghế đã đặt</span></div>
-                </div>
-                <div class="seat-grid">
-                    <%-- Dùng lại phần code lưới ghế dài --%>
-                    <div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div><div class="col-label"></div>
-                    <div class="row-label">A</div><div class="seat-cell available">A1</div><div class="seat-cell available">A2</div><div class="seat-cell available">A3</div><div class="seat-cell available">A4</div><div class="seat-cell available">A5</div><div class="seat-cell available">A6</div><div class="seat-cell available">A7</div><div class="seat-cell available">A8</div><div class="seat-cell available">A9</div><div class="seat-cell available">A10</div>
-                    <div class="row-label">B</div><div class="seat-cell taken">B1</div><div class="seat-cell available">B2</div><div class="seat-cell selected">B3</div><div class="seat-cell available">B4</div><div class="seat-cell available">B5</div><div class="seat-cell available">B6</div><div class="seat-cell available">B7</div><div class="seat-cell taken">B8</div><div class="seat-cell available">B9</div><div class="seat-cell selected">B10</div>
-                    <div class="row-label">C</div><div class="seat-cell available">C1</div><div class="seat-cell taken">C2</div><div class="seat-cell available">C3</div><div class="seat-cell selected">C4</div><div class="seat-cell available">C5</div><div class="seat-cell available">C6</div><div class="seat-cell available">C7</div><div class="seat-cell available">C8</div><div class="seat-cell taken">C9</div><div class="seat-cell available">C10</div>
-                    <div class="row-label">D</div><div class="seat-cell taken">D1</div><div class="seat-cell available">D2</div><div class="seat-cell available">D3</div><div class="seat-cell selected">D4</div><div class="seat-cell available">D5</div><div class="seat-cell available">D6</div><div class="seat-cell taken">D7</div><div class="seat-cell available">D8</div><div class="seat-cell available">D9</div><div class="seat-cell available">D10</div>
-                    <div class="row-label">E</div><div class="seat-cell available">E1</div><div class="seat-cell selected">E2</div><div class="seat-cell taken">E3</div><div class="seat-cell available">E4</div><div class="seat-cell available">E5</div><div class="seat-cell available">E6</div><div class="seat-cell available">E7</div><div class="seat-cell selected">E8</div><div class="seat-cell taken">E9</div><div class="seat-cell available">E10</div>
-                    <div class="row-label">F</div><div class="seat-cell taken">F1</div><div class="seat-cell available">F2</div><div class="seat-cell selected">F3</div><div class="seat-cell available">F4</div><div class="seat-cell available">F5</div><div class="seat-cell taken">F6</div><div class="seat-cell available">F7</div><div class="seat-cell available">F8</div><div class="seat-cell available">F9</div><div class="seat-cell selected">F10</div>
-                    <div class="row-label">G</div><div class="seat-cell available">G1</div><div class="seat-cell taken">G2</div><div class="seat-cell available">G3</div><div class="seat-cell selected">G4</div><div class="seat-cell available">G5</div><div class="seat-cell available">G6</div><div class="seat-cell available">G7</div><div class="seat-cell taken">G8</div><div class="seat-cell available">G9</div><div class="seat-cell selected">G10</div>
-                    <div class="row-label">H</div><div class="seat-cell selected">H1</div><div class="seat-cell available">H2</div><div class="seat-cell taken">H3</div><div class="seat-cell available">H4</div><div class="seat-cell available">H5</div><div class="seat-cell available">H6</div><div class="seat-cell available">H7</div><div class="seat-cell selected">H8</div><div class="seat-cell taken">H9</div><div class="seat-cell available">H10</div>
-                    <div class="row-label">I</div><div class="seat-cell taken">I1</div><div class="seat-cell available">I2</div><div class="seat-cell selected">I3</div><div class="seat-cell available">I4</div><div class="seat-cell available">I5</div><div class="seat-cell available">I6</div><div class="seat-cell taken">I7</div><div class="seat-cell available">I8</div><div class="seat-cell selected">I9</div><div class="seat-cell available">I10</div>
-                    <div class="row-label">J</div><div class="seat-cell available">J1</div><div class="seat-cell selected">J2</div><div class="seat-cell taken">J3</div><div class="seat-cell available">J4</div><div class="seat-cell available">J5</div><div class="seat-cell available">J6</div><div class="seat-cell selected">J7</div><div class="seat-cell available">J8</div><div class="seat-cell taken">J9</div><div class="seat-cell available">J10</div>
-                    <div class="row-label">K</div><div class="seat-cell taken">K1</div><div class="seat-cell available">K2</div><div class="seat-cell selected">K3</div><div class="seat-cell available">K4</div><div class="seat-cell available">K5</div><div class="seat-cell available">K6</div><div class="seat-cell taken">K7</div><div class="seat-cell available">K8</div><div class="seat-cell selected">K9</div><div class="seat-cell available">K10</div>
-                    <div class="row-label">L</div><div class="seat-cell available">L1</div><div class="seat-cell taken">L2</div><div class="seat-cell available">L3</div><div class="seat-cell selected">L4</div><div class="seat-cell available">L5</div><div class="seat-cell available">L6</div><div class="seat-cell available">L7</div><div class="seat-cell taken">L8</div><div class="seat-cell available">L9</div><div class="seat-cell selected">L10</div>
-                    <div class="row-label">M</div><div class="seat-cell taken">M1</div><div class="seat-cell available">M2</div><div class="seat-cell selected">M3</div><div class="seat-cell available">M4</div><div class="seat-cell available">M5</div><div class="seat-cell available">M6</div><div class="seat-cell taken">M7</div><div class="seat-cell available">M8</div><div class="seat-cell selected">M9</div><div class="seat-cell available">M10</div>
-                    <div class="row-label">N</div><div class="seat-cell available">N1</div><div class="seat-cell taken">N2</div><div class="seat-cell available">N3</div><div class="seat-cell selected">N4</div><div class="seat-cell available">N5</div><div class="seat-cell available">N6</div><div class="seat-cell available">N7</div><div class="seat-cell taken">N8</div><div class="seat-cell available">N9</div><div class="seat-cell selected">N10</div>
-                    <div class="row-label">O</div><div class="seat-cell taken">O1</div><div class="seat-cell available">O2</div><div class="seat-cell available">O3</div><div class="seat-cell selected">O4</div><div class="seat-cell available">O5</div><div class="seat-cell available">O6</div><div class="seat-cell taken">O7</div><div class="seat-cell available">O8</div><div class="seat-cell available">O9</div><div class="seat-cell available">O10</div>
-                    <div class="row-label">P</div><div class="seat-cell double double-span">P1-P2</div><div class="seat-cell available">P3</div><div class="seat-cell selected">P4</div><div class="seat-cell double double-span">P5-P6</div><div class="seat-cell available">P7</div><div class="seat-cell taken">P8</div><div class="seat-cell double double-span">P9-P10</div><div class="seat-cell available"></div>
-                </div>
-            </section>
-        </div>
+        <%-- NỘI DUNG: Giữ phần mô tả chi tiết phim --%>
+        <section class="md-content">
+            <div class="md-card">
+                <h2>Mô tả chi tiết</h2>
+                <p class="md-desc">${empty movie.description ? 'Đang cập nhật nội dung phim.' : movie.description}</p>
+            </div>
 
-        <%-- Booking Summary --%>
-        <div class="booking-summary">
-            <h2>Tổng Kết Đặt Vé</h2>
-            <div class="total-price">Tổng Tiền: 90,000 VNĐ (2 ghế Standard x 45K)</div>
-            <a href="payment.jsp" class="book-btn">Xác Nhận & Thanh Toán</a>
-            <p style="color: var(--text-muted); font-size: 12px; text-align: center; margin-top: var(--spacing-md);">* Vé không hoàn tiền. Áp dụng ưu đãi nếu đủ điều kiện.</p>
-        </div>
+            <aside class="md-card">
+                <h3>Thông tin phim</h3>
+                <ul class="md-specs">
+                    <li><span>Thể loại</span><span>${movie.type}</span></li>
+                    <li><span>Thời lượng</span><span>${movie.duration} phút</span></li>
+                    <li><span>Quốc gia</span><span>${movie.country}</span></li>
+                    <li><span>Trạng thái</span>
+                        <span>
+                            <c:choose>
+                                <c:when test="${movie.movieStatus == 'NOW_SHOWING'}">Đang chiếu</c:when>
+                                <c:otherwise>Sắp chiếu</c:otherwise>
+                            </c:choose>
+                        </span>
+                    </li>
+                </ul>
+            </aside>
+        </section>
     </main>
 
     <jsp:include page="footer.jsp" />
-
-    <%-- JS Script riêng cho trang đặt vé --%>
-    <script>
-        // Date tab
-        document.querySelectorAll('.date-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Theater accordion
-        document.querySelectorAll('.theater-header').forEach(header => {
-            header.addEventListener('click', function() {
-                this.parentElement.classList.toggle('active');
-            });
-        });
-
-        // Showtime selection
-        document.querySelectorAll('.showtime-slot').forEach(slot => {
-            slot.addEventListener('click', function() {
-                document.querySelectorAll('.showtime-slot').forEach(s => s.classList.remove('selected'));
-                this.classList.add('selected');
-                document.querySelector('.seat-map').classList.add('active');
-            });
-        });
-
-        // Ticket type
-        document.querySelectorAll('.ticket-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.ticket-option').forEach(o => o.classList.remove('active'));
-                this.classList.add('active');
-                const price = this.querySelector('.ticket-price').textContent;
-                document.querySelector('.total-price').textContent = `Tổng Tiền: ${price} (1 ghế)`;
-            });
-        });
-
-        // Seat selection
-        document.querySelectorAll('.seat-cell.available').forEach(seat => {
-            seat.addEventListener('click', function() {
-                this.classList.toggle('selected');
-                const selectedSeats = document.querySelectorAll('.seat-cell.selected').length;
-                const basePrice = 45000;
-                document.querySelector('.total-price').textContent = `Tổng Tiền: ${selectedSeats * basePrice} VNĐ (${selectedSeats} ghế Standard x ${basePrice} VNĐ)`;
-            });
-        });
-    </script>
 </body>
 </html>

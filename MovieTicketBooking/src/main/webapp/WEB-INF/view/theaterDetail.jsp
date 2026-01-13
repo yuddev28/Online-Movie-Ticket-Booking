@@ -66,7 +66,7 @@
                             <p class="genre">${m.type}</p>
                             
                             <%-- Nút đặt vé: Gửi kèm cả ID Phim và ID Rạp --%>
-                            <a href="book-ticket.jsp?id=${m.id}&cinemaId=${cinema.id}" class="btn">Đặt Vé</a>
+                            <a href="movie-detail?movieId=${m.id}&cinemaId=${cinema.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
                 </c:forEach>
