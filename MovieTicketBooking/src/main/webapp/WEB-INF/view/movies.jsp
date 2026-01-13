@@ -35,9 +35,6 @@
             </div>
         </section>
 
-        <%-- =================================== --%>
-        <%-- PHẦN 1: PHIM ĐANG CHIẾU (Dynamic)   --%>
-        <%-- =================================== --%>
         <section class="section">
             <h2>Phim Đang Chiếu</h2>
             <div class="movie-grid">
@@ -47,7 +44,6 @@
                     <p style="color:white; font-style: italic;">Hiện chưa có phim đang chiếu.</p>
                 </c:if>
 
-                <%-- Vòng lặp: listShowing --%>
                 <c:forEach items="${listShowing}" var="m">
                     <div class="movie-card">
                         <img src="${m.imageUrl}" 
@@ -57,9 +53,10 @@
                              
                         <div class="movie-info">
                             <h3>${m.name}</h3>
-                            <div class="rating">★ ${m.duration} phút</div>
+                            <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             <%-- Nút Đặt Vé cho phim đang chiếu --%>
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
                             <a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
@@ -67,9 +64,6 @@
             </div>
         </section>
 
-        <%-- =================================== --%>
-        <%-- PHẦN 2: PHIM SẮP CHIẾU (Dynamic)    --%>
-        <%-- =================================== --%>
         <section class="section">
             <h2>Phim Sắp Chiếu</h2>
             <div class="movie-grid">
@@ -79,7 +73,6 @@
                     <p style="color:white; font-style: italic;">Hiện chưa có phim sắp chiếu.</p>
                 </c:if>
 
-                <%-- Vòng lặp: listUpcoming --%>
                 <c:forEach items="${listUpcoming}" var="m">
                     <div class="movie-card">
                         <img src="${m.imageUrl}" 
@@ -89,15 +82,10 @@
                              
                         <div class="movie-info">
                             <h3>${m.name}</h3>
-                            
-                            <%-- Phim sắp chiếu chưa có rating, hiện chữ Sắp ra mắt --%>
-                            <div class="rating" style="color: #ffd700;">📅 Sắp ra mắt</div>
-                            
+                            <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             
-                            <%-- Phim sắp chiếu thì nút chuyển thành Chi Tiết (Màu xám) --%>
-                            <a href="movie-detail.jsp?id=${m.id}" class="btn" 
-                               style="background-color: #555; text-align: center;">Chi Tiết</a>
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
                         </div>
                     </div>
                 </c:forEach>

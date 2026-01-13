@@ -37,12 +37,10 @@
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
                         <div class="movie-info">
                             <h3>${m.name}</h3>
-                            <div class="rating">Sắp chiếu</div>
+                            <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             
-                            <%-- SỬA LINK: Đổi id thành movieId --%>
-                            <%-- Lưu ý: Vẫn trỏ về movie-detail.jsp vì chưa có Servlet cho chi tiết phim --%>
-                            <a href="movie-detail.jsp?movieId=${m.id}" class="btn" style="background: #555;">Chi Tiết</a>
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
                         </div>
                     </div>
                 </c:forEach>

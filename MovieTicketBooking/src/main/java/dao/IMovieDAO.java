@@ -38,6 +38,4 @@ public interface IMovieDAO {
 
 	// Update movie status by movie id
 	int updateMovieStatusById(int id, MovieStatus status);
-	
-	List<Movie> getMoviesByCinemaId(int cinemaId);
 }

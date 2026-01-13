@@ -34,8 +34,9 @@
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
                         <div class="movie-info">
                             <h3>${m.name}</h3>
-                            <div class="rating">★ ${m.duration} phút</div>
+                            <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
                             <a href="book-ticket?id=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>

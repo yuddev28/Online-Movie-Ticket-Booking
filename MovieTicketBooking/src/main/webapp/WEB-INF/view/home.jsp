@@ -27,15 +27,14 @@
 				<%-- Dùng JSTL để lặp qua danh sách listShowing từ Servlet --%>
 				<c:forEach items="${listShowing}" var="m">
 					<div class="movie-card">
-						<%-- Lấy ảnh từ DB. Thêm onerror để nếu link ảnh lỗi thì hiện ảnh thay thế --%>
 						<img src="${m.imageUrl}" alt="${m.name}" loading="lazy"
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
 						<div class="movie-info">
 							<h3>${m.name}</h3>
-							<%-- Có thể thay bằng ${m.duration} phút nếu muốn --%>
+							<div class="rating">${m.duration} phút</div>
 							<p class="genre">${m.type}</p>
 
-							<%-- Truyền ID phim vào link đặt vé --%>
+							<a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
 							<a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
 						</div>
 					</div>
@@ -55,8 +54,10 @@
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
 						<div class="movie-info">
 							<h3>${m.name}</h3>
-							<%-- Model chưa có ngày chiếu, chỉ hiện Type --%>
+							<div class="rating">${m.duration} phút</div>
 							<p class="genre">${m.type}</p>
+							
+							<a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
 						</div>
 					</div>
 				</c:forEach>
