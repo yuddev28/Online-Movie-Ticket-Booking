@@ -21,6 +21,8 @@
 	--spacing-sm: 8px;
 	--spacing-md: 16px;
 	--spacing-lg: 24px;
+	--spacing-xl: 32px; /* Extra large spacing */
+	
 	/* Layout: Chiều rộng max và bo góc nhẹ */
 	--max-width: 1400px;
 	--border-radius: 4px;
@@ -88,8 +90,9 @@ header {
 	height: auto; /* Không cố định height, tự fit */
 }
 
-.nav-links a:hover {
-	color: var(--primary-color); /* Hover đỏ để tương tác */
+.nav-links > li > a:hover,
+.nav-links > li > label:hover {
+  color: var(--primary-color);
 }
 
 .nav-links li {
@@ -325,12 +328,18 @@ main {
 
 .movie-info {
 	padding: var(--spacing-md);
+	
 }
 
 .movie-info h3 {
 	font-size: var(--font-size-base);
 	margin-bottom: var(--spacing-sm);
 	font-weight: 700;
+	width: 200px; /* Đặt độ rộng cố định cho tiêu đề */
+	white-space: nowrap; /* Ngăn văn bản xuống dòng */
+	overflow: hidden; /* Ẩn phần văn bản bị thừa ra ngoài */
+	text-overflow: ellipsis;
+	
 }
 
 /* Genre: Text nhỏ cho thể loại/thời gian */
@@ -381,23 +390,19 @@ main {
 }
 /*-------------------End Footer------------------------------------*/
 
-
-
-
-
 /*-------------------Start DropDownOptionMovie------------------------------------*/
 /* Dropdown Menu: Pure CSS Click Toggle với Checkbox Hack - Chỉ hiện khi click "Phim" */
 .nav-links li.has-dropdown:hover .dropdown {
-  display: block;
-  opacity: 1;
-  transform: translateY(0); /* Slide down nhẹ */
-  
+	display: block;
+	opacity: 1;
+	transform: translateY(0); /* Slide down nhẹ */
 }
+
 .nav-links li.has-dropdown {
 	position: relative;
 }
 
-.dropdown-toggle {	
+.dropdown-toggle {
 	display: none; /* Checkbox ẩn */
 }
 
@@ -445,8 +450,8 @@ main {
 
 .dropdown li a:hover {
 	background-color: var(--primary-color);
+	color: var(--text-color);
 	padding-left: calc(var(--spacing-md)+ 4px);
-	
 }
 
 /* Style cho label "Phim" (clickable như button) */
@@ -455,7 +460,6 @@ main {
 	display: inline-block;
 	padding: var(--spacing-sm) var(--spacing-md);
 	transition: color 0.3s;
-	
 }
 
 .has-dropdown label:hover {
@@ -474,878 +478,860 @@ main {
 
 /*--------------------------End CSS home.jsp & movies.jsp-----------------------------------------------*/
 
-
-
-
-/*--------------------------Start CSS theater.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS theater.jsp-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 .cinema-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--spacing-md);
 }
+
 .cinema-card {
-  background-color: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  transition: transform 0.3s;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
+	background-color: var(--bg-secondary);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	transition: transform 0.3s;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
 }
 
 .cinema-card:hover {
-  transform: translateY(-5px);
+	transform: translateY(-5px);
 }
 
 .cinema-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  background: linear-gradient(to bottom, var(--bg-color), var(--bg-secondary)); /* Placeholder nếu không có ảnh */
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	background: linear-gradient(to bottom, var(--bg-color),
+		var(--bg-secondary)); /* Placeholder nếu không có ảnh */
 }
 
 .cinema-info {
-  padding: var(--spacing-md);
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+	padding: var(--spacing-md);
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 .cinema-info h3 {
-  font-size: var(--font-size-large);
-  margin-bottom: var(--spacing-sm);
-  color: var(--secondary-color); /* Vàng cho tên rạp */
+	font-size: var(--font-size-large);
+	margin-bottom: var(--spacing-sm);
+	color: var(--secondary-color); /* Vàng cho tên rạp */
 }
 
 .cinema-info p {
-  color: var(--text-muted);
-  margin-bottom: var(--spacing-sm);
-  font-size: 14px;
+	color: var(--text-muted);
+	margin-bottom: var(--spacing-sm);
+	font-size: 14px;
 }
 
 .cinema-hours {
-  color: var(--primary-color);
-  font-weight: 700;
-  margin-bottom: var(--spacing-md);
+	color: var(--primary-color);
+	font-weight: 700;
+	margin-bottom: var(--spacing-md);
 }
 
 .map-section {
-  margin-top: var(--spacing-lg);
-  text-align: center;
+	margin-top: var(--spacing-lg);
+	text-align: center;
 }
 
 .map-section h2 {
-  margin-bottom: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
 }
 
 .map-iframe {
-  width: 100%;
-  max-width: 800px;
-  height: 400px;
-  border: none;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+	width: 100%;
+	max-width: 800px;
+	height: 400px;
+	border: none;
+	border-radius: var(--border-radius);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Media Query: Thu nhỏ grid trên mobile */
-@media (max-width: 768px) {
-  .cinema-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .map-iframe {
-    height: 300px;
-  }
+@media ( max-width : 768px) {
+	.cinema-grid {
+		grid-template-columns: 1fr;
+	}
+	.map-iframe {
+		height: 300px;
+	}
 }
-/*--------------------------Start CSS theater.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS theater.jsp-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
-
-
-
-
-/*--------------------------Start CSS promotions.jsp(lược bỏ)-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS promotions.jsp(lược bỏ)-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 /* Promotion Grid: Tương tự movie-grid cho danh sách ưu đãi */
 .promotion-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-md);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: var(--spacing-md);
 }
 
-/*--------------------------End CSS promotions.jsp(lược bỏ)-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------End CSS promotions.jsp(lược bỏ)-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
-
-
-
-
-/*--------------------------Start CSS book-ticket.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS book-ticket.jsp-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
 /* Date Tabs: Chọn ngày chiếu */
 .date-tabs {
-  display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
-  justify-content: center;
-  flex-wrap: wrap;
+	display: flex;
+	gap: var(--spacing-sm);
+	margin-bottom: var(--spacing-lg);
+	justify-content: center;
+	flex-wrap: wrap;
 }
 
 .date-tab {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--bg-secondary);
-  border: 1px solid #333;
-  color: var(--text-color);
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  transition: background 0.3s;
-  font-weight: 700;
+	padding: var(--spacing-sm) var(--spacing-md);
+	background: var(--bg-secondary);
+	border: 1px solid #333;
+	color: var(--text-color);
+	cursor: pointer;
+	border-radius: var(--border-radius);
+	transition: background 0.3s;
+	font-weight: 700;
 }
 
 .date-tab.active {
-  background: var(--primary-color);
-  color: var(--text-color);
+	background: var(--primary-color);
+	color: var(--text-color);
 }
 
 /* Theater List: Accordion cho rạp */
 .theater-list {
-  margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .theater-item {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-md);
-  overflow: hidden;
-  cursor: pointer;
-  transition: background 0.3s;
-  border: 1px solid #333;
+	background: var(--bg-secondary);
+	border-radius: var(--border-radius);
+	margin-bottom: var(--spacing-md);
+	overflow: hidden;
+	cursor: pointer;
+	transition: background 0.3s;
+	border: 1px solid #333;
 }
 
 .theater-item:hover {
-  background: rgba(229, 9, 20, 0.1);
+	background: rgba(229, 9, 20, 0.1);
 }
 
 .theater-item.active {
-  border-color: var(--primary-color);
+	border-color: var(--primary-color);
 }
 
 .theater-header {
-  padding: var(--spacing-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
+	padding: var(--spacing-md);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: 700;
 }
 
 .theater-name {
-  font-size: var(--font-size-large);
-  color: var(--secondary-color);
+	font-size: var(--font-size-large);
+	color: var(--secondary-color);
 }
 
 .theater-location {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-top: var(--spacing-sm);
+	color: var(--text-muted);
+	font-size: 14px;
+	margin-top: var(--spacing-sm);
 }
 
 .theater-expand {
-  font-size: 20px;
-  transition: transform 0.3s;
+	font-size: 20px;
+	transition: transform 0.3s;
 }
 
 .theater-item.active .theater-expand {
-  transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .showtime-list {
-  display: none;
-  padding: var(--spacing-md);
-  background: rgba(0,0,0,0.2);
+	display: none;
+	padding: var(--spacing-md);
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .theater-item.active .showtime-list {
-  display: block;
+	display: block;
 }
 
 .showtime-row {
-  display: flex;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
-  margin-bottom: var(--spacing-sm);
+	display: flex;
+	gap: var(--spacing-sm);
+	flex-wrap: wrap;
+	margin-bottom: var(--spacing-sm);
 }
 
 .showtime-slot {
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background 0.3s;
-  white-space: nowrap;
-  font-size: 14px;
-  font-weight: 700;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-sm) var(--spacing-md);
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: background 0.3s;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: 700;
 }
 
 .showtime-slot:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .showtime-slot.selected {
-  background: var(--secondary-color);
-  color: var(--bg-color);
+	background: var(--secondary-color);
+	color: var(--bg-color);
 }
 
 /* Ticket Type: Loại vé bên trái sơ đồ */
 .ticket-type {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
 }
 
 .ticket-option {
-  background: var(--bg-color);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md);
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.3s, transform 0.2s;
+	background: var(--bg-color);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	padding: var(--spacing-md);
+	text-align: center;
+	cursor: pointer;
+	transition: border-color 0.3s, transform 0.2s;
 }
 
 .ticket-option:hover {
-  transform: translateY(-2px);
+	transform: translateY(-2px);
 }
 
 .ticket-option.active {
-  border-color: var(--primary-color);
-  background: rgba(229, 9, 20, 0.1);
+	border-color: var(--primary-color);
+	background: rgba(229, 9, 20, 0.1);
 }
 
 .ticket-price {
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  color: var(--secondary-color);
-  margin-top: var(--spacing-sm);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	color: var(--secondary-color);
+	margin-top: var(--spacing-sm);
 }
 
 /* Seat Map: Lưới 2D chữ nhật (16 hàng A-P x 10 cột, label dãy bằng kích thước ghế) */
 .seat-map {
-  background: linear-gradient(to bottom, #1a1a1a, #000);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-  display: none;
+	background: linear-gradient(to bottom, #1a1a1a, #000);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
+	margin-bottom: var(--spacing-lg);
+	text-align: center;
+	display: none;
 }
 
 .seat-map.active {
-  display: block;
+	display: block;
 }
 
 .seat-map-header {
-  margin-bottom: var(--spacing-lg);
-  color: var(--text-color);
+	margin-bottom: var(--spacing-lg);
+	color: var(--text-color);
 }
 
 .seat-map-header h3 {
-  color: var(--secondary-color);
-  margin-bottom: var(--spacing-sm);
+	color: var(--secondary-color);
+	margin-bottom: var(--spacing-sm);
 }
 
 .seat-legend {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
+	flex-wrap: wrap;
 }
 
 .legend-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: 14px;
-  color: var(--text-muted);
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+	font-size: 14px;
+	color: var(--text-muted);
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border: 1px solid #333;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border: 1px solid #333;
 }
 
-.legend-color.available { 
-  background: #fff; 
+.legend-color.available {
+	background: #fff;
 }
 
-.legend-color.double { 
-  background: #e0e0e0; 
+.legend-color.double {
+	background: #e0e0e0;
 }
 
-.legend-color.selected { 
-  background: #ffd700; 
+.legend-color.selected {
+	background: #ffd700;
 }
 
-.legend-color.taken { 
-  background: #666; 
+.legend-color.taken {
+	background: #666;
 }
 
 .seat-grid {
-  display: grid;
-  grid-template-columns: repeat(11, 1fr); /* 11 cột đều kích thước: label + 10 ghế */
-  grid-template-rows: repeat(17, 1fr); /* Hàng 1: màn hình, 16 hàng A-P */
-  gap: 1px;
-  max-width: 660px; /* Tăng nhẹ để label = ghế */
-  margin: 0 auto;
-  background: #333;
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius);
-  grid-auto-flow: row;
-  justify-items: stretch;
+	display: grid;
+	grid-template-columns: repeat(11, 1fr);
+	/* 11 cột đều kích thước: label + 10 ghế */
+	grid-template-rows: repeat(17, 1fr);
+	/* Hàng 1: màn hình, 16 hàng A-P */
+	gap: 1px;
+	max-width: 660px; /* Tăng nhẹ để label = ghế */
+	margin: 0 auto;
+	background: #333;
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius);
+	grid-auto-flow: row;
+	justify-items: stretch;
 }
 
 .screen {
-  grid-column: 2 / -1; /* Chiếm 10 cột ghế */
-  grid-row: 1;
-  background: #000;
-  color: #fff;
-  padding: var(--spacing-md);
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 50px 50px 0 0;
-  position: relative;
+	grid-column: 2/-1; /* Chiếm 10 cột ghế */
+	grid-row: 1;
+	background: #000;
+	color: #fff;
+	padding: var(--spacing-md);
+	text-align: center;
+	font-size: 12px;
+	font-weight: 700;
+	border-radius: 50px 50px 0 0;
+	position: relative;
 }
 
 .screen::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 100%;
-  background: radial-gradient(ellipse, transparent 40%, #000 40%);
-  border-radius: 50px 50px 0 0;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 80%;
+	height: 100%;
+	background: radial-gradient(ellipse, transparent 40%, #000 40%);
+	border-radius: 50px 50px 0 0;
 }
 
 .row-label {
-  grid-column: 1; /* Cột 1 (cột 0 trong 1-based) */
-  aspect-ratio: 1; /* Square như ghế */
-  background: #444;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 10px; /* Bằng font ghế */
-  border: 1px solid #555;
-  text-transform: uppercase;
+	grid-column: 1; /* Cột 1 (cột 0 trong 1-based) */
+	aspect-ratio: 1; /* Square như ghế */
+	background: #444;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 10px; /* Bằng font ghế */
+	border: 1px solid #555;
+	text-transform: uppercase;
 }
 
 .col-label {
-  display: none; /* Ẩn label cột, chỉ giữ label dãy */
+	display: none; /* Ẩn label cột, chỉ giữ label dãy */
 }
 
 .seat-cell {
-  aspect-ratio: 1;
-  border: 1px solid #555;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: bold;
+	aspect-ratio: 1;
+	border: 1px solid #555;
+	cursor: pointer;
+	transition: all 0.3s;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10px;
+	font-weight: bold;
 }
 
 .seat-cell.double-span {
-  grid-column: span 2; /* Ghế đôi: 1 hàng 2 cột */
-  justify-self: center; /* Căn giữa 2 cột */
+	grid-column: span 2; /* Ghế đôi: 1 hàng 2 cột */
+	justify-self: center; /* Căn giữa 2 cột */
 }
 
 .seat-cell.available {
-  background: #fff;
-  color: #000;
+	background: #fff;
+	color: #000;
 }
 
 .seat-cell.available:hover {
-  background: rgba(255, 215, 0, 0.3);
+	background: rgba(255, 215, 0, 0.3);
 }
 
 .seat-cell.selected {
-  background: #ffd700;
-  color: #000;
-  border-color: #ffcc00;
+	background: #ffd700;
+	color: #000;
+	border-color: #ffcc00;
 }
 
 .seat-cell.taken {
-  background: #666;
-  color: #fff;
-  cursor: not-allowed;
+	background: #666;
+	color: #fff;
+	cursor: not-allowed;
 }
 
 .seat-cell.double {
-  background: #e0e0e0;
-  color: #000;
+	background: #e0e0e0;
+	color: #000;
 }
 
 /* Booking Summary */
 .booking-summary {
-  max-width: 600px;
-  margin: 0 auto;
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  text-align: center;
+	max-width: 600px;
+	margin: 0 auto;
+	background: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
+	text-align: center;
 }
 
 .total-price {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--secondary-color);
-  margin: var(--spacing-md) 0;
+	font-size: var(--font-size-xl);
+	font-weight: 700;
+	color: var(--secondary-color);
+	margin: var(--spacing-md) 0;
 }
 
 .book-btn {
-  width: 100%;
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-bottom: var(--spacing-md);
-  text-decoration: none !important;
+	width: 100%;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin-bottom: var(--spacing-md);
+	text-decoration: none !important;
 }
 
 .book-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 /* Profile Page Styles: User info, booking history table, promotions */
 .profile-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: var(--spacing-md);
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: var(--spacing-md);
 }
 
 .profile-section {
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+	background: var(--bg-secondary);
+	border-radius: var(--border-radius);
+	padding: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .profile-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-md);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: var(--spacing-md);
 }
 
 .profile-field {
-  padding: var(--spacing-md);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
+	padding: var(--spacing-md);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
 }
 
 .profile-field label {
-  display: block;
-  margin-bottom: var(--spacing-sm);
-  font-weight: 700;
+	display: block;
+	margin-bottom: var(--spacing-sm);
+	font-weight: 700;
 }
 
 .profile-field p {
-  color: var(--text-muted);
+	color: var(--text-muted);
 }
 
 .edit-profile-btn {
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  margin-top: var(--spacing-md);
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-sm) var(--spacing-md);
+	border: none;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	margin-top: var(--spacing-md);
 }
 
 .booking-history {
-  overflow-x: auto;
+	overflow-x: auto;
 }
 
 .booking-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--bg-color);
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--bg-color);
 }
 
 .booking-table th, .booking-table td {
-  padding: var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid #333;
+	padding: var(--spacing-md);
+	text-align: left;
+	border-bottom: 1px solid #333;
 }
 
 .booking-table th {
-  background: var(--primary-color);
-  color: var(--text-color);
-  font-weight: 700;
+	background: var(--primary-color);
+	color: var(--text-color);
+	font-weight: 700;
 }
 
 .booking-table tr:hover {
-  background: rgba(229, 9, 20, 0.1);
+	background: rgba(229, 9, 20, 0.1);
 }
 
 .promotions-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--spacing-md);
 }
 
 .promotion-summary {
-  padding: var(--spacing-md);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  text-align: center;
+	padding: var(--spacing-md);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	text-align: center;
 }
 
 .promotion-summary h4 {
-  margin-bottom: var(--spacing-sm);
-  color: var(--secondary-color);
+	margin-bottom: var(--spacing-sm);
+	color: var(--secondary-color);
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .date-tabs {
-    justify-content: flex-start;
-    overflow-x: auto;
-  }
-
-  .showtime-row {
-    justify-content: flex-start;
-    overflow-x: auto;
-  }
-
-  .seat-grid {
-    grid-template-columns: repeat(10, 1fr); /* Không label trên mobile */
-    gap: 0.5px;
-  }
-
-  .legend-item {
-    font-size: 12px;
-  }
-
-  .row-label {
-    display: none; /* Ẩn label dãy trên mobile nếu cần */
-  }
-
-  .seat-cell {
-    font-size: 8px;
-  }
-
-  .row-label, .col-label {
-    font-size: 10px;
-  }
-
-  .profile-info {
-    grid-template-columns: 1fr;
-  }
-
-  .booking-table {
-    font-size: 14px;
-  }
+@media ( max-width : 768px) {
+	.date-tabs {
+		justify-content: flex-start;
+		overflow-x: auto;
+	}
+	.showtime-row {
+		justify-content: flex-start;
+		overflow-x: auto;
+	}
+	.seat-grid {
+		grid-template-columns: repeat(10, 1fr); /* Không label trên mobile */
+		gap: 0.5px;
+	}
+	.legend-item {
+		font-size: 12px;
+	}
+	.row-label {
+		display: none; /* Ẩn label dãy trên mobile nếu cần */
+	}
+	.seat-cell {
+		font-size: 8px;
+	}
+	.row-label, .col-label {
+		font-size: 10px;
+	}
+	.profile-info {
+		grid-template-columns: 1fr;
+	}
+	.booking-table {
+		font-size: 14px;
+	}
 }
-/*--------------------------End CSS book-ticket.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------End CSS book-ticket.jsp-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
-
-
-
-
-
-/*--------------------------Start CSS loign.jsp/register.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
+/*--------------------------Start CSS loign.jsp/register.jsp-----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
 /* Login/Register Form Styles: Dark theme, centered form */
 .auth-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-lg);
-  background: var(--bg-color);
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-lg);
+	background: var(--bg-color);
 }
 
 .auth-form {
-  background: var(--bg-secondary);
-  padding: var(--spacing-xl);
-  border-radius: var(--border-radius);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  max-width: 400px;
-  position: relative;
+	background: var(--bg-secondary);
+	padding: var(--spacing-xl);
+	border-radius: var(--border-radius);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+	width: 100%;
+	max-width: 400px;
+	position: relative;
 }
 
 .auth-logo {
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
+	text-align: center;
+	margin-bottom: var(--spacing-lg);
 }
 
 .auth-logo .logo {
-  font-size: var(--font-size-xl);
-  color: var(--secondary-color);
-  font-weight: 700;
+	font-size: var(--font-size-xl);
+	color: var(--secondary-color);
+	font-weight: 700;
 }
 
 .auth-form h2 {
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-  color: var(--text-color);
-  font-size: var(--font-size-large);
+	text-align: center;
+	margin-bottom: var(--spacing-lg);
+	color: var(--text-color);
+	font-size: var(--font-size-large);
 }
 
 .form-group-auth {
-  margin-bottom: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
 }
 
 .form-group-auth label {
-  display: block;
-  margin-bottom: var(--spacing-sm);
-  color: var(--text-color);
-  font-weight: 500;
+	display: block;
+	margin-bottom: var(--spacing-sm);
+	color: var(--text-color);
+	font-weight: 500;
 }
 
 .form-group-auth input {
-  width: 100%;
-  padding: var(--spacing-md);
-  background: var(--bg-color);
-  color: var(--text-color);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  transition: border-color 0.3s;
+	width: 100%;
+	padding: var(--spacing-md);
+	background: var(--bg-color);
+	color: var(--text-color);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	transition: border-color 0.3s;
 }
 
 .form-group-auth input:focus {
-  border-color: var(--primary-color);
-  outline: none;
+	border-color: var(--primary-color);
+	outline: none;
 }
 
 .auth-btn {
-  width: 100%;
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-bottom: var(--spacing-md);
+	width: 100%;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-base);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin-bottom: var(--spacing-md);
 }
 
 .auth-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .social-login {
-  text-align: center;
-  margin-top: var(--spacing-lg);
+	text-align: center;
+	margin-top: var(--spacing-lg);
 }
 
 .social-login p {
-  color: var(--text-muted);
-  margin-bottom: var(--spacing-md);
+	color: var(--text-muted);
+	margin-bottom: var(--spacing-md);
 }
 
 .social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  width: 100%;
-  padding: var(--spacing-md);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  color: var(--text-color);
-  text-decoration: none;
-  transition: border-color 0.3s;
-  margin-bottom: var(--spacing-sm);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-sm);
+	width: 100%;
+	padding: var(--spacing-md);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	color: var(--text-color);
+	text-decoration: none;
+	transition: border-color 0.3s;
+	margin-bottom: var(--spacing-sm);
 }
 
 .social-btn:hover {
-  border-color: var(--primary-color);
+	border-color: var(--primary-color);
 }
 
 .social-btn::before {
-  content: '';
-  width: 20px;
-  height: 20px;
-  background-size: contain;
+	content: '';
+	width: 20px;
+	height: 20px;
+	background-size: contain;
 }
 
 .google-btn::before {
-  background-image: url('data:image/svg+xml;base64,...'); /* Icon Google base64 */
+	background-image: url('data:image/svg+xml;base64,...');
+	/* Icon Google base64 */
 }
 
 .facebook-btn::before {
-  background-image: url('data:image/svg+xml;base64,...'); /* Icon Facebook base64 */
+	background-image: url('data:image/svg+xml;base64,...');
+	/* Icon Facebook base64 */
 }
 
 .auth-link {
-  text-align: center;
-  color: var(--text-muted);
+	text-align: center;
+	color: var(--text-muted);
 }
 
 .auth-link a {
-  color: var(--primary-color);
-  text-decoration: none;
+	color: var(--primary-color);
+	text-decoration: none;
 }
 
 .auth-link a:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .error-msg {
-  color: #ff6b6b;
-  font-size: 12px;
-  margin-top: var(--spacing-sm);
-  text-align: center;
+	color: #ff6b6b;
+	font-size: 12px;
+	margin-top: var(--spacing-sm);
+	text-align: center;
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .auth-form {
-    padding: var(--spacing-lg);
-  }
+@media ( max-width : 768px) {
+	.auth-form {
+		padding: var(--spacing-lg);
+	}
 }
 
-/*--------------------------End CSS loign.jsp/register.jsp  -----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
-
-
-
-
+/*--------------------------End CSS loign.jsp/register.jsp  -----------------------------------------------*/
+/* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
 
 /*--------------------------Start payment.jsp  -----------------------------------------------*/
-
 .payment-container {
-  padding: var(--spacing-md);
+	padding: var(--spacing-md);
 }
 
 .payment-hero {
-  display: flex;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+	display: flex;
+	gap: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .payment-summary {
-  flex: 1;
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
+	flex: 1;
+	background: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
 }
 
 .summary-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  border-bottom: 1px solid #333;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: var(--spacing-sm);
+	padding: var(--spacing-sm);
+	border-bottom: 1px solid #333;
 }
 
 .summary-total {
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  color: var(--secondary-color);
-  border-top: 2px solid var(--primary-color);
-  padding-top: var(--spacing-md);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	color: var(--secondary-color);
+	border-top: 2px solid var(--primary-color);
+	padding-top: var(--spacing-md);
 }
 
 .payment-methods {
-  flex: 1;
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
+	flex: 1;
+	background: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
 }
 
 .method-option {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-  padding: var(--spacing-md);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: border-color 0.3s;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
+	padding: var(--spacing-md);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: border-color 0.3s;
 }
 
 .method-option:hover, .method-option.active {
-  border-color: var(--primary-color);
+	border-color: var(--primary-color);
 }
 
 .method-icon {
-  width: 40px;
-  height: 40px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  font-weight: 700;
+	width: 40px;
+	height: 40px;
+	background: #fff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #000;
+	font-weight: 700;
 }
 
 .promo-code {
-  margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .promo-code input {
-  width: 70%;
-  padding: var(--spacing-sm);
-  background: var(--bg-color);
-  border: 1px solid #333;
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
+	width: 70%;
+	padding: var(--spacing-sm);
+	background: var(--bg-color);
+	border: 1px solid #333;
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 .promo-code button {
-  width: 30%;
-  padding: var(--spacing-sm);
-  background: var(--primary-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  cursor: pointer;
+	width: 30%;
+	padding: var(--spacing-sm);
+	background: var(--primary-color);
+	color: var(--text-color);
+	border: none;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	cursor: pointer;
 }
 
 .pay-btn {
-  width: 100%;
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
+	width: 100%;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
 }
 
 .pay-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .payment-hero {
-    flex-direction: column;
-  }
+@media ( max-width : 768px) {
+	.payment-hero {
+		flex-direction: column;
+	}
 }
 
-
 /*--------------------------End payment.jsp  -----------------------------------------------*/
-
 
 /*-------------------------- Start profile.jsp(form edit chinh sua thong tin ca nhan)  -----------------------------------------------*/
 
@@ -1370,363 +1356,344 @@ main {
 }
 /*--------------------------End profile.jsp(form edit chinh sua thong tin ca nhan)  -----------------------------------------------*/
 
-
 /*--------------------------Start payment-success.jsp(thanh toan thanh cong)  -----------------------------------------------*/
 
 /* Success Page Styles: Confirmation with badges, summary */
 .success-container {
-  padding: var(--spacing-md);
-  text-align: center;
+	padding: var(--spacing-md);
+	text-align: center;
 }
 
 .success-hero {
-  margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .success-icon {
-  font-size: 64px;
-  color: #28a745;
-  margin-bottom: var(--spacing-sm);
+	font-size: 64px;
+	color: #28a745;
+	margin-bottom: var(--spacing-sm);
 }
 
 .success-title {
-  font-size: var(--font-size-xl);
-  color: #28a745;
-  margin-bottom: var(--spacing-sm);
+	font-size: var(--font-size-xl);
+	color: #28a745;
+	margin-bottom: var(--spacing-sm);
 }
 
 .success-summary {
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-lg);
+	background: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
+	margin-bottom: var(--spacing-lg);
 }
 
 .success-code {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--secondary-color);
-  margin-bottom: var(--spacing-md);
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--secondary-color);
+	margin-bottom: var(--spacing-md);
 }
 
 .success-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  border-bottom: 1px solid #333;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: var(--spacing-sm);
+	padding: var(--spacing-sm);
+	border-bottom: 1px solid #333;
 }
 
 .continue-btn {
-  width: 100%;
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-bottom: var(--spacing-md);
+	width: 100%;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin-bottom: var(--spacing-md);
 }
 
 .continue-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .success-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+@media ( max-width : 768px) {
+	.success-item {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }
 
 /*--------------------------End payment-success.jsp(thanh toan thanh cong)  -----------------------------------------------*/
 
-
-
-
 /*--------------------------Start payment-failure.jsp(thanh toan that bai)  -----------------------------------------------*/
-
 
 /* Failure Page Styles: Error message, retry buttons */
 .failure-container {
-  padding: var(--spacing-md);
-  text-align: center;
+	padding: var(--spacing-md);
+	text-align: center;
 }
 
 .failure-hero {
-  margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
 }
 
 .failure-icon {
-  font-size: 64px;
-  color: #dc3545;
-  margin-bottom: var(--spacing-sm);
+	font-size: 64px;
+	color: #dc3545;
+	margin-bottom: var(--spacing-sm);
 }
 
 .failure-title {
-  font-size: var(--font-size-xl);
-  color: #dc3545;
-  margin-bottom: var(--spacing-sm);
+	font-size: var(--font-size-xl);
+	color: #dc3545;
+	margin-bottom: var(--spacing-sm);
 }
 
 .failure-message {
-  color: var(--text-muted);
-  margin-bottom: var(--spacing-lg);
-  font-size: var(--font-size-base);
+	color: var(--text-muted);
+	margin-bottom: var(--spacing-lg);
+	font-size: var(--font-size-base);
 }
 
 .failure-summary {
-  background: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-lg);
-  border-left: 4px solid #dc3545;
+	background: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
+	margin-bottom: var(--spacing-lg);
+	border-left: 4px solid #dc3545;
 }
 
 .retry-btn {
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin: 0 var(--spacing-md);
-  width: 200px;
-  text-decoration: none !important;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin: 0 var(--spacing-md);
+	width: 200px;
+	text-decoration: none !important;
 }
 
 .retry-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .back-btn {
-  background: var(--secondary-color);
-  color: var(--bg-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-large);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin: 0 var(--spacing-md);
-  width: 200px;
-  text-decoration: none !important;
-  
+	background: var(--secondary-color);
+	color: var(--bg-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin: 0 var(--spacing-md);
+	width: 200px;
+	text-decoration: none !important;
 }
 
 .back-btn:hover {
-  background: #e6c200;
+	background: #e6c200;
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .retry-btn, .back-btn {
-    width: 100%;
-    margin: var(--spacing-sm) 0;
-   	
-  }
-  
+@media ( max-width : 768px) {
+	.retry-btn, .back-btn {
+		width: 100%;
+		margin: var(--spacing-sm) 0;
+	}
 }
 
 /*-------------------------------------------------End payment-failure.jsp------------------------------------------*/
 
-
-
-
-
 /*-------------------------------------------------Start my-booking.jsp(xem lich su dat ve)------------------------------------------*/
 /* Styles cho my-bookings.jsp: Bảng lịch sử đặt vé, filter, status badges */
 .bookings-container {
-  padding: var(--spacing-md);
+	padding: var(--spacing-md);
 }
 
 .bookings-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--bg-secondary);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.bookings-table th,
-.bookings-table td {
-  padding: var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid #333;
+.bookings-table th, .bookings-table td {
+	padding: var(--spacing-md);
+	text-align: left;
+	border-bottom: 1px solid #333;
 }
 
 .bookings-table th {
-  background: var(--primary-color);
-  color: var(--text-color);
-  font-weight: 700;
+	background: var(--primary-color);
+	color: var(--text-color);
+	font-weight: 700;
 }
 
 .status-badge {
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius);
-  font-size: 12px;
-  font-weight: 700;
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius);
+	font-size: 12px;
+	font-weight: 700;
 }
 
 .status-confirmed {
-  background: #28a745;
-  color: #fff;
+	background: #28a745;
+	color: #fff;
 }
 
 .status-cancelled {
-  background: #dc3545;
-  color: #fff;
+	background: #dc3545;
+	color: #fff;
 }
 
 .status-pending {
-  background: #ffc107;
-  color: #000;
+	background: #ffc107;
+	color: #000;
 }
 
 .action-btn {
-  padding: var(--spacing-sm) var(--spacing-md);
-  margin-right: var(--spacing-sm);
-  font-size: 12px;
-  background: var(--primary-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  transition: background 0.3s;
+	padding: var(--spacing-sm) var(--spacing-md);
+	margin-right: var(--spacing-sm);
+	font-size: 12px;
+	background: var(--primary-color);
+	color: var(--text-color);
+	border: none;
+	border-radius: var(--border-radius);
+	text-decoration: none;
+	transition: background 0.3s;
 }
 
 .action-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .no-bookings {
-  text-align: center;
-  padding: var(--spacing-lg);
-  color: var(--text-muted);
+	text-align: center;
+	padding: var(--spacing-lg);
+	color: var(--text-muted);
 }
 
 .filter-bar {
-  display: flex;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
-  justify-content: center;
+	display: flex;
+	gap: var(--spacing-md);
+	margin-bottom: var(--spacing-lg);
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .filter-select {
-  padding: var(--spacing-sm);
-  background: var(--bg-color);
-  color: var(--text-color);
-  border: 1px solid #333;
-  border-radius: var(--border-radius);
-  font-size: 14px;
+	padding: var(--spacing-sm);
+	background: var(--bg-color);
+	color: var(--text-color);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	font-size: 14px;
 }
 
 .filter-btn {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--primary-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background 0.3s;
+	padding: var(--spacing-sm) var(--spacing-md);
+	background: var(--primary-color);
+	color: var(--text-color);
+	border: none;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: background 0.3s;
 }
 
 .filter-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .download-btn, .clear-btn {
-  padding: var(--spacing-md);
-  margin: 0 var(--spacing-sm);
-  font-size: 14px;
+	padding: var(--spacing-md);
+	margin: 0 var(--spacing-sm);
+	font-size: 14px;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .bookings-table {
-    font-size: 12px;
-  }
-
-  .bookings-table th, .bookings-table td {
-    padding: var(--spacing-sm);
-  }
-
-  .filter-bar {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .action-btn {
-    display: block;
-    margin: var(--spacing-sm) 0;
-  }
+@media ( max-width : 768px) {
+	.bookings-table {
+		font-size: 12px;
+	}
+	.bookings-table th, .bookings-table td {
+		padding: var(--spacing-sm);
+	}
+	.filter-bar {
+		flex-direction: column;
+		align-items: center;
+	}
+	.action-btn {
+		display: block;
+		margin: var(--spacing-sm) 0;
+	}
 }
 /*-------------------------------------------------End my-booking.jsp(xem lich su dat ve)------------------------------------------*/
-
-
 
 /*-------------------------------------------------Start forgot-password.jsp(quên mật khẩu)------------------------------------------*/
 
 /* Forgot Password Form: Similar to login, email only */
 .forgot-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-lg);
-  background: var(--bg-color);
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-lg);
+	background: var(--bg-color);
 }
 
 .forgot-form {
-  background: var(--bg-secondary);
-  padding: var(--spacing-xl);
-  border-radius: var(--border-radius);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-  width: 100%;
-  max-width: 400px;
+	background: var(--bg-secondary);
+	padding: var(--spacing-xl);
+	border-radius: var(--border-radius);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+	width: 100%;
+	max-width: 400px;
 }
 
 .forgot-btn {
-  width: 100%;
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-top: var(--spacing-md);
+	width: 100%;
+	background: var(--primary-color);
+	color: var(--text-color);
+	padding: var(--spacing-lg);
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-base);
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.3s;
+	margin-top: var(--spacing-md);
 }
 
 .forgot-btn:hover {
-  background: #b20710;
+	background: #b20710;
 }
 
 .forgot-success {
-  text-align: center;
-  color: #28a745;
-  margin-top: var(--spacing-md);
+	text-align: center;
+	color: #28a745;
+	margin-top: var(--spacing-md);
 }
 
 /* Media Query */
-@media (max-width: 768px) {
-  .forgot-form {
-    padding: var(--spacing-lg);
-  }
+@media ( max-width : 768px) {
+	.forgot-form {
+		padding: var(--spacing-lg);
+	}
 }
-
 
 /*-------------------------------------------------End forgot-password.jsp(quên mật khẩu)------------------------------------------*/
 
@@ -1735,161 +1702,216 @@ main {
 /*-------------------------------------------------Start Profile Page Enhancements------------------------------------------*/
 /* Hiệu ứng ẩn hiện mượt mà cho form đổi mật khẩu */
 #passwordSection {
-    display: none; /* Mặc định ẩn */
-    margin-top: var(--spacing-lg);
-    border-top: 1px dashed #555;
-    padding-top: var(--spacing-lg);
-    animation: fadeIn 0.5s ease-in-out;
+	display: none; /* Mặc định ẩn */
+	margin-top: var(--spacing-lg);
+	border-top: 1px dashed #555;
+	padding-top: var(--spacing-lg);
+	animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Định nghĩa Animation */
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
+
 
 /* Nút bật tắt form đổi mật khẩu */
 .btn-toggle {
-    background-color: transparent;
-    border: 1px solid #555;
-    color: var(--text-color);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    margin-top: var(--spacing-sm);
-    font-size: 13px;
-    transition: all 0.3s;
+	background-color: transparent;
+	border: 1px solid #555;
+	color: var(--text-color);
+	padding: var(--spacing-sm) var(--spacing-md);
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	margin-top: var(--spacing-sm);
+	font-size: 13px;
+	transition: all 0.3s;
 }
 
 .btn-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+	background-color: rgba(255, 255, 255, 0.1);
+	border-color: var(--primary-color);
+	color: var(--primary-color);
 }
 /*-------------------------------------------------End Profile Page Enhancements------------------------------------------*/
-
 
 /* ==========================================================================
    HELPER / UTILITY CLASSES (Dùng chung để thay thế style inline)
    ========================================================================== */
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-danger { color: #f44336; } /* Màu đỏ lỗi */
-.text-success { color: #4caf50; } /* Màu xanh thành công */
-.text-muted { color: var(--text-muted); }
-.font-bold { font-weight: bold; }
-.mt-10 { margin-top: 10px; }
-.mb-10 { margin-bottom: 10px; }
-.mb-20 { margin-bottom: 20px; }
-.mt-20 { margin-top: 20px; }
-.mt-30 { margin-top: 30px; }
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-danger {
+	color: #f44336;
+} /* Màu đỏ lỗi */
+.text-success {
+	color: #4caf50;
+} /* Màu xanh thành công */
+.text-muted {
+	color: var(--text-muted);
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.mt-30 {
+	margin-top: 30px;
+}
 
 /* Alert Box (Thông báo lỗi/thành công) */
 .alert {
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
+	padding: 10px;
+	border-radius: 4px;
+	margin-bottom: 15px;
+	text-align: center;
 }
+
 .alert-error {
-    background: rgba(255, 0, 0, 0.1);
-    color: #ff4444;
-    border: 1px solid rgba(255, 0, 0, 0.2);
+	background: rgba(255, 0, 0, 0.1);
+	color: #ff4444;
+	border: 1px solid rgba(255, 0, 0, 0.2);
 }
+
 .alert-success {
-    background: rgba(0, 200, 81, 0.1);
-    color: #00C851;
-    border: 1px solid rgba(0, 200, 81, 0.2);
+	background: rgba(0, 200, 81, 0.1);
+	color: #00C851;
+	border: 1px solid rgba(0, 200, 81, 0.2);
 }
 
 /* ==========================================================================
    AUTH PAGES (Login, Register, Forgot Password...)
    ========================================================================== */
 .auth-intro-text {
-    color: var(--text-muted);
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
+	color: var(--text-muted);
+	text-align: center;
+	font-size: 14px;
+	margin-bottom: 20px;
 }
 
 .auth-forgot-link {
-    color: var(--text-muted);
-    font-size: 12px;
-    text-align: right;
-    display: block;
-    margin-bottom: var(--spacing-md);
-    text-decoration: none;
-    transition: color 0.3s;
+	color: var(--text-muted);
+	font-size: 12px;
+	text-align: right;
+	display: block;
+	margin-bottom: var(--spacing-md);
+	text-decoration: none;
+	transition: color 0.3s;
 }
-.auth-forgot-link:hover { color: var(--primary-color); }
+
+.auth-forgot-link:hover {
+	color: var(--primary-color);
+}
 
 .otp-input {
-    letter-spacing: 2px;
-    font-weight: bold;
-    text-align: center;
+	letter-spacing: 2px;
+	font-weight: bold;
+	text-align: center;
 }
 
 /* ==========================================================================
    PROFILE PAGE (Hồ sơ cá nhân)
    ========================================================================== */
 .profile-not-logged {
-    text-align: center;
-    padding: 50px;
-    color: white;
+	text-align: center;
+	padding: 50px;
+	color: white;
 }
 
 .section-title {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-    text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 20px;
+	color: var(--primary-color);
+	text-transform: uppercase;
 }
 
 .subsection-title {
-    color: var(--secondary-color);
-    margin-bottom: 10px;
+	color: var(--secondary-color);
+	margin-bottom: 10px;
 }
 
 /* Nút bật tắt form đổi mật khẩu */
 .btn-toggle-wrapper {
-    text-align: right;
-    margin-bottom: 10px;
+	text-align: right;
+	margin-bottom: 10px;
 }
 
 /* Container chứa các nút hành động (Lưu, Đăng xuất) */
 .form-actions {
-    text-align: center;
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+	text-align: center;
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 15px;
 }
 
-.required-star { color: red; }
+.required-star {
+	color: red;
+}
 
 .empty-history {
-    text-align: center;
-    color: #aaa;
-    padding: 20px;
+	text-align: center;
+	color: #aaa;
+	padding: 20px;
 }
 
 /* Khối đổi mật khẩu (Mặc định ẩn, sẽ hiện bằng JS hoặc class active) */
 #passwordSection {
-    display: none; /* Mặc định ẩn */
-    margin-top: var(--spacing-lg);
-    border-top: 1px dashed #555;
-    padding-top: var(--spacing-lg);
+	display: none; /* Mặc định ẩn */
+	margin-top: var(--spacing-lg);
+	border-top: 1px dashed #555;
+	padding-top: var(--spacing-lg);
 }
 /* Khi có class .show (do JS thêm vào) thì sẽ hiện ra */
 #passwordSection.show {
-    display: block;
-    animation: fadeIn 0.5s ease-in-out;
+	display: block;
+	animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Status Badges trong bảng lịch sử */
-.status-paid { color: #4caf50; font-weight: bold; }
-.status-cancelled { color: #f44336; font-weight: bold; }
-.status-pending { color: #ffc107; font-weight: bold; }
+.status-paid {
+	color: #4caf50;
+	font-weight: bold;
+}
+
+.status-cancelled {
+	color: #f44336;
+	font-weight: bold;
+}
+
+.status-pending {
+	color: #ffc107;
+	font-weight: bold;
+}
 
 /*---------------------------------------------------*/
 /* ==========================================================================
@@ -1898,30 +1920,94 @@ main {
 
 /* Ghế đôi chiếm 2 cột */
 .seat-cell.couple {
-    grid-column: span 2; /* Quan trọng: Chiếm 2 ô lưới */
-    width: 100%; /* Tràn đầy chiều rộng */
-    background-color: #ff69b4; /* Màu hồng */
-    border-color: #ff1493;
-    color: #fff;
-    aspect-ratio: auto; /* Bỏ tỷ lệ vuông */
-    height: 40px; /* Chiều cao cố định */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
+	grid-column: span 2; /* Quan trọng: Chiếm 2 ô lưới */
+	width: 100%; /* Tràn đầy chiều rộng */
+	background-color: #ff69b4; /* Màu hồng */
+	border-color: #ff1493;
+	color: #fff;
+	aspect-ratio: auto; /* Bỏ tỷ lệ vuông */
+	height: 40px; /* Chiều cao cố định */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
 }
 
 /* Hiệu ứng chọn ghế đôi */
 .seat-cell.couple.selected {
-    background-color: var(--secondary-color);
-    color: #000;
-    box-shadow: 0 0 15px #ff69b4;
-    border-color: var(--secondary-color);
+	background-color: var(--secondary-color);
+	color: #000;
+	box-shadow: 0 0 15px #ff69b4;
+	border-color: var(--secondary-color);
 }
 
 /* Khoảng trống giữa các ghế đôi */
 .seat-cell.spacer {
-    visibility: hidden; /* Ẩn đi nhưng vẫn chiếm chỗ trong Grid */
-    pointer-events: none;
+	visibility: hidden; /* Ẩn đi nhưng vẫn chiếm chỗ trong Grid */
+	pointer-events: none;
 }
+
+/*----------------------------------------*/
+/* ======================================================================
+   STATIC PAGES (privacy/terms/payment/refund/about/news/careers/contact)
+   ====================================================================== */
+.static-page {
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.static-card {
+	background: var(--bg-secondary);
+	border: 1px solid #333;
+	border-radius: var(--border-radius);
+	padding: var(--spacing-lg);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.static-card h1 {
+	margin: 0 0 var(--spacing-md);
+	font-size: var(--font-size-large);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.static-muted {
+	color: var(--text-muted);
+	margin-bottom: var(--spacing-lg);
+	line-height: 1.6;
+}
+
+.static-section {
+	margin-top: var(--spacing-lg);
+}
+
+.static-section h2 {
+	margin: 0 0 var(--spacing-sm);
+	font-size: var(--font-size-base);
+	color: var(--secondary-color);
+	font-weight: 700;
+}
+
+.static-section ul {
+	margin: 0;
+	padding-left: 18px;
+	line-height: 1.7;
+	color: var(--text-color);
+}
+
+.static-back {
+	display: inline-block;
+	margin-top: var(--spacing-lg);
+	color: var(--primary-color);
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.static-back:hover {
+	text-decoration: underline;
+}
+
+
 
