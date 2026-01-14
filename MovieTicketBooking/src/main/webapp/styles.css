@@ -488,23 +488,26 @@ main {
 
 
 /*--------------------------Start CSS theater.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
-.cinema-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
+section .cinema-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 item mỗi hàng */
+    gap: 24px;
 }
+
 .cinema-card {
-  background-color: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  transition: transform 0.3s;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    padding: 16px;                /* thêm padding cho đẹp */
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
 }
 
 .cinema-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-4px);  /* hiệu ứng hover nhẹ */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.45);
 }
 
 .cinema-card img {

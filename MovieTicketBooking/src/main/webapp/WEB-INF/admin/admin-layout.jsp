@@ -15,7 +15,7 @@
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
 <style>
-	.nav-pills .nav-item {
+	.nav-item {
 		width: 100%;
 		background: transparent;
 		border: none;
@@ -23,15 +23,10 @@
 		border-radius: 8px;
 	}
 	
-	.nav-pills .nav-item:hover {
+	.nav-item:hover {
 		background-color: #495057;
 	}
 	
-	.nav-pills .nav-item.active {
-		background-color: #0d6efd;
-		color: #fff;
-		font-weight: 500;
-	}
 </style>
 </head>
 <body>
@@ -73,9 +68,9 @@
 				</li>
 			</ul>
 			
-			<div class="d-flex justify-content-center align-items-center">
+			<div class="nav-item d-flex justify-content-center align-items-center">
 				<form action="${pageContext.request.contextPath}/admin/logout" method="get" >
-					<input type="submit" value="Đăng xuất" class="nav-link text-white mt-auto text-center">
+					<input type="submit" value="Đăng xuất" class="nav-link text-white mt-auto text-center p-3">
 				</form>
 			</div>
 			

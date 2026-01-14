@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%-- 1. Thêm thư viện JSTL --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <%-- Nhúng CSS và Font --%>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">

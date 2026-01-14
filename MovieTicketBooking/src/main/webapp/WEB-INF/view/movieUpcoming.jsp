@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -28,7 +28,6 @@
         </section>
 
         <section class="section">
-            <h2>Tất Cả Phim Sắp Chiếu</h2>
             <div class="movie-grid">
                 <%-- Vòng lặp lấy dữ liệu từ MovieUpcomingServlet --%>
                 <c:forEach items="${fullListUpcoming}" var="m">

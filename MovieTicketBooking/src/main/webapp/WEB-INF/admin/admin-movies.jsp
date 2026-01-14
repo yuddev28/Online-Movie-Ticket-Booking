@@ -49,7 +49,22 @@
 						<td>${m.duration }</td>
 						<td>${m.country }</td>
 						<td><img src="${m.imageUrl }" style="width:60px"></td>
-						<td>${m.movieStatus }</td>
+						<td>
+							<c:choose>
+						        <c:when test="${m.movieStatus == 'COMING_SOON'}">
+						            <span class="badge bg-primary">Sắp chiếu</span>
+						        </c:when>
+						        <c:when test="${m.movieStatus == 'NOW_SHOWING'}">
+						            <span class="badge bg-success">Đang chiếu</span>
+						        </c:when>
+						        <c:when test="${m.movieStatus == 'STOPPED_SHOWING'}">
+						            <span class="badge bg-danger">Ngừng chiếu</span>
+						        </c:when>
+						        <c:otherwise>
+						            Không xác định
+						        </c:otherwise>
+						    </c:choose>
+						</td>
 						<td>
 							<div class="d-flex gap-2">
 	    						<form action="${pageContext.request.contextPath}/admin/movie/edit" method="get">

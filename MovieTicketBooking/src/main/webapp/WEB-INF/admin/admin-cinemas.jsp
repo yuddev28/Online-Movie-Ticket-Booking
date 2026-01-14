@@ -31,8 +31,8 @@
 			<thread>
 				<tr>
 					<th style="width:20%">Tên</th>
-					<th style="width:60%">Địa chỉ</th>
-					<th style="width:20%">Hành động</th>
+					<th>Địa chỉ</th>
+					<th style="width:10%">Hành động</th>
 				</tr>
 			</thread>
 			<tbody>

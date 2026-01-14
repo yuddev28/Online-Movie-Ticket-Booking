@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%-- Thêm thư viện JSTL để dùng vòng lặp --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="vi">

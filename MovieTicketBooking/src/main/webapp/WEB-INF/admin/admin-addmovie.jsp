@@ -60,7 +60,6 @@
 					<td><select name="status">
 						<option value="COMING_SOON">Sắp chiếu</option>
 						<option value="NOW_SHOWING">Đang chiếu</option>
-						<option value="STOPPED_SHOWING">Ngừng chiếu</option>
 					</select></td>
 				</tr>
 			</table>

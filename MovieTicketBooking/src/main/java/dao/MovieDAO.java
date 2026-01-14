@@ -19,7 +19,7 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			// Query string to get data
 			String queryString = "SELECT movie_id, movie_name, movie_type, director_name, names_of_actors, movie_description,"
-					+ " movie_duration, movie_country, movie_image_url, movie_status FROM movies";
+					+ " movie_duration, movie_country, movie_image_url, movie_status FROM movies ORDER BY movie_id DESC";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			Statement st = connect.createStatement();
@@ -45,7 +45,8 @@ public class MovieDAO implements IMovieDAO {
 			// Query string to get data
 			String queryString = "SELECT movie_id, movie_name, movie_type, director_name, names_of_actors, movie_description,"
 					+ " movie_duration, movie_country, movie_image_url, movie_status"
-					+ " FROM movies WHERE movie_status = ? LIMIT ?";
+					+ " FROM movies WHERE movie_status = ? "
+					+ " ORDER BY movie_id DESC LIMIT ?";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -73,7 +74,7 @@ public class MovieDAO implements IMovieDAO {
 			// Query string to get data
 			String queryString = "SELECT movie_id, movie_name, movie_type, director_name, names_of_actors, movie_description,"
 					+ " movie_duration, movie_country, movie_image_url, movie_status"
-					+ " FROM movies WHERE movie_status = ?";
+					+ " FROM movies WHERE movie_status = ? ORDER BY movie_id DESC";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
@@ -100,7 +101,7 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			// Query string to get data
 			String queryString = "SELECT movie_id, movie_name, movie_type, director_name, names_of_actors, movie_description,"
-					+ " movie_duration, movie_country, movie_image_url, movie_status FROM movies WHERE movie_name LIKE ?;";
+					+ " movie_duration, movie_country, movie_image_url, movie_status FROM movies WHERE movie_name LIKE ? ORDER BY movie_id DESC;";
 			// Create connection
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement ps = connect.prepareStatement(queryString);
