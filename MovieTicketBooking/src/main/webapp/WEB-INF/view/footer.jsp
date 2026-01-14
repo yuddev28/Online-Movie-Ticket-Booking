@@ -3,15 +3,21 @@
 <%-- Nhúng CSS và Font --%>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+
 <footer class="footer">
     <div style="max-width: var(--max-width); margin: 0 auto; padding: 0 var(--spacing-md);">
         <div class="footer-links">
-            <a href="about.jsp">Giới Thiệu</a>
-            <a href="news.jsp">Tin Tức</a>
-            <a href="careers.jsp">Tuyển Dụng</a>
-            <a href="contact.jsp">Liên Hệ</a>
-            <a href="privacy.jsp">Chính Sách Bảo Mật</a>
+            <!-- Link TƯƠNG ĐỐI để tự ăn theo contextPath -->
+            <a href="about">Giới Thiệu</a>
+            <a href="news">Tin Tức</a>
+            <a href="careers">Tuyển Dụng</a>
+            <a href="contact">Liên Hệ</a>
+            <a href="privacy">Chính Sách Bảo Mật</a>
+            <a href="terms">Điều khoản</a>
+            <a href="payment-policy">Chính sách thanh toán</a>
+            <a href="refund-policy">Chính sách đổi/hoàn vé</a>
         </div>
+
         <p>&copy; 2025 MyCinema. Hệ thống rạp chiếu phim hiện đại bậc nhất.</p>
     </div>
 </footer>
@@ -23,7 +29,7 @@
         const dropdown = document.querySelector('.dropdown');
         const movieLink = document.getElementById('movieLink');
 
-        if (movieLink) {
+        if (movieLink && movieLi) {
             movieLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 movieLi.classList.toggle('active');
@@ -35,15 +41,5 @@
                 movieLi.classList.remove('active');
             }
         });
-
-        if (dropdown) {
-            const dropdownLinks = dropdown.querySelectorAll('a');
-            dropdownLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (movieLi) movieLi.classList.remove('active');
-                    window.location.href = this.href;
-                });
-            });
-        }
     });
 </script>
