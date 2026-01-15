@@ -43,7 +43,7 @@
 			<h2>Phim Đang Chiếu</h2>
 			<div class="movie-grid">
 				<%-- Dùng JSTL để lặp qua danh sách listShowing từ Servlet --%>
-				<c:forEach items="${listShowing}" var="m">
+				<c:forEach items="${listShowing}" var="m" begin="0" end="3">
 					<div class="movie-card">
 						<%-- Lấy ảnh từ DB. Thêm onerror để nếu link ảnh lỗi thì hiện ảnh thay thế --%>
 						<img src="${m.imageUrl}" alt="${m.name}" loading="lazy"
@@ -71,7 +71,7 @@
 		<section class="section">
 			<h2>Phim Sắp Chiếu</h2>
 			<div class="movie-grid">
-				<c:forEach items="${listUpcoming}" var="m">
+				<c:forEach items="${listUpcoming}" var="m" begin="0" end="3">
 					<div class="movie-card">
 						<img src="${m.imageUrl}" alt="${m.name}" loading="lazy"
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
