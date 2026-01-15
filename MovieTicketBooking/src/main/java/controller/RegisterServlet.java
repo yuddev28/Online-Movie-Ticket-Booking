@@ -22,15 +22,13 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
-        
         //  Get input data
         request.setCharacterEncoding("UTF-8");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String pass = request.getParameter("password");
-        String rePass = request.getParameter("confirmPassword");
+        String username = request.getParameter("username").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String pass = request.getParameter("password").trim();
+        String rePass = request.getParameter("confirmPassword").trim();
 
         // check input validation
         // check username
@@ -69,7 +67,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
         if (!phone.matches("^0\\d{9}$")) {
-            backToPage("Số điện thoại phải bắt đầu bằng 0 và có đúng 10 chữ số.", request, response);
+            backToPage("Số điện thoại không hợp lệ", request, response);
             return;
         }
         

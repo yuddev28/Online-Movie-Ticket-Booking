@@ -21,8 +21,8 @@ public class EmailUtils {
 
     public static void sendEmail(String toEmail, String subject, String body) {
         // Cấu hình SMTP (Ví dụ dùng Gmail)
-        final String fromEmail = "email_cua_ban@gmail.com"; // Điền email của bạn
-        final String password = "mat_khau_ung_dung_16_ky_tu"; // Điền App Password
+        final String fromEmail = "23130079@st.hcmuaf.edu.vn"; // Điền email của bạn
+        final String password = "qykfkkqsjtmvwqsf"; // Điền App Password
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); 

@@ -45,14 +45,32 @@ public class ProfileServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
 		
-		// Lấy dữ liệu từ form 
-		String newUsername = request.getParameter("username");
-		String email = request.getParameter("email");
-		String phone = request.getParameter("phone");
-		String currentPass = request.getParameter("currentPass");
-		String newPass = request.getParameter("newPass");
-		String confirmPass = request.getParameter("confirmPass");
+		String email = request.getParameter("email").trim();
+		String phone = request.getParameter("phone").trim();
+		String currentPass = request.getParameter("currentPass").trim();
+		String newPass = request.getParameter("newPass").trim();
+		String confirmPass = request.getParameter("confirmPass").trim();
 		
+		
+		// check email
+        if (email == null || email.isBlank()) {
+            backToPage("Email không được để trống.", request, response);
+            return;
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            backToPage("Email không hợp lệ.", request, response);
+            return;
+        }
+        
+        // check phonenumber
+        if (phone == null || phone.isBlank()) {
+            backToPage("Số điện thoại không được để trống.", request, response);
+            return;
+        }
+        if (!phone.matches("^0\\d{9}$")) {
+            backToPage("Số điện thoại không hợp lệ", request, response);
+            return;
+        }
 		
 		// Xử lý logic Đổi Mật Khẩu
 		if (newPass != null && !newPass.isEmpty()) {
@@ -61,23 +79,20 @@ public class ProfileServlet extends HttpServlet {
 			try {
 				String currentPassHash = PasswordUtils.hashPassword(currentPass);
 
-				if (!currentUser.getPassword().equals(currentPassHash)) {
-					request.setAttribute("error", "Mật khẩu hiện tại không đúng!");
-					request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+				if (PasswordUtils.checkPassword(currentPass, currentUser.getPassword())) {
+					backToPage("Mật khẩu hiện tại không đúng!", request, response);
 					return;
 				}
 				
 				// Kiểm tra xác nhận mật khẩu
 				if (!newPass.equals(confirmPass)) {
-					request.setAttribute("error", "Mật khẩu xác nhận không khớp!");
-					request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+					backToPage("Mật khẩu xác nhận không khớp!", request, response);
 					return;
 				}
 
 				// Kiểm tra độ dài (Tùy chọn)
-				if (newPass.length() < 6) {
-					request.setAttribute("error", "Mật khẩu mới phải từ 6 ký tự trở lên!");
-					request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+				if (newPass.length() < 5) {
+					backToPage("Mật khẩu mới phải từ 6 ký tự trở lên!", request, response);
 					return;
 				}
 
@@ -106,5 +121,17 @@ public class ProfileServlet extends HttpServlet {
 		request.setAttribute("message", "Cập nhật thông tin thành công!");
 		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}
+	
+	// Back to register page if fail validation
+    private void backToPage(String message, HttpServletRequest request, HttpServletResponse response) {
+        try {
+        	request.setAttribute("error", message);
+			request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 
 }
