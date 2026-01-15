@@ -16,7 +16,7 @@
 		<section class="hero">
 			<div class="hero-overlay" style="display:flex; justify-content:center; align-items:center;">
 				<img style=" border: 3px solid #888; border-radius: 8px;" 
-				alt="" src="https://iguov8nhvyobj.vcdn.cloud/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/9/8/980x448_23__8.jpg">
+				alt="" src="https://iguov8nhvyobj.vcdn.cloud/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/8/28namsau.jpg">
 			</div>
 		</section>
 

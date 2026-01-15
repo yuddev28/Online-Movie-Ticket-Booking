@@ -23,6 +23,11 @@
             <p style="color: var(--text-muted); text-align: center; font-size: 14px; margin-bottom: 20px;">
                 Nhập email đã đăng ký để nhận mã OTP xác thực.
             </p>
+            
+            <div class="form-group-auth">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+            </div>
 
             <div class="form-group-auth">
                 <label for="email">Email</label>

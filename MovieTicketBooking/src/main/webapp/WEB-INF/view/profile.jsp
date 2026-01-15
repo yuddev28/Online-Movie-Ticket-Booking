@@ -40,9 +40,8 @@
 					<%-- THÔNG TIN CƠ BẢN --%>
 					<div class="profile-info">
 						<div class="profile-field">
-							<label for="username">Tên đăng nhập</label> <input type="text"
-								id="username" name="username"
-								value="${sessionScope.user.username}" required>
+							<label>Tên đăng nhập</label> 
+							${sessionScope.user.username}
 						</div>
 
 						<div class="profile-field">
