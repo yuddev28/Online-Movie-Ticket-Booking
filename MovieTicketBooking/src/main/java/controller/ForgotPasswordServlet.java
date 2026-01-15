@@ -39,8 +39,8 @@ public class ForgotPasswordServlet extends HttpServlet {
         // check username is exist
         IUserDAO dao = new UserDAO();
         User user = dao.checkUser(username);
-        if (user != null) {
-            backToPage("Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.", request, response);
+        if (user == null) {
+            backToPage("Tên đăng nhập không tồn tại!", request, response);
             return;
         }
         
