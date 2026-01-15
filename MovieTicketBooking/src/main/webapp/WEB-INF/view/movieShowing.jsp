@@ -35,7 +35,7 @@
                             <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
                             <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
-                            <a href="book-ticket?id=${m.id}" class="btn">Đặt Vé</a>
+							<a href="book-ticket?movieId=${m.id}" class="btn">Đặt Vé</a>
                         </div>
                     </div>
                 </c:forEach>

@@ -28,7 +28,7 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getTicketsByUserId(int userId) {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
@@ -60,7 +60,7 @@ public class TicketDAO implements ITicketDAO {
 	// Get ticket by ticket id
 	@Override
 	public Ticket getTicketById(int ticketId) {
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 
@@ -93,7 +93,7 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public List<Ticket> getAllTickets() {
 		List<Ticket> list = new ArrayList<>();
-		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, ticket_seats, t.created_at, t.updated_at,"
+		String sql = "SELECT t.ticket_id, t.ticket_uid, t.ticket_price, t.payment_method, t.ticket_status, t.ticket_seats, t.created_at, t.updated_at,"
 				+ "u.user_id, u.username, u.email, u.phonenumber, u.role," 
 				+ "m.movie_id,  m.movie_name,"
 				+ "c.cinema_id, c.cinema_name, c.cinema_address," 

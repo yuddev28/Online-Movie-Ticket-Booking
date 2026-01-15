@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
         User user = dao.checkUser(username);
         if (user == null) {
-            request.setAttribute("error", "Tài khoản không tồn tại. <a href='register.jsp'>Đăng ký ngay</a>");
+            request.setAttribute("error", "Tài khoản không tồn tại. <a href='register'>Đăng ký ngay</a>");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         } else {
             // Trường hợp: Tài khoản có tồn tại, kiểm tra mật khẩu
