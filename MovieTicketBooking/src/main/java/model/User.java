@@ -16,26 +16,25 @@ public class User {
 	
 	// Constructor for create user
 	public User(String username, String password,
-			String email, String phoneNumber) {
+			String email, String phoneNumber, Role role) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.role = Role.USER;
+		this.role = role;
 		this.tickets = new ArrayList<>();
 	}
 	
 	// Constructor for get user from db
 	public User(int id, String username, String password,
-			String email, String phoneNumber, Role role,
-			List<Ticket> tickets) {
+			String email, String phoneNumber, Role role) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.role = role;
-		this.tickets = tickets;
+		this.tickets = new ArrayList<>();
 	}
 
 	//Getter and Setter

@@ -221,7 +221,6 @@ main {
 	background-position: center;
 	opacity: 0;
 	transition: opacity 1s;
-	
 }
 
 .hero-banner.active {
@@ -299,17 +298,22 @@ main {
 }
 
 /* Movie-grid: Grid responsive cho cards phim - Auto-fit columns như Cinestar */
-.movie-grid {
-	/* display: grid;
-	/*grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	/*gap: var(--spacing-md);*/
-	display: grid;
-    /* Tự động chia cột, tối thiểu 200px mỗi cột */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-    gap: 20px;
-    align-items: felx-start; /* Tránh việc các thẻ bị kéo dãn không đều */
+.section .movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+@media (max-width: 1024px) {
+    .section .movie-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
+@media (max-width: 768px) {
+    .section .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 /* Movie-card: Card phim với hover lift, shadow - Compact như Cinestar */
 .movie-card {
 	background-color: var(--bg-secondary);
@@ -317,8 +321,6 @@ main {
 	overflow: hidden;
 	transition: transform 0.3s;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-	height: 100%
-	
 }
 
 .movie-card:hover {
@@ -326,19 +328,13 @@ main {
 }
 
 .movie-card img {
-    width: 100%;
-    height: auto;          /* Chiều cao tự do theo ảnh gốc */
-    aspect-ratio: 2/3;     /* Ép tỉ lệ chuẩn poster phim (nếu trình duyệt hỗ trợ) */
-    object-fit: contain;
-    background-color: #000;
+	width: 100%;
+	height: 270px;
+	object-fit: cover; /* Poster fit mà không méo */
 }
 
 .movie-info {
 	padding: var(--spacing-md);
-	flex-grow:1;
-	display:flex;
-	flex-direction:colum;
-	justify-content:space-between;
 }
 
 .movie-info h3 {
@@ -365,8 +361,6 @@ main {
 	font-weight: 700;
 	margin-bottom: var(--spacing-sm);
 }
-
-
 /*-------------------End SelectMovies------------------------------------*/
 
 /*-------------------Start Footer------------------------------------*/
@@ -460,8 +454,8 @@ main {
 }
 
 .dropdown li a:hover {
-	background-color: var(--primary-color);
-	padding-left: calc(var(--spacing-md)+ 4px);
+	background-color: #222222;
+	padding-left: calc(var(--spacing-md)+ 2px);
 	
 }
 
@@ -494,23 +488,26 @@ main {
 
 
 /*--------------------------Start CSS theater.jsp-----------------------------------------------*//* Cinema Grid: Tương tự movie-grid cho danh sách rạp */
-.cinema-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
+section .cinema-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 item mỗi hàng */
+    gap: 24px;
 }
+
 .cinema-card {
-  background-color: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  transition: transform 0.3s;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    padding: 16px;                /* thêm padding cho đẹp */
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
 }
 
 .cinema-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-4px);  /* hiệu ứng hover nhẹ */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.45);
 }
 
 .cinema-card img {
@@ -808,16 +805,16 @@ main {
 
 .seat-grid {
   display: grid;
-  grid-template-columns: repeat(11, 1fr); /* 11 cột đều kích thước: label + 10 ghế */
-  grid-template-rows: repeat(17, 1fr); /* Hàng 1: màn hình, 16 hàng A-P */
-  gap: 1px;
-  max-width: 660px; /* Tăng nhẹ để label = ghế */
+  gap: 6px;
+
+  grid-template-columns: repeat(var(--cols), 38px);
+  width: fit-content;
+  max-width: 100%;
   margin: 0 auto;
+
   background: #333;
   padding: var(--spacing-sm);
   border-radius: var(--border-radius);
-  grid-auto-flow: row;
-  justify-items: stretch;
 }
 
 .screen {
@@ -1746,7 +1743,43 @@ main {
 
 /*-------------------------------------------------End forgot-password.jsp(quên mật khẩu)------------------------------------------*/
 
+/* ... (Code cũ giữ nguyên) ... */
 
+/*-------------------------------------------------Start Profile Page Enhancements------------------------------------------*/
+/* Hiệu ứng ẩn hiện mượt mà cho form đổi mật khẩu */
+#passwordSection {
+    display: none; /* Mặc định ẩn */
+    margin-top: var(--spacing-lg);
+    border-top: 1px dashed #555;
+    padding-top: var(--spacing-lg);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Định nghĩa Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nút bật tắt form đổi mật khẩu */
+.btn-toggle {
+    background-color: transparent;
+    border: 1px solid #555;
+    color: var(--text-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: var(--spacing-sm);
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+/*-------------------------------------------------End Profile Page Enhancements------------------------------------------*/
 
 
 

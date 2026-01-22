@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -18,7 +18,7 @@
     <jsp:include page="header.jsp" />
 
     <main>
-        <section class="hero">
+        <section class="hero" style="height: 200px;">
             <div class="hero-banner"
                 style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('http://www.impawards.com/2024/posters/dune_part_two.jpg');"></div>
             <div class="hero-overlay">
@@ -28,7 +28,6 @@
         </section>
 
         <section class="section">
-            <h2>Tất Cả Phim Sắp Chiếu</h2>
             <div class="movie-grid">
                 <%-- Vòng lặp lấy dữ liệu từ MovieUpcomingServlet --%>
                 <c:forEach items="${fullListUpcoming}" var="m">
@@ -37,9 +36,10 @@
 							onerror="this.onerror=null; this.src='https://via.placeholder.com/180x270?text=No+Image'">
                         <div class="movie-info">
                             <h3>${m.name}</h3>
-                            <div class="rating">Sắp chiếu</div>
+                            <div class="rating">${m.duration} phút</div>
                             <p class="genre">${m.type}</p>
-                            <a href="movie-detail.jsp?id=${m.id}" class="btn" style="background: #555;">Chi Tiết</a>
+                            
+                            <a href="movie-detail?movieId=${m.id}" class="btn">Chi tiết</a>
                         </div>
                     </div>
                 </c:forEach>

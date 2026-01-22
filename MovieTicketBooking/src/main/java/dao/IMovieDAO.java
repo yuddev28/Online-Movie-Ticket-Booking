@@ -14,9 +14,15 @@ import model.MovieStatus;
 public interface IMovieDAO {
 	// Get list of all movies in database
 	List<Movie> getAllMovies();
-
+	
+	// Get n movies with status
+	List<Movie> getNMoviesWithStatus(int n, MovieStatus status);
+	
+	//Get all movies with status
+	List<Movie> getMoviesWithStatus(MovieStatus status);
+	
 	// Get movie have name contains a string
-	List<Movie> getMoviesHaveNameLikeString(String str);
+	List<Movie> getMoviesHaveNameLikeKeyword(String keyword);
 
 	// Get movie by id
 	Movie getMovieById(int id);
@@ -28,11 +34,8 @@ public interface IMovieDAO {
 	int deleteMovieById(int id);
 	
 	// Update detail of movie with id
-	
 	int updateMovie(int id, Movie newMovie);
 
 	// Update movie status by movie id
 	int updateMovieStatusById(int id, MovieStatus status);
-	
-	List<Movie> getMoviesByCinemaId(int cinemaId);
 }

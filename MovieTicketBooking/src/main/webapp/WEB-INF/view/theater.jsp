@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- Sửa lại thư viện JSTL theo yêu cầu của bạn --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -26,7 +26,7 @@
 
     <main>
         <%-- Hero Section (Giữ nguyên) --%>
-        <section class="hero">
+        <section class="hero" style="height: 200px;">
             <div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1400x500?text=He+Thong+Rap+MyCinema');"></div>
             <div class="hero-overlay">
                 <h1>Danh Sách Rạp MyCinema</h1>
@@ -36,7 +36,6 @@
 
         <%-- DANH SÁCH RẠP (Lấy dữ liệu động từ Database) --%>
         <section class="section">
-            <h2>Danh Sách Rạp Chiếu</h2>
             
             <div class="cinema-grid">
                 
@@ -48,19 +47,12 @@
                 <%-- Vòng lặp hiển thị từng rạp --%>
                 <c:forEach items="${listCinemas}" var="c">
                     <div class="cinema-card">
-                        <%-- Ảnh rạp: Dùng tên rạp để tạo ảnh placeholder tự động --%>
-                        <img  
-                             alt="${m.name}"
-                             loading="lazy" 
-                             onerror="this.src='https://via.placeholder.com/180x270?text=No+Image'">
                         
                         <div class="cinema-info">
                             <h3>${c.name}</h3>
                             <p><strong>Địa chỉ:</strong> ${c.address}</p>
                             <p class="cinema-hours">Giờ mở cửa: 8:00 - 24:00</p>
                             
-                            <%-- Link chuyển sang trang chi tiết (kèm ID rạp) --%>
-                            <a href="theater-detail?id=${c.id}" class="btn">Xem Lịch Chiếu</a>
                         </div>
                     </div>
                 </c:forEach>

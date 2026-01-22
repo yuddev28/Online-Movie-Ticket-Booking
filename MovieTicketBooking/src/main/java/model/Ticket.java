@@ -1,7 +1,9 @@
 package model;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class Ticket {
@@ -9,7 +11,7 @@ public class Ticket {
 	private String uid;
 	private User user;
 	private ShowTime showTime;
-	private List<ShowTimeSeat> seats;
+	private String seats;
 	private BigDecimal totalPrice;
 	private PaymentMethod paymentMethod;
 	private TicketStatus status;
@@ -18,22 +20,8 @@ public class Ticket {
 	
 	public Ticket() {}
 	
-	// constructor for create ticket
-	public Ticket(int id, User user, ShowTime showTime, List<ShowTimeSeat> seats, PaymentMethod paymentMethod) {
-		this.id = id;
-		this.uid = this.generateUid();
-		this.user = user;
-		this.showTime = showTime;
-		this.seats = seats;
-		this.totalPrice = this.calculateTotalPrice();
-		this.paymentMethod = paymentMethod;
-		this.status = TicketStatus.UNPAID;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = createdAt;
-	}
-	
 	// constructor for get data from db
-	public Ticket(int id, String uid, User user, ShowTime showTime, List<ShowTimeSeat> seats, BigDecimal totalPrice,
+	public Ticket(int id, String uid, User user, ShowTime showTime, String seats, BigDecimal totalPrice,
 			PaymentMethod paymentMethod, TicketStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
 		this.uid = uid;
@@ -45,16 +33,6 @@ public class Ticket {
 		this.status = status;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-	}
-
-	// auto create uid of ticket
-	private String generateUid() {
-		return showTime.getId() + "-" + user.getId() + "-" + seats.size(); 
-	}
-	
-	// calculate total price of ticket by price per ticket * number of seat
-	private BigDecimal calculateTotalPrice() {
-		return showTime.getPricePerTicket().multiply(new BigDecimal(seats.size()));
 	}
 	
 	// Getter and Setter
@@ -74,11 +52,11 @@ public class Ticket {
 		this.showTime = showTime;
 	}
 
-	public List<ShowTimeSeat> getSeats() {
+	public String getSeats() {
 		return seats;
 	}
 
-	public void setSeats(List<ShowTimeSeat> seats) {
+	public void setSeats(String seats) {
 		this.seats = seats;
 	}
 
@@ -138,7 +116,13 @@ public class Ticket {
 		this.createdAt = createdAt;
 	}
 	
+	public Date getCreatedAtAsDate() {
+		return Timestamp.valueOf(createdAt);
+	}
 	
+	public Date getUpdatedAtAsDate() {
+		return Timestamp.valueOf(updatedAt);
+	}
 	
 	
 }

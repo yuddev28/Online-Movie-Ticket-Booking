@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import model.Room;
 import model.ShowTime;
@@ -29,34 +30,10 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeId(int showTimeId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id, ticket_id FROM showtimeseats WHERE showtime_id = ? ORDER BY showtimeseat_id";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
-			ResultSet rs = st.executeQuery();
-			ShowTimeSeat sts;
-			while (rs.next()) {
-				sts = mapResultSetToShowTimeSeat(rs);
-				list.add(sts);
-			}
-			rs.close();
-			st.close();
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	// Get list of show time seats of user by user id
-	@Override
-	public List<ShowTimeSeat> getShowTimeSeatsByUserId(int userId) {
-		List<ShowTimeSeat> list = new ArrayList<>();
-		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE user_id = ?;";
-			Connection connect = JDBCConnection.getConnection();
-			PreparedStatement st = connect.prepareStatement(query);
-			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
 			ShowTimeSeat sts;
 			while (rs.next()) {
@@ -73,14 +50,16 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 	}
 	
 	@Override
-	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeIdAndUserId(int showTimeId, int userId) {
+	public List<ShowTimeSeat> getShowTimeSeatsByShowTimeAndUserAndTicket(int showTimeId, int userId, int ticketId) {
 		List<ShowTimeSeat> list = new ArrayList<>();
 		try {
-			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id FROM showtimeseats WHERE showtime_id = ? AND user_id = ?;";
+			String query = "SELECT showtimeseat_id, seat_name, created_at, updated_at, user_id, showtime_id, room_id, ticket_id FROM showtimeseats"
+					+ " WHERE showtime_id = ? AND user_id = ? AND ticket_id = ?;";
 			Connection connect = JDBCConnection.getConnection();
 			PreparedStatement st = connect.prepareStatement(query);
 			st.setInt(1, showTimeId);
 			st.setInt(2, userId);
+			st.setInt(3, ticketId);
 			ResultSet rs = st.executeQuery();
 			ShowTimeSeat sts;
 			while (rs.next()) {
@@ -95,6 +74,7 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		}
 		return list;
 	}
+	
 
 	// Add list of show time seats
 	@Override
@@ -130,21 +110,25 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 			e.printStackTrace();
 		}
 	}
+	
 
-	// Update user of show time seat by show time seat id, user can be null
+
+	// Update user and ticket of show time seat by show time seat id, user can be null
 	@Override
-	public void updateShowTimeSeat(int showTimeSeatId, User user) {
+	public void updateShowTimeSeat(int showTimeSeatId, User user, int ticketId) {
 
 		try {
-			String sql = "UPDATE showtimeseats SET user_id = ? WHERE showtimeseat_id = ?;";
+			String sql = "UPDATE showtimeseats SET user_id = ?, ticket_id = ? WHERE showtimeseat_id = ?;";
 
 			Connection conn = JDBCConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			if (user != null) {
 				ps.setInt(1, user.getId());
+				ps.setInt(2, ticketId);
 			} else {
 				ps.setNull(1, java.sql.Types.INTEGER);
+				ps.setNull(2, java.sql.Types.INTEGER);
 			}
 			ps.setInt(2, showTimeSeatId);
 			ps.executeUpdate();
@@ -161,17 +145,24 @@ public class ShowTimeSeatDAO implements IShowTimeSeatDAO {
 		try {
 			int id = rs.getInt("showtimeseat_id");
 			String seatName = rs.getString("seat_name");
-			int userId = rs.getInt("user_id");
-			User bookBy = userDAO.getUserById(userId);
-			ShowTime showTime = showtimeDAO.getShowTimeById(rs.getInt("showtime_id"));
-			Room room = roomDAO.getRoomById(rs.getInt("room_id"));
+			// Check if no user book -> skip query get user by id
+			User bookedBy = null;
+			Object user = rs.getObject("user_id");
+			if(user != null) {
+				bookedBy = userDAO.getUserById((int) user);
+			}
+				
+			ShowTime showTime = new ShowTime();
+			showTime.setId(rs.getInt("showtime_id"));
+			Room room = null;
 			LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 			LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
-			sts = new ShowTimeSeat(id, seatName, room, bookBy, showTime, createdAt, updatedAt);
+			sts = new ShowTimeSeat(id, seatName, room, bookedBy, showTime, createdAt, updatedAt);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return sts;
 	}
+
 
 }

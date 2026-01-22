@@ -1,10 +1,16 @@
 package dao;
 
+import java.util.List;
+
+import model.Role;
 import model.User;
 
 public interface IUserDAO {
+	List<User> getAllUser();
 	User getUserById(int id);
-	User getUserByUsername(String username);
-    void addUser(User user);
-	
+	User checkUser(String username);
+	User getUserByEmail(String email);
+    boolean addUser(User user);
+    void updateUser(User user);
+	boolean deleteUser(int id);
 }

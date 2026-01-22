@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,38 +11,39 @@
 </head>
 <body>
     <div class="auth-container">
-        <form class="forgot-form" id="forgotForm">
+        
+        <form class="auth-form" action="forgot-password" method="post">
+            
             <div class="auth-logo">
-                <a href="home.jsp" class="logo">MyCinema</a>
+                <a href="home" class="logo">MyCinema</a>
             </div>
-            <h2>Quên Mật Khẩu</h2>
+
+            <h2>Khôi Phục Mật Khẩu</h2>
+
+            <p style="color: var(--text-muted); text-align: center; font-size: 14px; margin-bottom: 20px;">
+                Nhập email đã đăng ký để nhận mã OTP xác thực.
+            </p>
+            
+            <div class="form-group-auth">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+            </div>
+
             <div class="form-group-auth">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
             </div>
-            <button type="submit" class="forgot-btn">Gửi Mã Xác Nhận</button>
-            <div class="auth-link" style="margin-top: var(--spacing-md);">
-                <p><a href="login.jsp">Quay lại đăng nhập</a></p>
-            </div>
-            <div id="successMsg" class="forgot-success" style="display: none;">
-                Mã xác nhận đã được gửi đến email của bạn. Kiểm tra hộp thư đến hoặc thư rác.
+
+            <c:if test="${not empty error}">
+                <p style="color: red; text-align: center; margin-bottom: 10px;">${error}</p>
+            </c:if>
+
+            <button type="submit" class="auth-btn">Gửi Mã OTP</button>
+
+            <div class="auth-link">
+                <p>Bạn đã nhớ mật khẩu? <a href="login">Đăng nhập ngay</a></p>
             </div>
         </form>
     </div>
-
-    <script>
-        // Mock send OTP
-        document.getElementById('forgotForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            if (email) {
-                document.getElementById('successMsg').style.display = 'block';
-                // Redirect to OTP page after 3s
-                setTimeout(() => {
-                    window.location.href = 'otp.jsp'; // Giả định trang OTP
-                }, 3000);
-            }
-        });
-    </script>
 </body>
 </html>

@@ -6,11 +6,11 @@
 <footer class="footer">
     <div style="max-width: var(--max-width); margin: 0 auto; padding: 0 var(--spacing-md);">
         <div class="footer-links">
-            <a href="about.jsp">Giới Thiệu</a>
-            <a href="news.jsp">Tin Tức</a>
-            <a href="careers.jsp">Tuyển Dụng</a>
-            <a href="contact.jsp">Liên Hệ</a>
-            <a href="privacy.jsp">Chính Sách Bảo Mật</a>
+            <a href="about">Giới Thiệu</a>
+            <a href="news">Tin Tức</a>
+            <a href="careers">Tuyển Dụng</a>
+            <a href="contact">Liên Hệ</a>
+            <a href="privacy">Chính Sách Bảo Mật</a>
         </div>
         <p>&copy; 2025 MyCinema. Hệ thống rạp chiếu phim hiện đại bậc nhất.</p>
     </div>

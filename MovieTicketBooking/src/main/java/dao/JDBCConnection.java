@@ -4,36 +4,35 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class JDBCConnection {
-	private static final String URL = "jdbc:mysql://localhost:3306/movie_ticket_booking";
-	private static final String USER = "root";
-	private static final String PASSWORD = "mysqlpw";
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
-	// Connect with default database
-	public static Connection getConnection() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			return conn;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	// Connect with other database
-	public static Connection getConnection(String url, String user, String password) {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(url, user, password);
-			return conn;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+public class JDBCConnection {
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/movie_ticket_booking";
+    private static final String USER = "root";
+    private static final String PASS = "mysqlpw";
+    private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
+    private static HikariConfig config = new HikariConfig();
+    private static HikariDataSource ds;
+    static {
+        config.setJdbcUrl(DB_URL);
+        config.setUsername(USER);
+        config.setPassword(PASS);
+        config.setDriverClassName(DRIVER_NAME);
+        
+        config.setMaximumPoolSize(15);      // Tổng số connection tối đa
+        config.setMinimumIdle(5);           // Số connection rảnh
+        config.setIdleTimeout(30000);       // Connection rảnh quá lâu sẽ đóng (ms)
+        config.setMaxLifetime(1800000);     // Tuổi thọ tối đa của connection (ms)
+        config.setConnectionTimeout(30000); // Chờ lấy connection tối đa trước khi lỗi
+        
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        ds = new HikariDataSource(config);
+    }
+    private JDBCConnection() { }
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
 }

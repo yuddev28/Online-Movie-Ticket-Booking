@@ -31,9 +31,10 @@
 			<thread>
 				<tr>
 					<th style="width:20%">Tên</th>
-					<th style="width:50%">Chi nhánh</th>
+					<th style="width:40%">Chi nhánh</th>
 					<th style="width:10%">Số cột</th>
 					<th style="width:10%">Số hàng</th>
+					<th>Tổng số ghế</th>
 					<th>Hành động</th>
 				</tr>
 			</thread>
@@ -44,6 +45,7 @@
 						<td>${r.cinema.name }</td>
 						<td>${r.numberOfColumns }</td>
 						<td>${r.numberOfRows }</td>
+						<td>${r.numberOfColumns *  r.numberOfRows }</td>
 						<td>
 							<div class="d-flex gap-2">
 								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-room-id="${r.id}">

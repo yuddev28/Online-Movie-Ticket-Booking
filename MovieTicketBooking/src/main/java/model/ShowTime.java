@@ -29,14 +29,14 @@ public class ShowTime {
 	}
 	
 	public ShowTime(int id, Cinema cinema, Room room, Movie movie, BigDecimal pricePerTicket,
-			LocalDateTime startTime) {
+			LocalDateTime startTime, LocalDateTime createdAt) {
 		this.id = id;
 		this.cinema = cinema;
 		this.room = room;
 		this.movie = movie;
 		this.pricePerTicket = pricePerTicket;
 		this.startTime = startTime;
-		this.createdAt = LocalDateTime.now();
+		this.createdAt = createdAt;
 	}
 	
 	//Create show time seat have name EX: A1 - Z10000
@@ -125,6 +125,10 @@ public class ShowTime {
 
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public LocalDateTime getCreatedAt() {

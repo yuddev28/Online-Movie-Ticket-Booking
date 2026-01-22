@@ -28,7 +28,7 @@ public class Movie {
 		this.movieStatus = movieStatus;
 	}
 	
-	// Contructor without movie id
+	// Constructor without movie id
 	public Movie(String name, String type, String directorName, String actorsName, String description,
 			int duration, String country, String imageUrl, MovieStatus movieStatus) {
 		this.name = name;
@@ -40,6 +40,12 @@ public class Movie {
 		this.country = country;
 		this.imageUrl = imageUrl;
 		this.movieStatus = movieStatus;
+	}
+	
+	// Constructor for manage ticket by admin
+	public Movie(int id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
 	// Getter and Setter

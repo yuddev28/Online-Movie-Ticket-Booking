@@ -11,12 +11,12 @@
     <div class="auth-container">
         <form class="auth-form" action="register" method="post">
             <div class="auth-logo">
-                <a href="home.jsp" class="logo">MyCinema</a>
+                <a href="home" class="logo">MyCinema</a>
             </div>
             <h2>Đăng Ký</h2>
             
             <div class="form-group-auth">
-                <label for="fullname">Tên đăng nhập (Username)</label>
+                <label for="fullname">Tên đăng nhập</label>
                 <input type="text" id="fullname" name="username" placeholder="Nhập tên đăng nhập" required>
             </div>
             

@@ -41,6 +41,7 @@
 						</select>
 					</td>
 				</tr>
+				<tr><td>Nhập số cột và số hàng ghế:</td></tr>
 				<tr>
 					<td><label for="cols">Số cột</label></td>
 					<td><input name="cols" type="number" min=1  class="form-control"></td>
