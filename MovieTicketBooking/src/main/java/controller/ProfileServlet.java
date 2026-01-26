@@ -33,7 +33,7 @@ public class ProfileServlet extends HttpServlet {
 	    request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
 	}
 
-	// XỬ LÝ ĐỔI MẬT KHẨU 
+	// XỬ LÝ ĐỔI THÔNG TIN
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -79,7 +79,7 @@ public class ProfileServlet extends HttpServlet {
 			try {
 				String currentPassHash = PasswordUtils.hashPassword(currentPass);
 
-				if (PasswordUtils.checkPassword(currentPass, currentUser.getPassword())) {
+				if (!PasswordUtils.checkPassword(currentPass, currentUser.getPassword())) {
 					backToPage("Mật khẩu hiện tại không đúng!", request, response);
 					return;
 				}
@@ -119,7 +119,7 @@ public class ProfileServlet extends HttpServlet {
 
 		// Thông báo thành công và reload trang
 		request.setAttribute("message", "Cập nhật thông tin thành công!");
-		request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+		doGet(request, response);
 	}
 	
 	// Back to register page if fail validation

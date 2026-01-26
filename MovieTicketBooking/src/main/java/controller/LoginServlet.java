@@ -61,23 +61,17 @@ public class LoginServlet extends HttpServlet {
             // Trường hợp: Tài khoản có tồn tại, kiểm tra mật khẩu
         	//mã hóa mật khẩu người dùng vừa nhập vào form để so sánh với dữ liệu mật khẩu được mã hóa dưới database
             
-			try {
-				if (PasswordUtils.checkPassword(pass, user.getPassword())) {
-	                // Đăng nhập thành công -> Lưu vào Session
-	                HttpSession session = request.getSession();
-	                session.setAttribute("user", user); // Lưu đối tượng user để profile.jsp dùng
-	                
-	                // Chuyển hướng vào trang Profile hoặc Home
-	                response.sendRedirect("home");
-	            } else {
-	                // Sai mật khẩu
-	                request.setAttribute("error", "Sai mật khẩu! Vui lòng thử lại.");
-	                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-	            }
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	if (PasswordUtils.checkPassword(pass, user.getPassword())) {
+                // Đăng nhập thành công -> Lưu vào Session
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                
+                response.sendRedirect("home");
+            } else {
+                // Sai mật khẩu
+                request.setAttribute("error", "Sai mật khẩu! Vui lòng thử lại.");
+                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            }
         	
         }
     }

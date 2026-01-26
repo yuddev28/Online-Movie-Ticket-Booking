@@ -15,7 +15,7 @@ public class PasswordUtils {
 	}
 	
 	// Check password
-	public static boolean checkPassword(String password, String hash) throws Exception {
+	public static boolean checkPassword(String password, String hash) {
 		if(password == null || hash == null) {
 			return false;
 		}

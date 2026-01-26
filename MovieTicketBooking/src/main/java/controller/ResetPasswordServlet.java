@@ -42,22 +42,21 @@ public class ResetPasswordServlet extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("resetEmail");
+        String username = (String) session.getAttribute("resetUsername"); 
         
-        if (email != null) {
+        if (username != null) {
             UserDAO dao = new UserDAO();
-            User user = dao.getUserByEmail(email); // Lấy user từ DB lên
+            User user = dao.checkUser(username); 
             
             if (user != null) {
                 // Mã hóa và cập nhật mật khẩu mới
                 try {
 					user.setPassword(PasswordUtils.hashPassword(newPass));
-					// Lưu xuống DB (Dùng hàm updateUser đã sửa ở bước trước)
 	                dao.updateUser(user); 
 	                
 	                // Xóa session OTP để bảo mật
 	                session.removeAttribute("otp");
-	                session.removeAttribute("resetEmail");
+	                session.removeAttribute("resetUsername");
 	                
 	                // Thông báo và về trang login
 	                request.setAttribute("message", "Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
@@ -65,8 +64,6 @@ public class ResetPasswordServlet extends HttpServlet {
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-                
-                
             }
         } else {
             response.sendRedirect("login");

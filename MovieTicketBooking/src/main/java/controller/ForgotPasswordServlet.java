@@ -69,6 +69,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("otp", otp);
 		session.setAttribute("resetEmail", email);
+		session.setAttribute("resetUsername", username);
 		session.setMaxInactiveInterval(300); // OTP hết hạn sau 5 phút
 
 		// 4. Chuyển hướng sang trang nhập OTP

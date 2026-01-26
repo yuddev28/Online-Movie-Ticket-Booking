@@ -29,7 +29,8 @@ public class AdminAuthFilter implements Filter{
 		}
 		User admin = (User) session.getAttribute("admin");
 		if(!Role.ADMIN.equals(admin.getRole())) {
-			res.sendRedirect(req.getContextPath() + "/login-admin");
+			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			request.getRequestDispatcher("/WEB-INF/admin/error-403.jsp").forward(req, res);
 			return;
 		}
 		chain.doFilter(req, res);
